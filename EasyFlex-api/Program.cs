@@ -1,8 +1,10 @@
 using DataAccess.Factories;
+using DataAccess.Models;
 using EasyFlex_api.Utils;
 using Interface.Factories;
 using Interface.Interface;
 using Logic.Factories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<dbo>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure CORS to allow all origins, methods, and headers
 builder.Services.AddCors(options =>
