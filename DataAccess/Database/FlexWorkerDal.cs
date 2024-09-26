@@ -1,9 +1,10 @@
 using DataAccess.Models;
+using Interface.Interface.Dal;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
 
-public class FlexWorkerDal(dbo context)
+public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 {
     public async Task AddFlexWorker(Flexworker flexworker)
     {
