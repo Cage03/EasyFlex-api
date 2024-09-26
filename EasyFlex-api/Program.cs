@@ -10,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
+
+builder.Services.AddDbContext<dbo>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddSingleton<IConfigLoader, ConfigLoader>();
 builder.Services.AddScoped<ILogicFactory, LogicFactory>();
 builder.Services.AddScoped<IDalFactory, DalFactory>();
@@ -19,8 +23,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<dbo>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure CORS to allow all origins, methods, and headers
 builder.Services.AddCors(options =>
