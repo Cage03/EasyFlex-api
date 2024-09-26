@@ -1,26 +1,29 @@
 ﻿using DataAccess.Database;
 using DataAccess.Models;
 using Interface.Factories;
-using Microsoft.EntityFrameworkCore;
+using Interface.Interface.Dal;
 
 namespace DataAccess.Factories;
 
 public class DalFactory(dbo context) : IDalFactory
 {
-    public FlexWorkerDal CreateFlexWorkerDal()
+    public ICategoryDal GetCategoryDal()
+    {
+        return new CategoryDal(context);
+    }
+
+    public IFlexWorkerDal GetFlexWorkerDal()
     {
         return new FlexWorkerDal(context);
     }
-    public SkillDal CreateSkillDal()
-    {
-        return new SkillDal(context);
-    }
-    public JobDal CreateJobDal()
+
+    public IJobDal GetJobDal()
     {
         return new JobDal(context);
     }
-    public CategoryDal CreateCategoryDal()
+
+    public ISkillDal GetSkillDal()
     {
-        return new CategoryDal(context);
+        return new SkillDal(context);
     }
 }
