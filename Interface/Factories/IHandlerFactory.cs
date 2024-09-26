@@ -6,4 +6,5 @@ namespace Interface.Factories;
 public interface IHandlerFactory
 {
     public IFlexWorkerHandler GetFlexWorkerHandler();
+    public IJobHandler GetJobHandler();
 }

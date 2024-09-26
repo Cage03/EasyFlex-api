@@ -1,8 +1,8 @@
 ﻿using Interface.Models;
 
-namespace Interface.Interface.Dal;
+namespace Interface.Interface.Handlers;
 
-public interface IJobDal
+public interface IJobHandler
 {
     public Task CreateJob(JobModel job);
 }

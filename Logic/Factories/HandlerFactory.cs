@@ -11,4 +11,9 @@ public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
     {
         return new FlexWorkerHandler(dalFactory.GetFlexWorkerDal());
     }
+
+    public IJobHandler GetJobHandler()
+    {
+        return new JobHandler(dalFactory.GetJobDal());
+    }
 }
