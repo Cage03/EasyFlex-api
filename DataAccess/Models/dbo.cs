@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Interface.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models;
@@ -15,21 +16,21 @@ public partial class dbo : DbContext
     {
     }
 
-    public virtual DbSet<Category> Categories { get; set; }
+    public virtual DbSet<CategoryModel> Categories { get; set; }
 
-    public virtual DbSet<Flexworker> Flexworkers { get; set; }
+    public virtual DbSet<FlexworkerModel> Flexworkers { get; set; }
 
-    public virtual DbSet<Job> Jobs { get; set; }
+    public virtual DbSet<JobModel> Jobs { get; set; }
 
-    public virtual DbSet<Skill> Skills { get; set; }
+    public virtual DbSet<SkillModel> Skills { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<UserModel> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Category>(entity =>
+        modelBuilder.Entity<CategoryModel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__category__3213E83FEEE1023E");
 
@@ -41,7 +42,7 @@ public partial class dbo : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Flexworker>(entity =>
+        modelBuilder.Entity<FlexworkerModel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__flexwork__3213E83F15FF6BAD");
 
@@ -72,10 +73,10 @@ public partial class dbo : DbContext
             entity.HasMany(d => d.Skills).WithMany(p => p.Flexworkers)
                 .UsingEntity<Dictionary<string, object>>(
                     "SkillsFlexworker",
-                    r => r.HasOne<Skill>().WithMany()
+                    r => r.HasOne<SkillModel>().WithMany()
                         .HasForeignKey("SkillsId")
                         .HasConstraintName("FK__skills_fl__skill__38996AB5"),
-                    l => l.HasOne<Flexworker>().WithMany()
+                    l => l.HasOne<FlexworkerModel>().WithMany()
                         .HasForeignKey("FlexworkersId")
                         .HasConstraintName("FK__skills_fl__flexw__37A5467C"),
                     j =>
@@ -87,7 +88,7 @@ public partial class dbo : DbContext
                     });
         });
 
-        modelBuilder.Entity<Job>(entity =>
+        modelBuilder.Entity<JobModel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__jobs__3213E83F5D83D074");
 
@@ -106,10 +107,10 @@ public partial class dbo : DbContext
             entity.HasMany(d => d.Flexworkers).WithMany(p => p.Jobs)
                 .UsingEntity<Dictionary<string, object>>(
                     "JobsFlexworker",
-                    r => r.HasOne<Flexworker>().WithMany()
+                    r => r.HasOne<FlexworkerModel>().WithMany()
                         .HasForeignKey("FlexworkersId")
                         .HasConstraintName("FK__jobs_flex__flexw__30F848ED"),
-                    l => l.HasOne<Job>().WithMany()
+                    l => l.HasOne<JobModel>().WithMany()
                         .HasForeignKey("JobsId")
                         .HasConstraintName("FK__jobs_flex__jobs___300424B4"),
                     j =>
@@ -123,10 +124,10 @@ public partial class dbo : DbContext
             entity.HasMany(d => d.Skills).WithMany(p => p.Jobs)
                 .UsingEntity<Dictionary<string, object>>(
                     "SkillsJob",
-                    r => r.HasOne<Skill>().WithMany()
+                    r => r.HasOne<SkillModel>().WithMany()
                         .HasForeignKey("SkillsId")
                         .HasConstraintName("FK__skills_jo__skill__34C8D9D1"),
-                    l => l.HasOne<Job>().WithMany()
+                    l => l.HasOne<JobModel>().WithMany()
                         .HasForeignKey("JobsId")
                         .HasConstraintName("FK__skills_jo__jobs___33D4B598"),
                     j =>
@@ -138,7 +139,7 @@ public partial class dbo : DbContext
                     });
         });
 
-        modelBuilder.Entity<Skill>(entity =>
+        modelBuilder.Entity<SkillModel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__skills__3213E83FEE47368D");
 
@@ -150,12 +151,12 @@ public partial class dbo : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("name");
 
-            entity.HasOne(d => d.Category).WithMany(p => p.Skills)
+            entity.HasOne(d => d.CategoryModel).WithMany(p => p.Skills)
                 .HasForeignKey(d => d.CategoryId)
                 .HasConstraintName("FK__skills__category__398D8EEE");
         });
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<UserModel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__users__3213E83FDD325EC9");
 

@@ -16,7 +16,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     {
         try
         {
-            throw new NotImplementedException();
+            return Ok(_flexWorkerHandler.GetFlexWorkers());
         }
         catch (Exception e)
         {

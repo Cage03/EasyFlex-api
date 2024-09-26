@@ -1,18 +1,18 @@
 using DataAccess.Models;
 using Interface.Interface.Dal;
-using Microsoft.EntityFrameworkCore;
+using Interface.Models;
 
 namespace DataAccess.Database;
 
 public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 {
-    public async Task AddFlexWorker(Flexworker flexworker)
+    public async Task AddFlexWorker(FlexworkerModel flexWorker)
     {
-        context.Flexworkers.Add(flexworker);
         await context.SaveChangesAsync();
     }
-    public List<Flexworker> GetAllFlexWorkers()
+    public List<FlexworkerModel> GetAllFlexWorkers()
     {
         return context.Flexworkers.ToList();
     }
+    
 }
