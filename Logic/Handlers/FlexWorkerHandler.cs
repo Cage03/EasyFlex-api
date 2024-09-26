@@ -1,16 +1,12 @@
-﻿using Interface.Factories;
+﻿using Interface.Interface.Dal;
 using Interface.Interface.Handlers;
 
 namespace Logic.Handlers;
 
-public class FlexWorkerHandler : IFlexWorkerHandler
+public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandler
 {
-    private readonly IDalFactory _dalFactory;
-
-    public FlexWorkerHandler(IDalFactory dalFactory)
+    public Task CreateFlexWorker()
     {
-        _dalFactory = dalFactory;
+        throw new NotImplementedException();
     }
-    
-    
 }

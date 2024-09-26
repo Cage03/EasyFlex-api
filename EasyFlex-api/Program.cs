@@ -15,7 +15,7 @@ builder.Services.AddDbContext<dbo>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSingleton<IConfigLoader, ConfigLoader>();
-builder.Services.AddScoped<ILogicFactory, LogicFactory>();
+builder.Services.AddScoped<ILogicFactoryBuilder, LogicFactoryBuilderBuilder>();
 builder.Services.AddScoped<IDalFactory, DalFactory>();
 
 builder.Services.AddEndpointsApiExplorer();
