@@ -8,9 +8,9 @@ namespace Logic.Handlers;
 
 public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandler
 {
-    public async Task CreateFlexWorker(FlexWorker flexWorker)
+    public async Task CreateFlexWorker(FlexworkerModel flexWorker)
     { 
-        await flexWorkerDal.AddFlexWorker(flexWorker.ToModel());
+        await flexWorkerDal.AddFlexWorker(flexWorker);
     }
 
     public List<FlexworkerModel> GetFlexWorkers()
