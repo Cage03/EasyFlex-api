@@ -40,17 +40,32 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         }
     }
 
-    [HttpGet]
-    [Route("/Get")]
-    public IActionResult GetFlexworkerById(int id)
+    // [HttpGet]
+    // [Route("/Get")]
+    // public IActionResult GetFlexworkerById(int id)
+    // {
+    //     try
+    //     {
+    //         return Ok(_flexWorkerHandler.SelectFlexworkerById(id));
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return NotFound();
+    //     }
+    // }
+
+    [HttpPost]
+    [Route("/Update")]
+    public IActionResult UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
     {
         try
         {
-            return Ok(_flexWorkerHandler.SelectFlexworkerById(id));
+            _flexWorkerHandler.UpdateFlexWorker(flexWorker);
+            return Ok();
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            return NotFound();
+            return NotFound(e);
         }
     }
 }
