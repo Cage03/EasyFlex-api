@@ -13,6 +13,11 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         await flexWorkerDal.AddFlexWorker(flexWorker);
     }
 
+    public void DeleteFlexWorker(FlexworkerModel flexWorker)
+    {
+        throw new NotImplementedException();
+    }
+
     public List<FlexworkerModel> GetFlexWorkers()
     {
         return flexWorkerDal.GetAllFlexWorkers();
