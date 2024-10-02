@@ -6,5 +6,5 @@ public interface IFlexWorkerHandler
 {
     public List<FlexworkerModel> GetFlexWorkers();
     public Task CreateFlexWorker(FlexworkerModel flexWorker);
-    void DeleteFlexWorker(FlexworkerModel flexWorker);
+    public FlexworkerModel SelectFlexworkerById(int id);
 }

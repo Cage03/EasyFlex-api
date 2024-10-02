@@ -39,20 +39,18 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
             return NotFound(e);
         }
     }
-    
+
     [HttpGet]
-    [Route("/Delete")]
-    
-    public IActionResult DeleteFlexWorker([FromBody] FlexworkerModel flexWorker)
+    [Route("/Get")]
+    public IActionResult GetFlexworkerById(int id)
     {
         try
         {
-            _flexWorkerHandler.DeleteFlexWorker(flexWorker);
-            return Ok();
+            return Ok(_flexWorkerHandler.SelectFlexworkerById(id));
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return NotFound(e);
+            return NotFound();
         }
     }
 }
