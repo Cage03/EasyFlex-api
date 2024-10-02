@@ -33,5 +33,9 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
     {
         return context.Flexworkers.ToList();
     }
-    
+
+    public FlexworkerModel GetFlexWorkerById(int id)
+    {
+        return context.Flexworkers.Find(id);
+    }
 }

@@ -25,7 +25,7 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
 
     public FlexworkerModel SelectFlexworkerById(int id)
     {
-        throw new NotImplementedException();
+        return flexWorkerDal.GetFlexWorkerById(id);
     }
 
     public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
