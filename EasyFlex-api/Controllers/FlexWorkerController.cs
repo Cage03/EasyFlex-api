@@ -39,4 +39,18 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
             return NotFound(e);
         }
     }
+
+    [HttpGet]
+    [Route("/Get")]
+    public IActionResult GetFlexworkerById(int id)
+    {
+        try
+        {
+            return Ok(_flexWorkerHandler.SelectFlexworkerById(id));
+        }
+        catch (Exception ex)
+        {
+            return NotFound();
+        }
+    }
 }
