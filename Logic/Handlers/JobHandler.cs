@@ -10,4 +10,9 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
     {
         await jobDal.CreateJob(job);
     }
+
+    public async Task UpdateJob(JobModel job)
+    {
+        await jobDal.UpdateJob(job);
+    }
 }
