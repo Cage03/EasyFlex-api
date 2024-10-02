@@ -6,4 +6,5 @@ public interface IFlexWorkerDal
 {
     public List<FlexworkerModel> GetAllFlexWorkers();
     public Task AddFlexWorker(FlexworkerModel flexWorker);
+    public FlexworkerModel GetFlexWorkerById(int id);
 }

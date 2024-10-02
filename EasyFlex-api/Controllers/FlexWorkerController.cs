@@ -41,7 +41,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     }
 
     [HttpGet]
-    [Route("/Get")]
+    [Route("/GetById")]
     public IActionResult GetFlexworkerById(int id)
     {
         try
@@ -50,7 +50,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         }
         catch (Exception ex)
         {
-            return NotFound();
+            return NotFound(ex);
         }
     }
 }
