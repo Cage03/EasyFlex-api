@@ -11,7 +11,6 @@ public class FlexWorker
     public string Email { get; set; }
     public string? PhoneNumber { get; set; }
     public string? ProfilePictureUrl { get; set; }
-    public virtual ICollection<Job> Jobs { get; set; }
     public virtual ICollection<Skill> Skills { get; set; }
     
     public FlexWorker(FlexworkerModel flexworkerModel)
@@ -23,7 +22,6 @@ public class FlexWorker
         Email = flexworkerModel.Email;
         PhoneNumber = flexworkerModel.PhoneNumber;
         ProfilePictureUrl = flexworkerModel.ProfilePictureUrl;
-        Jobs = flexworkerModel.Jobs.Select(j => new Job(j)).ToList();
         Skills = flexworkerModel.Skills.Select(s => new Skill(s)).ToList();
     }
     public FlexworkerModel ToModel()
@@ -37,7 +35,6 @@ public class FlexWorker
             Email = Email,
             PhoneNumber = PhoneNumber,
             ProfilePictureUrl = ProfilePictureUrl,
-            Jobs = Jobs.Select(j => j.ToModel()).ToList(),
             Skills = Skills.Select(s => s.ToModel()).ToList()
         };
     }

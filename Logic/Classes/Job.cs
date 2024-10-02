@@ -11,7 +11,6 @@ public class Job
     public int MaxHours { get; set; }
     public DateOnly StartDate { get; set; }
     public DateOnly? EndDate { get; set; }
-    public virtual ICollection<FlexWorker> Flexworkers { get; set; }
     public virtual ICollection<Skill> Skills { get; set; }
 
     public Job(JobModel jobModel)
@@ -23,7 +22,6 @@ public class Job
         MaxHours = jobModel.MaxHours;
         StartDate = jobModel.StartDate;
         EndDate = jobModel.EndDate;
-        Flexworkers = jobModel.Flexworkers.Select(f => new FlexWorker(f)).ToList();
         Skills = jobModel.Skills.Select(s => new Skill(s)).ToList();
     }
     public JobModel ToModel()
@@ -37,7 +35,6 @@ public class Job
             MaxHours = MaxHours,
             StartDate = StartDate,
             EndDate = EndDate,
-            Flexworkers = Flexworkers.Select(f => f.ToModel()).ToList(),
             Skills = Skills.Select(s => s.ToModel()).ToList()
         };
     }
