@@ -23,7 +23,7 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         return flexWorkerDal.GetAllFlexWorkers();
     }
 
-    public FlexworkerModel SelectFlexworkerById(int id)
+    public FlexworkerModel GetFlexworkerById(int id)
     {
         return flexWorkerDal.GetFlexWorkerById(id);
     }

@@ -1,0 +1,75 @@
+name: .NET Integration with OpenCover
+
+on:
+  push:
+    branches: [ "master", "production" ]
+  pull_request:
+    branches: [ "master", "production" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout code
+    - uses: actions/checkout@v4
+
+    # Step 2: Setup .NET SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    # Step 3: Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Step 4: Build the project
+    - name: Build
+      run: dotnet build --no-restore
+
+    # Step 5: Download and Install OpenCover
+    - name: Download OpenCover
+      run: |
+        wget https://github.com/OpenCover/opencover/releases/download/4.7.1221/OpenCover.4.7.1221.zip
+        unzip OpenCover.4.7.1221.zip -d OpenCover
+
+    # Step 6: Run tests using OpenCover and collect coverage
+    - name: Run tests with OpenCover
+      run: |
+        OpenCover/OpenCover.Console.exe -target:"dotnet" \
+          -targetargs:"test --no-build --verbosity normal" \
+          -output:"TestResults/coverage/opencover.xml" \
+          -filter:"+[*]Logic.*"  # Only include the Logic project
+
+    # Step 7: Download and Install ReportGenerator
+    - name: Download ReportGenerator
+      run: |
+        wget https://github.com/danielpalme/ReportGenerator/releases/download/v5.1.12/ReportGenerator.zip
+        unzip ReportGenerator.zip -d ReportGenerator
+
+    # Step 8: Generate HTML coverage report using ReportGenerator
+    - name: Generate HTML coverage report
+      run: |
+        ReportGenerator/ReportGenerator.exe \
+          -reports:TestResults/coverage/opencover.xml \
+          -targetdir:TestResults/coverage/report \
+          -reporttypes:Html
+
+    # Step 9: Enforce 80% code coverage for Logic project
+    - name: Enforce 80% coverage for Logic
+      run: |
+        coveragePercentage=$(grep -oP '(?<=<CoveragePercent>)[0-9]+' TestResults/coverage/opencover.xml)
+        if [ "$coveragePercentage" -lt 80 ]; then
+          echo "Code coverage for Logic project is below 80%! Failing the build."
+          exit 1
+        else
+          echo "Code coverage for Logic project is sufficient: $coveragePercentage%"
+        fi
+
+    # Step 10: Upload the coverage report as an artifact
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-coverage-report
+        path: TestResults/coverage/report/index.html
