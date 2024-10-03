@@ -1,4 +1,4 @@
-name: .NET Integration
+name: .NET Integration with OpenCover
 
 on:
   push:
@@ -28,34 +28,38 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    # Step 5: Download dotCover CLI (latest version)
-    - name: Download dotCover CLI
+    # Step 5: Download and Install OpenCover
+    - name: Download OpenCover
       run: |
-        wget https://download.jetbrains.com/resharper/dotCover.2024.2.5/JetBrains.dotCover.CommandLineTools.2024.2.5.zip
-        unzip JetBrains.dotCover.CommandLineTools.2024.2.5.zip -d dotCover
+        wget https://github.com/OpenCover/opencover/releases/download/4.7.1221/OpenCover.4.7.1221.zip
+        unzip OpenCover.4.7.1221.zip -d OpenCover
 
-    # Step 6: Run tests with dotCover and generate coverage
-    - name: Run tests with dotCover
+    # Step 6: Run tests using OpenCover and collect coverage
+    - name: Run tests with OpenCover
       run: |
-        dotCover/dotCover.sh cover --TargetExecutable=dotnet \
-          --TargetArguments="test --no-build --verbosity normal" \
-          --Output="TestResults/coverage/dotcover.dcvr" \
-          --Filters="+:Logic.*"  # Only include the Logic project
+        OpenCover/OpenCover.Console.exe -target:"dotnet" \
+          -targetargs:"test --no-build --verbosity normal" \
+          -output:"TestResults/coverage/opencover.xml" \
+          -filter:"+[*]Logic.*"  # Only include the Logic project
 
-    # Step 7: Generate HTML and XML coverage report
-    - name: Generate coverage report
+    # Step 7: Download and Install ReportGenerator
+    - name: Download ReportGenerator
       run: |
-        dotCover/dotCover.sh report --Source=TestResults/coverage/dotcover.dcvr \
-          --Output=TestResults/coverage/coverage.html \
-          --ReportType=HTML
-        dotCover/dotCover.sh report --Source=TestResults/coverage/dotcover.dcvr \
-          --Output=TestResults/coverage/coverage.xml \
-          --ReportType=XML  # XML report for threshold checking
+        wget https://github.com/danielpalme/ReportGenerator/releases/download/v5.1.12/ReportGenerator.zip
+        unzip ReportGenerator.zip -d ReportGenerator
 
-    # Step 8: Check for minimum 80% code coverage for Logic project
+    # Step 8: Generate HTML coverage report using ReportGenerator
+    - name: Generate HTML coverage report
+      run: |
+        ReportGenerator/ReportGenerator.exe \
+          -reports:TestResults/coverage/opencover.xml \
+          -targetdir:TestResults/coverage/report \
+          -reporttypes:Html
+
+    # Step 9: Enforce 80% code coverage for Logic project
     - name: Enforce 80% coverage for Logic
       run: |
-        coveragePercentage=$(grep -oP '(?<=<CoveragePercent>)[0-9]+' TestResults/coverage/coverage.xml)
+        coveragePercentage=$(grep -oP '(?<=<CoveragePercent>)[0-9]+' TestResults/coverage/opencover.xml)
         if [ "$coveragePercentage" -lt 80 ]; then
           echo "Code coverage for Logic project is below 80%! Failing the build."
           exit 1
@@ -63,9 +67,9 @@ jobs:
           echo "Code coverage for Logic project is sufficient: $coveragePercentage%"
         fi
 
-    # Step 9: Upload the coverage report as an artifact
+    # Step 10: Upload the coverage report as an artifact
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
       with:
         name: code-coverage-report
-        path: TestResults/coverage/coverage.html
+        path: TestResults/coverage/report/index.html
