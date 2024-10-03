@@ -26,9 +26,10 @@ jobs:
     
     - name: Test with Code Coverage
       run: |
-        dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=80 --logger "trx;LogFileName=test_results.trx"
+        mkdir -p TestResults
+        dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=80 /p:CoverletOutput=./TestResults/ --logger "trx;LogFileName=./TestResults/test_results.trx"
 
-    - name: Publish Test Results
+    - name: Upload Test Results
       uses: actions/upload-artifact@v3
       with:
         name: test-results
