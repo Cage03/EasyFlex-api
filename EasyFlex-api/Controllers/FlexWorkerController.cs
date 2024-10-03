@@ -27,11 +27,11 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     
     [HttpPost]
     [Route("/Register")]
-    public IActionResult RegisterFlexWorker([FromBody] FlexworkerModel flexWorker)
+    public async Task<IActionResult> RegisterFlexWorker([FromBody] FlexworkerModel flexWorker)
     {
         try
         {
-            _flexWorkerHandler.CreateFlexWorker(flexWorker);
+           await _flexWorkerHandler.CreateFlexWorker(flexWorker);
             return Ok();
         }
         catch (Exception e)

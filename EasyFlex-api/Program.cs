@@ -1,8 +1,10 @@
+using DataAccess.Database;
 using DataAccess.Factories;
 using DataAccess.Models;
 using EasyFlex_api.Utils;
 using Interface.Factories;
 using Interface.Interface;
+using Interface.Interface.Dal;
 using Logic.Factories;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +15,8 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddDbContext<dbo>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IFlexWorkerDal, FlexWorkerDal>();
 
 builder.Services.AddSingleton<IConfigLoader, ConfigLoader>();
 builder.Services.AddScoped<ILogicFactoryBuilder, LogicFactoryBuilderBuilder>();
