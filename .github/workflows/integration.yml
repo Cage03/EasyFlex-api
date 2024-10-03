@@ -27,7 +27,7 @@ jobs:
     - name: Test with Code Coverage
       run: |
         mkdir -p TestResults
-        dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=80 /p:CoverletOutput=TestResults/ --logger "trx;LogFileName=TestResults/test_results.trx"
+        dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=80 /p:CoverletOutput=./TestResults/ --logger "trx;LogFileName=./TestResults/test_results.trx"
       
     - name: Debug - List TestResults Directory
       run: ls -R TestResults
