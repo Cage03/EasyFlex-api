@@ -12,9 +12,10 @@ public class JobDal(dbo context) : IJobDal
         await context.SaveChangesAsync();
     }
 
-    public Task DeleteJob(JobModel job)
+    public async Task DeleteJob(JobModel job)
     {
-        throw new NotImplementedException();
+        context.Jobs.Remove(job);
+        await context.SaveChangesAsync();
     }
 
     public Task GetAllJobs()
@@ -22,10 +23,9 @@ public class JobDal(dbo context) : IJobDal
         throw new NotImplementedException();
     }
 
-    public async Task GetJob(int id)
+    public async Task<JobModel?> GetJob(int id)
     {
-        await context.Jobs.FindAsync(id);
-        await context.SaveChangesAsync();
+        return await context.Jobs.FindAsync(id);
     }
 
     public async Task UpdateJob(JobModel job)
