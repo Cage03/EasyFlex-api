@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
+[Route("api/Jobs")]
 [ApiController]
 public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
@@ -17,6 +18,38 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
         try
         {
             _jobHandler.CreateJob(job);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
+
+    [HttpGet]
+    [Route("Get")]
+    public IActionResult GetJob([FromQuery] int id)
+    {
+        try
+        {
+            JobModel? job = _jobHandler.GetJob(id).Result;
+            return Ok(job);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
+
+    [HttpPost]
+    [Route("Delete")]
+    public async Task<IActionResult> DeleteJob([FromBody] int id)
+    {
+        try
+        {
+            JobModel? job = await _jobHandler.GetJob(id);
+
+            await _jobHandler.DeleteJob(job);
             return Ok();
         }
         catch (Exception ex)

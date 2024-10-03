@@ -23,7 +23,7 @@ public partial class JobModel
 
     public DateOnly? EndDate { get; set; }
 
-    public virtual ICollection<SkillModel> Skills { get; set; } = new List<SkillModel>();
+    public virtual ICollection<SkillModel>? Skills { get; set; } = new List<SkillModel>();
 
     // public JobDto ToDto()
     // {

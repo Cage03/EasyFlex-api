@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
+[Route("api/Flexworkers")]
 [ApiController]
 public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
