@@ -28,11 +28,11 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    # Step 5: Download dotCover CLI
+    # Step 5: Download dotCover CLI (latest version)
     - name: Download dotCover CLI
       run: |
-        wget https://download.jetbrains.com/resharper/dotCover.2023.2.2/JetBrains.dotCover.CommandLineTools.2023.2.2.zip
-        unzip JetBrains.dotCover.CommandLineTools.2023.2.2.zip -d dotCover
+        wget https://download.jetbrains.com/resharper/dotCover.2024.2.5/JetBrains.dotCover.CommandLineTools.2024.2.5.zip
+        unzip JetBrains.dotCover.CommandLineTools.2024.2.5.zip -d dotCover
 
     # Step 6: Run tests with dotCover and generate coverage
     - name: Run tests with dotCover
