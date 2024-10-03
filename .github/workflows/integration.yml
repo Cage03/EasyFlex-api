@@ -11,19 +11,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout code
     - uses: actions/checkout@v4
+
+    # Step 2: Setup .NET SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+
+    # Step 3: Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
+
+    # Step 4: Build the project
     - name: Build
       run: dotnet build --no-restore
-    - name: Run tests with coverage
-      run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=80 /p:ThresholdType=line --filter FullyQualifiedName~Logic
+
+    # Step 5: Download dotCover CLI
+    - name: Download dotCover CLI
+      run: |
+        wget https://download.jetbrains.com/resharper/dotCover.2023.2.2/JetBrains.dotCover.CommandLineTools.2023.2.2.zip
+        unzip JetBrains.dotCover.CommandLineTools.2023.2.2.zip -d dotCover
+
+    # Step 6: Run tests with dotCover and generate coverage
+    - name: Run tests with dotCover
+      run: |
+        dotCover/dotCover.sh cover --TargetExecutable=dotnet \
+          --TargetArguments="test --no-build --verbosity normal" \
+          --Output="TestResults/coverage/dotcover.dcvr" \
+          --Filters="+:Logic.*"  # Only include the Logic project
+
+    # Step 7: Generate HTML and XML coverage report
+    - name: Generate coverage report
+      run: |
+        dotCover/dotCover.sh report --Source=TestResults/coverage/dotcover.dcvr \
+          --Output=TestResults/coverage/coverage.html \
+          --ReportType=HTML
+        dotCover/dotCover.sh report --Source=TestResults/coverage/dotcover.dcvr \
+          --Output=TestResults/coverage/coverage.xml \
+          --ReportType=XML  # XML report for threshold checking
+
+    # Step 8: Check for minimum 80% code coverage for Logic project
+    - name: Enforce 80% coverage for Logic
+      run: |
+        coveragePercentage=$(grep -oP '(?<=<CoveragePercent>)[0-9]+' TestResults/coverage/coverage.xml)
+        if [ "$coveragePercentage" -lt 80 ]; then
+          echo "Code coverage for Logic project is below 80%! Failing the build."
+          exit 1
+        else
+          echo "Code coverage for Logic project is sufficient: $coveragePercentage%"
+        fi
+
+    # Step 9: Upload the coverage report as an artifact
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
       with:
         name: code-coverage-report
-        path: $(System.DefaultWorkingDirectory)/TestResults
+        path: TestResults/coverage/coverage.html
