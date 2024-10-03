@@ -12,28 +12,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    
     - name: Restore dependencies
       run: dotnet restore
-    
     - name: Build
       run: dotnet build --no-restore
-    
-    - name: Test with Code Coverage
-      run: |
-        mkdir -p TestResults
-        dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=80 /p:CoverletOutput=./TestResults/ --logger "trx;LogFileName=./TestResults/test_results.trx"
-      
-    - name: Debug - List TestResults Directory
-      run: ls -R TestResults
-    
-    - name: Upload Test Results
+    - name: Run tests with coverage
+      run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=80 /p:ThresholdType=line --filter FullyQualifiedName~Logic
+    - name: Upload coverage report
       uses: actions/upload-artifact@v3
       with:
-        name: test-results
-        path: TestResults/
+        name: code-coverage-report
+        path: $(System.DefaultWorkingDirectory)/TestResults
