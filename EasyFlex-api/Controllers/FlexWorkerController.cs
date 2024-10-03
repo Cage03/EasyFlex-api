@@ -42,12 +42,12 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     }
 
     [HttpGet]
-    [Route("/Get")]
+    [Route("/GetById")]
     public IActionResult GetFlexworkerById(int id)
     {
         try
         {
-            return Ok(_flexWorkerHandler.SelectFlexworkerById(id));
+            return Ok(_flexWorkerHandler.GetFlexworkerById(id));
         }
         catch (Exception ex)
         {
