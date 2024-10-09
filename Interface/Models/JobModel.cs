@@ -1,22 +1,30 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Interface.Models;
 
 public partial class JobModel
 {
     public int Id { get; set; }
 
+    [Required] 
+    public string Name { get; set; }
+
+    [Required]
     public string Adress { get; set; } = null!;
 
+    [Required]
     public string? Description { get; set; }
 
+    [Required]
     public int MinHours { get; set; }
 
+    [Required]
     public int MaxHours { get; set; }
 
+    [Required]
     public DateOnly StartDate { get; set; }
 
     public DateOnly? EndDate { get; set; }
-
-    public virtual ICollection<FlexworkerModel> Flexworkers { get; set; } = new List<FlexworkerModel>();
 
     public virtual ICollection<SkillModel> Skills { get; set; } = new List<SkillModel>();
 

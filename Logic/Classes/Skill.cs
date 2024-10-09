@@ -16,9 +16,7 @@ public class Skill
         Id = skillModel.Id;
         CategoryId = skillModel.CategoryId;
         Name = skillModel.Name;
-        Category = new Category(skillModel.CategoryModel);
-        Flexworkers = skillModel.Flexworkers.Select(f => new FlexWorker(f)).ToList();
-        Jobs = skillModel.Jobs.Select(j => new Job(j)).ToList();
+        Category = new Category(skillModel.Category);
     }
     public SkillModel ToModel()
     {
@@ -27,9 +25,7 @@ public class Skill
             Id = Id,
             CategoryId = CategoryId,
             Name = Name,
-            CategoryModel = Category.ToModel(),
-            Flexworkers = Flexworkers.Select(f => f.ToModel()).ToList(),
-            Jobs = Jobs.Select(j => j.ToModel()).ToList()
+            Category = Category.ToModel(),
         };
     }
 }

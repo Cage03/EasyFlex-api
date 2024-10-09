@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
+[Route("api/Flexworkers")]
 [ApiController]
 public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
@@ -12,7 +13,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         logicFactoryBuilder.BuildHandlerFactory().GetFlexWorkerHandler();
 
     [HttpGet]
-    [Route("/Get")]
+    [Route("Get")]
     public IActionResult GetFlexWorkers()
     {
         try
