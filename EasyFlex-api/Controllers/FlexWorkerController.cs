@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
-[Route("api/Flexworkers")]
+[Route("Flexworker")]
 [ApiController]
 public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
@@ -27,7 +27,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     }
     
     [HttpPost]
-    [Route("/Register")]
+    [Route("Register")]
     public async Task<IActionResult> RegisterFlexWorker([FromBody] FlexworkerModel flexWorker)
     {
         try
@@ -42,7 +42,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     }
 
     [HttpGet]
-    [Route("/Get")]
+    [Route("GetById")]
     public IActionResult GetFlexworkerById(int id)
     {
         try
