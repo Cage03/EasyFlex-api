@@ -13,11 +13,11 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
 
     [HttpPost]
     [Route("Register")]
-    public IActionResult CreateJob([FromBody] JobModel job)
+    public async Task<IActionResult> CreateJob([FromBody] JobModel job)
     {
         try
         {
-            _jobHandler.CreateJob(job);
+            await _jobHandler.CreateJob(job);
             return Ok();
         }
         catch (Exception ex)
