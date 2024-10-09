@@ -18,9 +18,9 @@ public class JobDal(dbo context) : IJobDal
         await context.SaveChangesAsync();
     }
 
-    public Task GetAllJobs()
+    public IQueryable<JobModel> GetJobs()
     {
-        throw new NotImplementedException();
+        return context.Jobs;
     }
 
     public async Task<JobModel?> GetJob(int id)

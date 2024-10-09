@@ -41,6 +41,21 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
         }
     }
 
+    [HttpGet]
+    [Route("GetJobs")]
+    public async Task<IActionResult> GetJobs([FromQuery] int pageNumber)
+    {
+        try
+        {
+            var jobs = await _jobHandler.GetJobs(pageNumber);
+            return Ok(jobs);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
+
     [HttpPost]
     [Route("Delete")]
     public async Task<IActionResult> DeleteJob([FromBody] int id)
