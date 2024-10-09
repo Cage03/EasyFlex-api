@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
-[Route("api/Jobs")]
+[Route("Jobs")]
 [ApiController]
 public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
     private readonly IJobHandler _jobHandler = logicFactoryBuilder.BuildHandlerFactory().GetJobHandler();
 
     [HttpPost]
-    [Route("Create")]
+    [Route("Register")]
     public IActionResult CreateJob([FromBody] JobModel job)
     {
         try

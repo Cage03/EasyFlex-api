@@ -13,7 +13,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         logicFactoryBuilder.BuildHandlerFactory().GetFlexWorkerHandler();
 
     [HttpGet]
-    [Route("/Get")]
+    [Route("Get")]
     public IActionResult GetFlexWorkers()
     {
         try
