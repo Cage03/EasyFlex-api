@@ -27,16 +27,12 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
         await jobDal.DeleteJob(job);
     }
 
-    public async Task<JobModel[]?> GetJobs(int pageNumber)
+    public async Task<JobModel[]?> GetJobs(int pageNumber, int limit)
     {
-        const int limit = 6;
         var offset = (pageNumber - 1) * limit;
-
-        var jobs = await jobDal.GetJobs()
-            .Skip(offset)
-            .Take(limit)
-            .ToArrayAsync();
-
-        return jobs;
+        
+        var jobs = await jobDal.GetJobs(offset, limit);
+        
+        return jobs?.ToArray();
     }
 }
