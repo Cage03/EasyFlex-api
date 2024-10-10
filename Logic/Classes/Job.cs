@@ -16,7 +16,7 @@ public class Job
     public Job(JobModel jobModel)
     {
         Id = jobModel.Id;
-        Adress = jobModel.Adress;
+        Adress = jobModel.Address;
         Description = jobModel.Description;
         MinHours = jobModel.MinHours;
         MaxHours = jobModel.MaxHours;
@@ -29,7 +29,7 @@ public class Job
         return new JobModel
         {
             Id = Id,
-            Adress = Adress,
+            Address = Adress,
             Description = Description,
             MinHours = MinHours,
             MaxHours = MaxHours,
