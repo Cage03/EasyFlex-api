@@ -76,5 +76,43 @@ public class FlexworkerHandlerTests
         // Assert
         Assert.AreEqual(0, result.Count);
     }
+
+    [TestMethod]
+    public async Task CreateFlexWorker_ShouldCreateFlexWorker()
+    {
+        // Arrange
+        var flexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
+            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+        };
+
+        _mockFlexworkerDal.Setup(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()));
+
+        // Act
+        await _flexWorkerHandler.CreateFlexWorker(flexWorker);
+
+        // Assert
+        _mockFlexworkerDal.Verify(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()), Times.Once);
+    }
     
+    // test for adding duplicate flexworker
+    [TestMethod]
+    public async Task CreateFlexWorker_ShouldThrowExceptionIfFlexWorkerAlreadyExists()
+    {
+        // Arrange
+        var flexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
+            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+        };
+
+        _mockFlexworkerDal.Setup(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()))
+            .ThrowsAsync(new Exception("Flexworker already exists"));
+
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<Exception>(() => _flexWorkerHandler.CreateFlexWorker(flexWorker));
+    }
+
 }

@@ -33,7 +33,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     {
         try
         {
-            _flexWorkerHandler.CreateFlexWorker(flexWorker);
+            await _flexWorkerHandler.CreateFlexWorker(flexWorker);
             return Ok();
         }
         catch (Exception e)
