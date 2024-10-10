@@ -1,0 +1,80 @@
+using Interface.Interface.Dal;
+using Interface.Models;
+using Logic.Handlers;
+using Moq;
+
+namespace Test.UnitTests.Handlers;
+
+[TestClass]
+public class FlexworkerHandlerTests
+{
+    private Mock<IFlexWorkerDal> _mockFlexworkerDal = null!;
+    private FlexWorkerHandler _flexWorkerHandler = null!;
+
+    [TestInitialize]
+    public void Setup()
+    {
+        _mockFlexworkerDal = new Mock<IFlexWorkerDal>();
+        _flexWorkerHandler = new FlexWorkerHandler(_mockFlexworkerDal.Object);
+    }
+
+    [TestMethod]
+    public async Task GetFlexWorkers_ShouldReturnPaginatedFlexWorkers()
+    {
+        // Arrange
+        var flexWorkers = new List<FlexworkerModel>
+        {
+            new()
+            {
+                Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
+                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+            },
+            new()
+            {
+                Id = 2, Name = "Flexworker2", Email = "email2@email.nl", Adress = "Adress2",
+                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+            },
+            new()
+            {
+                Id = 3, Name = "Flexworker3", Email = "email3@email.nl", Adress = "Adress3",
+                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+            },
+        };
+
+        int pageNumber = 1;
+        int limit = 2;
+
+        var offset = (pageNumber - 1) * limit;
+
+        _mockFlexworkerDal
+            .Setup(x => x.GetAllFlexWorkers(It.IsAny<int>(), It.IsAny<int>()))
+            .ReturnsAsync(flexWorkers.Skip(offset).Take(limit).ToList());
+        // Act
+        var result = await _flexWorkerHandler.GetFlexWorkers(pageNumber, limit);
+
+        // Assert
+        Assert.AreEqual(2, result!.Count);
+        Assert.AreEqual(1, result[0].Id);
+        Assert.AreEqual(2, result[1].Id);
+
+    }
+    
+    [TestMethod]
+    public async Task GetFlexWorkers_ShouldReturnEmptyArrayIfNoFlexWorkersAvailable()
+    {
+        // Arrange
+        var flexWorkers = new List<FlexworkerModel>(); // No flexworkers
+
+        _mockFlexworkerDal.Setup(x => x.GetAllFlexWorkers(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(flexWorkers);
+
+        int pageNumber = 1;
+        int limit = 2;
+
+        // Act
+        var result = await _flexWorkerHandler.GetFlexWorkers(pageNumber, limit);
+
+        // Assert
+        Assert.AreEqual(0, result.Count);
+    }
+    
+}

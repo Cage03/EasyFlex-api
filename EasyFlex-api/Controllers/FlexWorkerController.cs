@@ -14,7 +14,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
 
     [HttpGet]
     [Route("Get")]
-    public IActionResult GetFlexWorkers(int limit, int page)
+    public async Task<IActionResult> GetFlexWorkers(int limit, int page)
     {
         try
         {
