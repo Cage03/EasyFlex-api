@@ -1,6 +1,7 @@
 using DataAccess.Models;
 using Interface.Interface.Dal;
 using Interface.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
 
@@ -18,9 +19,12 @@ public class JobDal(dbo context) : IJobDal
         await context.SaveChangesAsync();
     }
 
-    public IQueryable<JobModel> GetJobs()
+    public async Task<List<JobModel>> GetJobs(int offset, int limit)
     {
-        return context.Jobs;
+        return await context.Jobs
+            .Skip(offset)
+            .Take(limit)
+            .ToListAsync();  // Now returns a List instead of IQueryable
     }
 
     public async Task<JobModel?> GetJob(int id)
