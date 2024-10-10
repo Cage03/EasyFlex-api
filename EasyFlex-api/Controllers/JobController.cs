@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
-[Route("Jobs")]
+[Route("Job")]
 [ApiController]
 public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
