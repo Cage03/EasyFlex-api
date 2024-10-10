@@ -41,7 +41,7 @@ public class MockJobDal : IJobDal
         if (existingJob != null)
         {
             existingJob.Name = job.Name;
-            existingJob.Adress = job.Adress;
+            existingJob.Address = job.Address;
             existingJob.Description = job.Description;
             existingJob.MinHours = job.MinHours;
             existingJob.MaxHours = job.MaxHours;
