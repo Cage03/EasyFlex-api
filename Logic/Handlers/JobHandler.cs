@@ -1,6 +1,7 @@
 ﻿using Interface.Interface.Dal;
 using Interface.Interface.Handlers;
 using Interface.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Logic.Handlers;
 
@@ -24,5 +25,14 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
     public async Task DeleteJob(JobModel job)
     {
         await jobDal.DeleteJob(job);
+    }
+
+    public async Task<JobModel[]?> GetJobs(int pageNumber, int limit)
+    {
+        var offset = (pageNumber - 1) * limit;
+        
+        var jobs = await jobDal.GetJobs(offset, limit);
+        
+        return jobs?.ToArray();
     }
 }
