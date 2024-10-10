@@ -54,8 +54,8 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
             return NotFound(ex);
         }
     }
-    [HttpPost]
-    [Route("/Update")]
+    [HttpPut]
+    [Route("Update")]
     public IActionResult UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
     {
         try
