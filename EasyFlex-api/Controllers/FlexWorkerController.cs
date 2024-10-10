@@ -18,7 +18,8 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     {
         try
         {
-            return Ok(_flexWorkerHandler.GetFlexWorkers(limit, page));
+            var flexWorkers = await _flexWorkerHandler.GetFlexWorkers(limit, page);
+            return Ok(flexWorkers);
         }
         catch (Exception e)
         {
