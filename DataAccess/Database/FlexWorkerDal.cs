@@ -36,9 +36,9 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         return context.SaveChangesAsync();
     }
 
-    public List<FlexworkerModel> GetAllFlexWorkers()
+    public List<FlexworkerModel> GetAllFlexWorkers(int limit, int page)
     {
-        return context.Flexworkers.ToList();
+        return context.Flexworkers.Skip(page * limit).Take(limit).ToList();
     }
 
     public FlexworkerModel GetFlexWorkerById(int id)

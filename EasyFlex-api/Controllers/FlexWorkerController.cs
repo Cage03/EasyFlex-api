@@ -14,11 +14,11 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
 
     [HttpGet]
     [Route("Get")]
-    public IActionResult GetFlexWorkers()
+    public IActionResult GetFlexWorkers(int limit, int page)
     {
         try
         {
-            return Ok(_flexWorkerHandler.GetFlexWorkers());
+            return Ok(_flexWorkerHandler.GetFlexWorkers(limit, page));
         }
         catch (Exception e)
         {

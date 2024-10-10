@@ -18,9 +18,9 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         throw new NotImplementedException();
     }
 
-    public List<FlexworkerModel> GetFlexWorkers()
+    public List<FlexworkerModel> GetFlexWorkers(int limit, int page)
     {
-        return flexWorkerDal.GetAllFlexWorkers();
+        return flexWorkerDal.GetAllFlexWorkers(limit, page);
     }
 
     public FlexworkerModel GetFlexworkerById(int id)
