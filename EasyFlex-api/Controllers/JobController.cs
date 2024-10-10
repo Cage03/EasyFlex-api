@@ -43,11 +43,11 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
 
     [HttpGet]
     [Route("GetJobs")]
-    public async Task<IActionResult> GetJobs([FromQuery] int pageNumber)
+    public async Task<IActionResult> GetJobs([FromQuery] int pageNumber, int limit)
     {
         try
         {
-            var jobs = await _jobHandler.GetJobs(pageNumber);
+            var jobs = await _jobHandler.GetJobs(pageNumber, limit);
             return Ok(jobs);
         }
         catch (Exception ex)
