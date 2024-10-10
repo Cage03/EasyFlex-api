@@ -47,7 +47,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     {
         try
         {
-            return Ok(_flexWorkerHandler.SelectFlexworkerById(id));
+            return Ok(_flexWorkerHandler.GetFlexworkerById(id));
         }
         catch (Exception ex)
         {
