@@ -30,11 +30,11 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
     public async Task<JobModel[]?> GetJobs(int pageNumber)
     {
         const int limit = 6;
-        var offset = (pageNumber - 1) * limit; 
-        
+        var offset = (pageNumber - 1) * limit;
+
         var jobs = await jobDal.GetJobs()
-            .Skip(offset) 
-            .Take(limit)  
+            .Skip(offset)
+            .Take(limit)
             .ToArrayAsync();
 
         return jobs;
