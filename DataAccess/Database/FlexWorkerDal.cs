@@ -29,6 +29,13 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         await context.SaveChangesAsync();
     }
 
+    public Task DeleteFlexWorker(int id)
+    {
+        var flexWorker = context.Flexworkers.Find(id);
+        context.Flexworkers.Remove(flexWorker);
+        return context.SaveChangesAsync();
+    }
+
     public List<FlexworkerModel> GetAllFlexWorkers()
     {
         return context.Flexworkers.ToList();

@@ -8,4 +8,5 @@ public interface IFlexWorkerHandler
     public Task CreateFlexWorker(FlexworkerModel flexWorker);
     public Task UpdateFlexWorker(FlexworkerModel flexWorker);
     public FlexworkerModel GetFlexworkerById(int id);
+    public Task DeleteFlexWorker(int id);
 }

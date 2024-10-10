@@ -28,6 +28,11 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         return flexWorkerDal.GetFlexWorkerById(id);
     }
 
+    public Task DeleteFlexWorker(int id)
+    {
+        return flexWorkerDal.DeleteFlexWorker(id);
+    }
+
     public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
     {
         await flexWorkerDal.UpdateFlexWorker(flexWorker);
