@@ -13,11 +13,6 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         await flexWorkerDal.AddFlexWorker(flexWorker);
     }
 
-    public void DeleteFlexWorker(FlexworkerModel flexWorker)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<List<FlexworkerModel>> GetFlexWorkers(int limit, int page)
     {
         return await flexWorkerDal.GetAllFlexWorkers(limit, page);
@@ -28,9 +23,14 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         return flexWorkerDal.GetFlexWorkerById(id);
     }
 
-    public Task DeleteFlexWorker(int id)
+    public async Task DeleteFlexWorker(int id)
     {
-        return flexWorkerDal.DeleteFlexWorker(id);
+        var flexWorker = GetFlexworkerById(id);
+        if (flexWorker == null)
+        {
+            throw new Exception("Flexworker not found");
+        }
+        await flexWorkerDal.DeleteFlexWorker(id);
     }
 
     public async Task UpdateFlexWorker(FlexworkerModel flexWorker)

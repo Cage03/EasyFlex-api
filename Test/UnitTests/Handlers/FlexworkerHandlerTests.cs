@@ -96,7 +96,6 @@ public class FlexworkerHandlerTests
         _mockFlexworkerDal.Verify(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()), Times.Once);
     }
     
-    // test for adding duplicate flexworker
     [TestMethod]
     public async Task CreateFlexWorker_ShouldThrowExceptionIfFlexWorkerAlreadyExists()
     {
@@ -114,5 +113,46 @@ public class FlexworkerHandlerTests
         var exception =
             await Assert.ThrowsExceptionAsync<Exception>(() => _flexWorkerHandler.CreateFlexWorker(flexWorker));
     }
+
+    [TestMethod]
+    public async Task DeleteFlexWorker_ShouldDeleteFlexWorker()
+    {
+        // Arrange
+        var flexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
+            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+        };
+
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(flexWorker);
+        _mockFlexworkerDal.Setup(x => x.DeleteFlexWorker(It.IsAny<int>()));
+
+        // Act
+        await _flexWorkerHandler.DeleteFlexWorker(flexWorker.Id);
+
+        // Assert
+        _mockFlexworkerDal.Verify(x => x.DeleteFlexWorker(It.IsAny<int>()), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task DeleteFlexWorker_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
+    {
+        // Arrange
+        var flexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
+            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+        };
+
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns((FlexworkerModel)null);
+
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<Exception>(() => _flexWorkerHandler.DeleteFlexWorker(flexWorker.Id));
+
+        // Assert
+        Assert.AreEqual("Flexworker not found", exception.Message);
+    }
+
 
 }
