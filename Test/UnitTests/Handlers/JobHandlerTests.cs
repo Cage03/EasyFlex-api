@@ -65,5 +65,33 @@ namespace Test.UnitTests.Handlers
             // Assert
             Assert.AreEqual(0, result!.Length);
         }
+
+        [TestMethod]
+        public async Task CreateJob_ShouldReturn1IfSuccessful ()
+        {
+            //Arrange
+            JobModel job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
+            _mockJobDal.Setup(x => x.CreateJob(It.IsAny<JobModel>())).ReturnsAsync(1);
+
+            //Act
+            var result = await _jobHandler.CreateJob(job);
+
+            //Assert
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public async Task CreateJob_ShouldReturn0IfUnsuccessful()
+        {
+            //Arrange
+            JobModel job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
+            _mockJobDal.Setup(x => x.CreateJob(It.IsAny<JobModel>())).ReturnsAsync(0);
+
+            //Act
+            var result = await _jobHandler.CreateJob(job);
+
+            //Assert
+            Assert.AreEqual(0, result);
+        }
     }
 }
