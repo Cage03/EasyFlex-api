@@ -23,8 +23,13 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         return flexWorkerDal.GetAllFlexWorkers();
     }
 
-    public FlexworkerModel SelectFlexworkerById(int id)
+    public FlexworkerModel GetFlexworkerById(int id)
     {
-        throw new NotImplementedException();
+        return flexWorkerDal.GetFlexWorkerById(id);
+    }
+
+    public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
+    {
+        await flexWorkerDal.UpdateFlexWorker(flexWorker);
     }
 }

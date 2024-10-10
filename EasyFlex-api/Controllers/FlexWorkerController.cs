@@ -32,7 +32,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     {
         try
         {
-           await _flexWorkerHandler.CreateFlexWorker(flexWorker);
+            _flexWorkerHandler.CreateFlexWorker(flexWorker);
             return Ok();
         }
         catch (Exception e)
@@ -51,7 +51,21 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         }
         catch (Exception ex)
         {
-            return NotFound();
+            return NotFound(ex);
+        }
+    }
+    [HttpPost]
+    [Route("/Update")]
+    public IActionResult UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
+    {
+        try
+        {
+            _flexWorkerHandler.UpdateFlexWorker(flexWorker);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e);
         }
     }
 }
