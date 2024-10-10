@@ -7,9 +7,9 @@ namespace Logic.Handlers;
 
 public class JobHandler(IJobDal jobDal) : IJobHandler
 {
-    public async Task CreateJob(JobModel job)
+    public async Task<int> CreateJob(JobModel job)
     {
-        await jobDal.CreateJob(job);
+        return await jobDal.CreateJob(job);
     }
 
     public async Task<JobModel?> GetJob(int id)
