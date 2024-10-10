@@ -17,8 +17,9 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
-            await _jobHandler.CreateJob(job);
-            return Ok();
+            if (await _jobHandler.CreateJob(job) == 0)
+            { return StatusCode(400, "Failed to create job."); }
+            else { return Ok(); }
         }
         catch (Exception ex)
         {

@@ -7,10 +7,10 @@ namespace DataAccess.Database;
 
 public class JobDal(dbo context) : IJobDal
 {
-    public async Task CreateJob(JobModel job)
+    public async Task<int> CreateJob(JobModel job)
     {
         context.Jobs.Add(job);
-        await context.SaveChangesAsync();
+        return await context.SaveChangesAsync();
     }
 
     public async Task DeleteJob(JobModel job)
