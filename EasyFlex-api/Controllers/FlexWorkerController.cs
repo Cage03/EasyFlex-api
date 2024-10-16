@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
-[Route("api/Flexworkers")]
+[Route("Flexworker")]
 [ApiController]
 public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
@@ -13,12 +13,13 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         logicFactoryBuilder.BuildHandlerFactory().GetFlexWorkerHandler();
 
     [HttpGet]
-    [Route("/Get")]
-    public IActionResult GetFlexWorkers()
+    [Route("Get")]
+    public async Task<IActionResult> GetFlexWorkers(int limit, int page)
     {
         try
         {
-            return Ok(_flexWorkerHandler.GetFlexWorkers());
+            var flexWorkers = await _flexWorkerHandler.GetFlexWorkers(limit, page);
+            return Ok(flexWorkers);
         }
         catch (Exception e)
         {
@@ -27,12 +28,12 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     }
     
     [HttpPost]
-    [Route("/Register")]
-    public IActionResult RegisterFlexWorker([FromBody] FlexworkerModel flexWorker)
+    [Route("Register")]
+    public async Task<IActionResult> RegisterFlexWorker([FromBody] FlexworkerModel flexWorker)
     {
         try
         {
-            _flexWorkerHandler.CreateFlexWorker(flexWorker);
+            await _flexWorkerHandler.CreateFlexWorker(flexWorker);
             return Ok();
         }
         catch (Exception e)
@@ -54,9 +55,9 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
             return NotFound(ex);
         }
     }
-    [HttpPost]
-    [Route("/Update")]
-    public async Task<IActionResult>UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
+    [HttpPut]
+    [Route("Update")]
+    public async Task<IActionResult> UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
     {
         try
         {

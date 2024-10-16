@@ -28,9 +28,16 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         await context.SaveChangesAsync();
     }
 
-    public List<FlexworkerModel> GetAllFlexWorkers()
+    public async Task DeleteFlexWorker(int id)
     {
-        return context.Flexworkers.ToList();
+        var flexWorker = context.Flexworkers.Find(id);
+        context.Flexworkers.Remove(flexWorker);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<List<FlexworkerModel>> GetAllFlexWorkers(int limit, int page)
+    {
+        return context.Flexworkers.Skip(page * limit).Take(limit).ToList();
     }
 
     public FlexworkerModel GetFlexWorkerById(int id)

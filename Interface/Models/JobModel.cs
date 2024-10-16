@@ -6,8 +6,11 @@ public partial class JobModel
 {
     public int Id { get; set; }
 
+    [Required] 
+    public string Name { get; set; }
+
     [Required]
-    public string Adress { get; set; } = null!;
+    public string Address { get; set; } = null!;
 
     [Required]
     public string? Description { get; set; }
@@ -23,7 +26,7 @@ public partial class JobModel
 
     public DateOnly? EndDate { get; set; }
 
-    public virtual ICollection<SkillModel>? Skills { get; set; } = new List<SkillModel>();
+    public virtual ICollection<SkillModel> Skills { get; set; } = new List<SkillModel>();
 
     // public JobDto ToDto()
     // {
