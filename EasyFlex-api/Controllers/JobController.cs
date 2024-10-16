@@ -73,4 +73,19 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
             return StatusCode(400, ex);
         }
     }
+    
+    [HttpPost]
+    [Route("Update")]
+    public async Task<IActionResult> UpdateJob([FromBody] JobModel job)
+    {
+        try
+        {
+            await _jobHandler.UpdateJob(job);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
 }

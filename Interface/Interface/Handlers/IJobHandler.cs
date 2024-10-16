@@ -8,4 +8,5 @@ public interface IJobHandler
     public Task<JobModel?> GetJob(int id);
     public Task<JobModel[]?> GetJobs(int pageNumber, int limit);
     public Task DeleteJob(JobModel job);
+    public Task UpdateJob(JobModel job);
 }
