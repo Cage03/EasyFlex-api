@@ -155,6 +155,20 @@ public class FlexworkerHandlerTests
     }
 
     [TestMethod]
+    public void GetFlexworkerById_ShouldReturnFlexworker()
+    {
+        // Arrange
+        var flexWorker = new FlexworkerModel
+        {
+            Id = 1,
+            Name = "Flexworker1",
+            Email = "email1@email.nl",
+            Adress = "Adress1",
+            DateOfBirth = new DateTime(1990, 10, 1),
+            PhoneNumber = "0612345678",
+            ProfilePictureUrl = "url1"
+        };
+    [TestMethod]
     public async Task UpdateFlexWorker_ShouldUpdateFlexWorker()
     {
         //Arrange
@@ -205,6 +219,30 @@ public class FlexworkerHandlerTests
             Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Adress = "Old_Adress",
             DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
         };
+
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(flexWorker);
+
+        // Act
+        var result = _flexWorkerHandler.GetFlexworkerById(1);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(flexWorker.Id, result.Id);
+        Assert.AreEqual(flexWorker.Name, result.Name);
+    }
+
+    [TestMethod]
+    public void GetFlexworkerById_ShouldReturnNullIfFlexworkerDoesNotExist()
+    {
+        // Arrange
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns((FlexworkerModel)null);
+
+        // Act
+        var result = _flexWorkerHandler.GetFlexworkerById(1);
+
+        // Assert
+        Assert.IsNull(result);
+    }
 
         var sameFlexWorker = new FlexworkerModel
         {
