@@ -43,7 +43,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     }
 
     [HttpGet]
-    [Route("/GetById")]
+    [Route("GetById")]
     public IActionResult GetFlexworkerById(int id)
     {
         try
