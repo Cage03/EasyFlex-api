@@ -15,9 +15,11 @@ public class JobDal(dbo context) : IJobDal
         return id;
     }
 
-    public async Task DeleteJob(JobModel job)
+    public async Task DeleteJob(int id)
     {
-        context.Jobs.Remove(job);
+        var job = await context.Jobs.FindAsync(id);
+        
+        if (job != null) context.Jobs.Remove(job);
         await context.SaveChangesAsync();
     }
 
