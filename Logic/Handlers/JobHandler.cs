@@ -7,9 +7,9 @@ namespace Logic.Handlers;
 
 public class JobHandler(IJobDal jobDal) : IJobHandler
 {
-    public async Task CreateJob(JobModel job)
+    public async Task<int> CreateJob(JobModel job)
     {
-        await jobDal.CreateJob(job);
+        return await jobDal.CreateJob(job);
     }
 
     public async Task<JobModel?> GetJob(int id)
@@ -22,9 +22,11 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
         await jobDal.UpdateJob(job);
     }
 
-    public async Task DeleteJob(JobModel job)
+    public async Task DeleteJob(int id)
     {
-        await jobDal.DeleteJob(job);
+        if (id <= 0) throw new IndexOutOfRangeException();
+        
+        await jobDal.DeleteJob(id);
     }
 
     public async Task<JobModel[]?> GetJobs(int pageNumber, int limit)
