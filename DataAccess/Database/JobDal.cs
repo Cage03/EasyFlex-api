@@ -10,7 +10,9 @@ public class JobDal(dbo context) : IJobDal
     public async Task<int> CreateJob(JobModel job)
     {
         context.Jobs.Add(job);
-        return await context.SaveChangesAsync();
+        await context.SaveChangesAsync();
+        int id = job.Id; 
+        return id;
     }
 
     public async Task DeleteJob(int id)

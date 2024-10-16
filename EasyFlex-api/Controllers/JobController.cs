@@ -17,9 +17,10 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
-            if (await _jobHandler.CreateJob(job) == 0)
+            int id = await _jobHandler.CreateJob(job);
+            if (id == 0)
             { return StatusCode(400, "Failed to create job."); }
-            else { return Ok(); }
+            else { return Ok(id); }
         }
         catch (Exception ex)
         {
@@ -64,6 +65,21 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
         try
         {
             await _jobHandler.DeleteJob(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
+    
+    [HttpPost]
+    [Route("Update")]
+    public async Task<IActionResult> UpdateJob([FromBody] JobModel job)
+    {
+        try
+        {
+            await _jobHandler.UpdateJob(job);
             return Ok();
         }
         catch (Exception ex)
