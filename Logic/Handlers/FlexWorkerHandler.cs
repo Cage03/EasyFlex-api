@@ -18,9 +18,9 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         return await flexWorkerDal.GetAllFlexWorkers(limit, page);
     }
 
-    public FlexworkerModel GetFlexworkerById(int id)
+    public async Task<FlexworkerModel?> GetFlexworkerById(int id)
     {
-        return flexWorkerDal.GetFlexWorkerById(id);
+        return await flexWorkerDal.GetFlexWorkerById(id);
     }
 
     public async Task DeleteFlexWorker(int id)

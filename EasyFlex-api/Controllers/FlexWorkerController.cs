@@ -44,11 +44,11 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
 
     [HttpGet]
     [Route("GetById")]
-    public IActionResult GetFlexworkerById(int id)
+    public async Task<IActionResult> GetFlexworkerById(int id)
     {
         try
         {
-            return Ok(_flexWorkerHandler.GetFlexworkerById(id));
+            return Ok(await _flexWorkerHandler.GetFlexworkerById(id));
         }
         catch (Exception ex)
         {
