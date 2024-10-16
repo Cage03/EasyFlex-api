@@ -15,7 +15,7 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 
     public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
     {
-        var existingFlexworker = context.Flexworkers.FindAsync(flexWorker.Id);
+        var existingFlexworker = context.Flexworkers.FirstOrDefaultAsync(worker => worker.Id == flexWorker.Id);
         if (existingFlexworker.Result != null)
         {
             existingFlexworker.Result.Name = flexWorker.Name;
@@ -25,7 +25,6 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
             existingFlexworker.Result.PhoneNumber = flexWorker.PhoneNumber;
             existingFlexworker.Result.ProfilePictureUrl = flexWorker.ProfilePictureUrl;
         }
-
         await context.SaveChangesAsync();
     }
 
