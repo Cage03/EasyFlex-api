@@ -15,17 +15,17 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 
     public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
     {
-        var existingFlexworker = context.Flexworkers.FindAsync(flexWorker.Id);
-        if (existingFlexworker.Result != null)
+        var existingFlexworker = await context.Flexworkers.FirstOrDefaultAsync(worker => worker.Id == flexWorker.Id);
+        if (existingFlexworker != null)
         {
-            existingFlexworker.Result.Name = flexWorker.Name;
-            existingFlexworker.Result.Email = flexWorker.Email;
-            existingFlexworker.Result.Adress = flexWorker.Adress;
-            existingFlexworker.Result.DateOfBirth = flexWorker.DateOfBirth;
-            existingFlexworker.Result.PhoneNumber = flexWorker.PhoneNumber;
-            existingFlexworker.Result.ProfilePictureUrl = flexWorker.ProfilePictureUrl;
+            existingFlexworker.Name = flexWorker.Name;
+            existingFlexworker.Email = flexWorker.Email;
+            existingFlexworker.DateOfBirth = flexWorker.DateOfBirth;
+            existingFlexworker.PhoneNumber = flexWorker.PhoneNumber;
+            existingFlexworker.ProfilePictureUrl = flexWorker.ProfilePictureUrl;
+            
+            //context.Flexworkers.Update(existingFlexworker);
         }
-
         await context.SaveChangesAsync();
     }
 
