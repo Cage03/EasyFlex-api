@@ -1,6 +1,7 @@
 using DataAccess.Models;
 using Interface.Interface.Dal;
 using Interface.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
 
@@ -11,9 +12,39 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         context.Flexworkers.Add(flexWorker);
         await context.SaveChangesAsync();
     }
-    public List<FlexworkerModel> GetAllFlexWorkers()
+
+    public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
     {
-        return context.Flexworkers.ToList();
+        var existingFlexworker = context.Flexworkers.FirstOrDefaultAsync(worker => worker.Id == flexWorker.Id);
+        if (existingFlexworker.Result != null)
+        {
+            existingFlexworker.Result.Name = flexWorker.Name;
+            existingFlexworker.Result.Email = flexWorker.Email;
+            existingFlexworker.Result.Adress = flexWorker.Adress;
+            existingFlexworker.Result.DateOfBirth = flexWorker.DateOfBirth;
+            existingFlexworker.Result.PhoneNumber = flexWorker.PhoneNumber;
+            existingFlexworker.Result.ProfilePictureUrl = flexWorker.ProfilePictureUrl;
+        }
+        await context.SaveChangesAsync();
     }
-    
+
+    public async Task DeleteFlexWorker(int id)
+    {
+        var flexWorker = context.Flexworkers.Find(id);
+        context.Flexworkers.Remove(flexWorker);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<List<FlexworkerModel>> GetAllFlexWorkers(int limit, int page)
+    {
+        return context.Flexworkers.Skip(page * limit).Take(limit).ToList();
+    }
+
+    public async Task<FlexworkerModel?> GetFlexWorkerById(int id)
+    {
+        var flexworker = await context.Flexworkers.FindAsync(id);
+        if (flexworker == null) throw new Exception("Flexworker not found");
+
+        return flexworker;
+    }
 }
