@@ -168,6 +168,57 @@ public class FlexworkerHandlerTests
             PhoneNumber = "0612345678",
             ProfilePictureUrl = "url1"
         };
+    [TestMethod]
+    public async Task UpdateFlexWorker_ShouldUpdateFlexWorker()
+    {
+        //Arrange
+        var oldFlexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "OlD_Flexworker1", Email = "OLD_email1@email.nl", Adress = "OlD_Adress1",
+            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "OlD_0612345678", ProfilePictureUrl = "OlD_url1"
+        };
+        var updatedFlexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "New_Flexworker1", Email = "New_email1@email.nl", Adress = "New_Adress1",
+            DateOfBirth = new DateTime(2000, 11, 19), PhoneNumber = "New_0612345678", ProfilePictureUrl = "New_url1"
+        };
+        
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(oldFlexWorker);
+        _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>()));
+        
+        //Act
+        
+        await _flexWorkerHandler.UpdateFlexWorker(updatedFlexWorker);
+        
+        //Assert
+        
+        _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
+            fw => fw.Id == updatedFlexWorker.Id &&
+                  fw.Name == updatedFlexWorker.Name &&
+                  fw.Email == updatedFlexWorker.Email &&
+                  fw.Adress == updatedFlexWorker.Adress &&
+                  fw.PhoneNumber == updatedFlexWorker.PhoneNumber &&
+                  fw.ProfilePictureUrl == updatedFlexWorker.ProfilePictureUrl
+        )), Times.Once);
+        
+        _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
+            fw => fw.Id != oldFlexWorker.Id &&
+                  fw.Name != oldFlexWorker.Name &&
+                  fw.Email != oldFlexWorker.Email &&
+                  fw.Adress != oldFlexWorker.Adress &&
+                  fw.PhoneNumber != oldFlexWorker.PhoneNumber &&
+                  fw.ProfilePictureUrl != oldFlexWorker.ProfilePictureUrl
+        )), Times.Never);
+    }
+    [TestMethod]
+    public async Task UpdateFlexWorker_ShouldNotUpdateIfFlexWorkerIsSame()
+    {
+        // Arrange
+        var oldFlexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Adress = "Old_Adress",
+            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
+        };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(flexWorker);
 
@@ -192,5 +243,47 @@ public class FlexworkerHandlerTests
         // Assert
         Assert.IsNull(result);
     }
+
+        var sameFlexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Adress = "Old_Adress",
+            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
+        };
+
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(oldFlexWorker);
+
+        // Act
+        await _flexWorkerHandler.UpdateFlexWorker(sameFlexWorker);
+        
+        _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
+            fw => fw.Id == oldFlexWorker.Id &&
+                  fw.Name != oldFlexWorker.Name ||
+                  fw.Email != oldFlexWorker.Email || 
+                  fw.Adress != oldFlexWorker.Adress ||
+                  fw.PhoneNumber != oldFlexWorker.PhoneNumber ||
+                  fw.ProfilePictureUrl != oldFlexWorker.ProfilePictureUrl
+        )), Times.Never);
+    }
+
+    [TestMethod]
+    public async Task UpdateFlexWorker_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
+    {
+        {
+            // Arrange
+            var updatedFlexWorker = new FlexworkerModel
+            {
+                Id = 1, Name = "New_Flexworker1", Email = "New_email1@email.nl", Adress = "New_Adress1",
+                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "New_0612345678", ProfilePictureUrl = "New_url1"
+            };
+            
+            _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>())).ThrowsAsync(new Exception());
+
+            // Act 
+            async Task Act() => await _flexWorkerHandler.UpdateFlexWorker(updatedFlexWorker);
+            
+            // Assert
+            await Assert.ThrowsExceptionAsync<Exception>(Act);
+        }
+    } 
 
 }
