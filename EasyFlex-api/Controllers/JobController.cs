@@ -57,15 +57,13 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
         }
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("Delete")]
-    public async Task<IActionResult> DeleteJob([FromBody] int id)
+    public async Task<IActionResult> DeleteJob([FromQuery] int id)
     {
         try
         {
-            JobModel? job = await _jobHandler.GetJob(id);
-
-            await _jobHandler.DeleteJob(job);
+            await _jobHandler.DeleteJob(id);
             return Ok();
         }
         catch (Exception ex)

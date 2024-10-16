@@ -8,5 +8,5 @@ public interface IJobDal
     public Task<JobModel?> GetJob(int id);
     public Task<List<JobModel>> GetJobs(int offset, int limit);
     public Task UpdateJob(JobModel job);
-    public Task DeleteJob(JobModel job);
+    public Task DeleteJob(int id);
 }

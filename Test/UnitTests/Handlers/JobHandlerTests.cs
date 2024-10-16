@@ -93,5 +93,30 @@ namespace Test.UnitTests.Handlers
             //Assert
             Assert.AreEqual(0, result);
         }
+        
+        [TestMethod]
+        public async Task DeleteJob_ShouldCallDalDeleteJob()
+        {
+            // Arrange
+            int jobId = 1;
+            _mockJobDal.Setup(x => x.DeleteJob(jobId)).Returns(Task.CompletedTask);
+
+            // Act
+            await _jobHandler.DeleteJob(jobId);
+
+            // Assert
+            _mockJobDal.Verify(x => x.DeleteJob(jobId), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DeleteJob_ShouldNotCallDalIfInvalidId()
+        {
+            // Arrange
+            int invalidJobId = -1;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<IndexOutOfRangeException>(async () => 
+                await _jobHandler.DeleteJob(invalidJobId));
+        }
     }
 }
