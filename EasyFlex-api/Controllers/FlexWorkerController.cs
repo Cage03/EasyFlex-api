@@ -56,12 +56,12 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     }
     [HttpPost]
     [Route("/Update")]
-    public IActionResult UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
+    public async Task<IActionResult>UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
     {
         try
         {
-            _flexWorkerHandler.UpdateFlexWorker(flexWorker);
-            return Ok();
+            await _flexWorkerHandler.UpdateFlexWorker(flexWorker);
+            return Ok( );
         }
         catch (Exception e)
         {
