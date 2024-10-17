@@ -37,7 +37,7 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 
     public async Task<List<FlexworkerModel>> GetAllFlexWorkers(int limit, int page)
     {
-        return context.Flexworkers.Skip(page * limit).Take(limit).ToList();
+        return await context.Flexworkers.Skip(page * limit).Take(limit).ToListAsync();
     }
 
     public async Task<FlexworkerModel?> GetFlexWorkerById(int id)
