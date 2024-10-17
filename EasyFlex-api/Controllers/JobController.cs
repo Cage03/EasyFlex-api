@@ -17,8 +17,10 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
-            await _jobHandler.CreateJob(job);
-            return Ok();
+            int id = await _jobHandler.CreateJob(job);
+            if (id == 0)
+            { return StatusCode(400, "Failed to create job."); }
+            else { return Ok(id); }
         }
         catch (Exception ex)
         {
@@ -56,15 +58,28 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
         }
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Route("Delete")]
-    public async Task<IActionResult> DeleteJob([FromBody] int id)
+    public async Task<IActionResult> DeleteJob([FromQuery] int id)
     {
         try
         {
-            JobModel? job = await _jobHandler.GetJob(id);
-
-            await _jobHandler.DeleteJob(job);
+            await _jobHandler.DeleteJob(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
+    
+    [HttpPost]
+    [Route("Update")]
+    public async Task<IActionResult> UpdateJob([FromBody] JobModel job)
+    {
+        try
+        {
+            await _jobHandler.UpdateJob(job);
             return Ok();
         }
         catch (Exception ex)

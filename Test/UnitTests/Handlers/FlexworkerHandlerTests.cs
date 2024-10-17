@@ -32,23 +32,22 @@ public class FlexworkerHandlerTests
             new()
             {
                 Id = 2, Name = "Flexworker2", Email = "email2@email.nl", Adress = "Adress2",
-                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2"
             },
             new()
             {
                 Id = 3, Name = "Flexworker3", Email = "email3@email.nl", Adress = "Adress3",
-                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3"
             },
         };
 
         int pageNumber = 1;
         int limit = 2;
 
-        var offset = (pageNumber - 1) * limit;
-
         _mockFlexworkerDal
             .Setup(x => x.GetAllFlexWorkers(It.IsAny<int>(), It.IsAny<int>()))
-            .ReturnsAsync(flexWorkers.Skip(offset).Take(limit).ToList());
+            .ReturnsAsync(flexWorkers.Take(limit).ToList());
+
         // Act
         var result = await _flexWorkerHandler.GetFlexWorkers(pageNumber, limit);
 
@@ -56,9 +55,8 @@ public class FlexworkerHandlerTests
         Assert.AreEqual(2, result!.Count);
         Assert.AreEqual(1, result[0].Id);
         Assert.AreEqual(2, result[1].Id);
-
     }
-    
+
     [TestMethod]
     public async Task GetFlexWorkers_ShouldReturnEmptyArrayIfNoFlexWorkersAvailable()
     {
@@ -95,7 +93,7 @@ public class FlexworkerHandlerTests
         // Assert
         _mockFlexworkerDal.Verify(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()), Times.Once);
     }
-    
+
     [TestMethod]
     public async Task CreateFlexWorker_ShouldThrowExceptionIfFlexWorkerAlreadyExists()
     {
@@ -109,9 +107,10 @@ public class FlexworkerHandlerTests
         _mockFlexworkerDal.Setup(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()))
             .ThrowsAsync(new Exception("Flexworker already exists"));
 
-        // Act
+        // Act & Assert
         var exception =
             await Assert.ThrowsExceptionAsync<Exception>(() => _flexWorkerHandler.CreateFlexWorker(flexWorker));
+        Assert.AreEqual("Flexworker already exists", exception.Message);
     }
 
     [TestMethod]
@@ -124,7 +123,7 @@ public class FlexworkerHandlerTests
             DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
         };
 
-        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(flexWorker);
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
         _mockFlexworkerDal.Setup(x => x.DeleteFlexWorker(It.IsAny<int>()));
 
         // Act
@@ -138,92 +137,27 @@ public class FlexworkerHandlerTests
     public async Task DeleteFlexWorker_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
     {
         // Arrange
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel)null);
+
+        // Act & Assert
+        var exception = await Assert.ThrowsExceptionAsync<Exception>(() => _flexWorkerHandler.DeleteFlexWorker(1));
+        Assert.AreEqual("Flexworker not found", exception.Message);
+    }
+
+    [TestMethod]
+    public async Task GetFlexworkerById_ShouldReturnFlexworker()
+    {
+        // Arrange
         var flexWorker = new FlexworkerModel
         {
             Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
             DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
         };
 
-        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns((FlexworkerModel)null);
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
 
         // Act
-        var exception =
-            await Assert.ThrowsExceptionAsync<Exception>(() => _flexWorkerHandler.DeleteFlexWorker(flexWorker.Id));
-
-        // Assert
-        Assert.AreEqual("Flexworker not found", exception.Message);
-    }
-
-    [TestMethod]
-    public void GetFlexworkerById_ShouldReturnFlexworker()
-    {
-        // Arrange
-        var flexWorker = new FlexworkerModel
-        {
-            Id = 1,
-            Name = "Flexworker1",
-            Email = "email1@email.nl",
-            Adress = "Adress1",
-            DateOfBirth = new DateTime(1990, 10, 1),
-            PhoneNumber = "0612345678",
-            ProfilePictureUrl = "url1"
-        };
-    [TestMethod]
-    public async Task UpdateFlexWorker_ShouldUpdateFlexWorker()
-    {
-        //Arrange
-        var oldFlexWorker = new FlexworkerModel
-        {
-            Id = 1, Name = "OlD_Flexworker1", Email = "OLD_email1@email.nl", Adress = "OlD_Adress1",
-            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "OlD_0612345678", ProfilePictureUrl = "OlD_url1"
-        };
-        var updatedFlexWorker = new FlexworkerModel
-        {
-            Id = 1, Name = "New_Flexworker1", Email = "New_email1@email.nl", Adress = "New_Adress1",
-            DateOfBirth = new DateTime(2000, 11, 19), PhoneNumber = "New_0612345678", ProfilePictureUrl = "New_url1"
-        };
-        
-        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(oldFlexWorker);
-        _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>()));
-        
-        //Act
-        
-        await _flexWorkerHandler.UpdateFlexWorker(updatedFlexWorker);
-        
-        //Assert
-        
-        _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
-            fw => fw.Id == updatedFlexWorker.Id &&
-                  fw.Name == updatedFlexWorker.Name &&
-                  fw.Email == updatedFlexWorker.Email &&
-                  fw.Adress == updatedFlexWorker.Adress &&
-                  fw.PhoneNumber == updatedFlexWorker.PhoneNumber &&
-                  fw.ProfilePictureUrl == updatedFlexWorker.ProfilePictureUrl
-        )), Times.Once);
-        
-        _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
-            fw => fw.Id != oldFlexWorker.Id &&
-                  fw.Name != oldFlexWorker.Name &&
-                  fw.Email != oldFlexWorker.Email &&
-                  fw.Adress != oldFlexWorker.Adress &&
-                  fw.PhoneNumber != oldFlexWorker.PhoneNumber &&
-                  fw.ProfilePictureUrl != oldFlexWorker.ProfilePictureUrl
-        )), Times.Never);
-    }
-    [TestMethod]
-    public async Task UpdateFlexWorker_ShouldNotUpdateIfFlexWorkerIsSame()
-    {
-        // Arrange
-        var oldFlexWorker = new FlexworkerModel
-        {
-            Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Adress = "Old_Adress",
-            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
-        };
-
-        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(flexWorker);
-
-        // Act
-        var result = _flexWorkerHandler.GetFlexworkerById(1);
+        var result = await _flexWorkerHandler.GetFlexworkerById(1);
 
         // Assert
         Assert.IsNotNull(result);
@@ -232,58 +166,80 @@ public class FlexworkerHandlerTests
     }
 
     [TestMethod]
-    public void GetFlexworkerById_ShouldReturnNullIfFlexworkerDoesNotExist()
+    public async Task GetFlexworkerById_ShouldReturnNullIfFlexworkerDoesNotExist()
     {
         // Arrange
-        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns((FlexworkerModel)null);
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel)null);
 
         // Act
-        var result = _flexWorkerHandler.GetFlexworkerById(1);
+        var result = await _flexWorkerHandler.GetFlexworkerById(1);
 
         // Assert
         Assert.IsNull(result);
     }
 
-        var sameFlexWorker = new FlexworkerModel
+    [TestMethod]
+    public async Task UpdateFlexWorker_ShouldUpdateFlexWorker()
+    {
+        // Arrange
+        var oldFlexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Adress = "Old_Adress",
+            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
+        };
+        var updatedFlexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "New_Flexworker", Email = "new@email.nl", Adress = "New_Adress",
+            DateOfBirth = new DateTime(2000, 11, 19), PhoneNumber = "new_0612345678", ProfilePictureUrl = "new_url"
+        };
+
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(oldFlexWorker);
+        _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>()));
+
+        // Act
+        await _flexWorkerHandler.UpdateFlexWorker(updatedFlexWorker);
+
+        // Assert
+        _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
+            fw => fw.Id == updatedFlexWorker.Id &&
+                  fw.Name == updatedFlexWorker.Name &&
+                  fw.Email == updatedFlexWorker.Email &&
+                  fw.Adress == updatedFlexWorker.Adress &&
+                  fw.PhoneNumber == updatedFlexWorker.PhoneNumber &&
+                  fw.ProfilePictureUrl == updatedFlexWorker.ProfilePictureUrl
+        )), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task UpdateFlexWorker_ShouldUpdateFlexWorker_WhenFlexWorkerExists()
+    {
+        // Arrange
+        var existingFlexWorker = new FlexworkerModel
         {
             Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Adress = "Old_Adress",
             DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
         };
 
-        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).Returns(oldFlexWorker);
+        var updatedFlexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Updated_Flexworker", Email = "updated@email.nl", Adress = "Updated_Adress",
+            DateOfBirth = new DateTime(2000, 11, 19), PhoneNumber = "New_0612345678", ProfilePictureUrl = "new_url"
+        };
+
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(existingFlexWorker);
+        _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>()));
 
         // Act
-        await _flexWorkerHandler.UpdateFlexWorker(sameFlexWorker);
-        
+        await _flexWorkerHandler.UpdateFlexWorker(updatedFlexWorker);
+
+        // Assert
         _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
-            fw => fw.Id == oldFlexWorker.Id &&
-                  fw.Name != oldFlexWorker.Name ||
-                  fw.Email != oldFlexWorker.Email || 
-                  fw.Adress != oldFlexWorker.Adress ||
-                  fw.PhoneNumber != oldFlexWorker.PhoneNumber ||
-                  fw.ProfilePictureUrl != oldFlexWorker.ProfilePictureUrl
-        )), Times.Never);
+            fw => fw.Id == updatedFlexWorker.Id &&
+                  fw.Name == updatedFlexWorker.Name &&
+                  fw.Email == updatedFlexWorker.Email &&
+                  fw.Adress == updatedFlexWorker.Adress &&
+                  fw.PhoneNumber == updatedFlexWorker.PhoneNumber &&
+                  fw.ProfilePictureUrl == updatedFlexWorker.ProfilePictureUrl
+        )), Times.Once);
     }
-
-    [TestMethod]
-    public async Task UpdateFlexWorker_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
-    {
-        {
-            // Arrange
-            var updatedFlexWorker = new FlexworkerModel
-            {
-                Id = 1, Name = "New_Flexworker1", Email = "New_email1@email.nl", Adress = "New_Adress1",
-                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "New_0612345678", ProfilePictureUrl = "New_url1"
-            };
-            
-            _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>())).ThrowsAsync(new Exception());
-
-            // Act 
-            async Task Act() => await _flexWorkerHandler.UpdateFlexWorker(updatedFlexWorker);
-            
-            // Assert
-            await Assert.ThrowsExceptionAsync<Exception>(Act);
-        }
-    } 
-
 }
