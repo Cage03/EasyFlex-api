@@ -55,6 +55,22 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
             return NotFound(ex);
         }
     }
+    
+    [HttpDelete]
+    [Route("Delete")]
+    public async Task<IActionResult> DeleteFlexWorker(int id)
+    {
+        try
+        {
+            await _flexWorkerHandler.DeleteFlexWorker(id);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e);
+        }
+    } 
+    
     [HttpPut]
     [Route("Update")]
     public async Task<IActionResult> UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
