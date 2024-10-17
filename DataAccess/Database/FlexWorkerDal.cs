@@ -30,8 +30,8 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 
     public async Task DeleteFlexWorker(int id)
     {
-        var flexWorker = context.Flexworkers.Find(id);
-        context.Flexworkers.Remove(flexWorker);
+        var flexWorker = await context.Flexworkers.FindAsync(id);
+        context.Flexworkers.Remove(flexWorker!);
         await context.SaveChangesAsync();
     }
 

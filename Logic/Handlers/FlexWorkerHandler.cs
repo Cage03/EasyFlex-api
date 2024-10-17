@@ -25,7 +25,7 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
 
     public async Task DeleteFlexWorker(int id)
     {
-        var flexWorker = GetFlexworkerById(id);
+        var flexWorker = await GetFlexworkerById(id);
         if (flexWorker == null)
         {
             throw new Exception("Flexworker not found");
