@@ -103,4 +103,20 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
             return NotFound(e);
         }
     }   
+    
+    [HttpDelete]
+    [Route("DeleteSkills")]
+    public async Task<IActionResult> DeleteSkills(int flexWorkerId, List<int> skillIds)
+    {
+        try
+        {
+            List<SkillModel> skills = await _skillHandler.GetSkills(skillIds);
+            await _flexWorkerHandler.DeleteSkills(flexWorkerId, skills);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e);
+        }
+    }
 }

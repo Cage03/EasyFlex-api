@@ -39,10 +39,25 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
     {
         foreach (var skill in skills)
         {
-            var existingSkill = context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
-            if (existingSkill.Result != null)
+            var existingSkill = await context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
+            if (existingSkill != null)
             {
-                flexworker.Skills.Add(existingSkill.Result);
+                flexworker.Skills.Add(existingSkill);
+            }
+        }
+        await context.SaveChangesAsync();
+    }
+
+    public async Task DeleteSkills(FlexworkerModel flexworker, List<SkillModel> skills)
+    {
+        var flexworkerWithSkills = await context.Flexworkers.Include(f => f.Skills).FirstOrDefaultAsync(f => f.Id == flexworker.Id);
+        if (flexworkerWithSkills == null) throw new Exception("Flexworker not found");
+        foreach (var skill in skills)
+        {
+            var existingSkill = flexworkerWithSkills.Skills.FirstOrDefault(s => s.Id == skill.Id);
+            if (existingSkill != null)
+            {
+                flexworkerWithSkills.Skills.Remove(existingSkill);
             }
         }
         await context.SaveChangesAsync();
