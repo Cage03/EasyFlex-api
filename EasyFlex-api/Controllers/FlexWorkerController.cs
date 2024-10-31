@@ -94,7 +94,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     {
         try
         {
-            List<SkillModel> skills = await _skillHandler.GetSkills(skillIds);
+            List<SkillModel> skills = await _skillHandler.GetSkillsFromIds(skillIds);
             await _flexWorkerHandler.AddSkills(flexWorkerId, skills);
             return Ok();
         }
@@ -110,7 +110,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     {
         try
         {
-            List<SkillModel> skills = await _skillHandler.GetSkills(skillIds);
+            List<SkillModel> skills = await _skillHandler.GetSkillsFromIds(skillIds);
             await _flexWorkerHandler.DeleteSkills(flexWorkerId, skills);
             return Ok();
         }

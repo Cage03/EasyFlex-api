@@ -13,4 +13,19 @@ public class SkillDal(dbo context) : ISkillDal
         if (skills.Count != skillIds.Count) throw new Exception("Not all skills found");
         return skills;
     }
+
+    public async Task<List<SkillModel>> GetSkillsFromCategory(int limit, int page, int categoryId)
+    {
+        if (limit < 0 || page < 0)
+        {
+            limit = 10;
+            page = 0;
+        }
+
+        if (categoryId <= 0)
+        {
+            throw new Exception("Invalid category id");
+        }
+        return await context.Skills.Where(skill => skill.CategoryId == categoryId).Skip(limit * page).Take(limit).ToListAsync();
+    }
 }
