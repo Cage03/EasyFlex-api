@@ -11,6 +11,8 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
 {
     private readonly IFlexWorkerHandler _flexWorkerHandler =
         logicFactoryBuilder.BuildHandlerFactory().GetFlexWorkerHandler();
+    
+    private readonly ISkillHandler _skillHandler =logicFactoryBuilder.BuildHandlerFactory().GetSkillHandler();
 
     [HttpGet]
     [Route("Get")]
@@ -85,4 +87,20 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
             return NotFound(e);
         }
     }
+    
+    [HttpPost]
+    [Route("AddSkills")]
+    public async Task<IActionResult> AddSkills(int flexWorkerId, List<int> skillIds)
+    {
+        try
+        {
+            List<SkillModel> skills = await _skillHandler.GetSkills(skillIds);
+            await _flexWorkerHandler.AddSkills(flexWorkerId, skills);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e);
+        }
+    }   
 }

@@ -16,4 +16,9 @@ public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
     {
         return new JobHandler(dalFactory.GetJobDal());
     }
+
+    public ISkillHandler GetSkillHandler()
+    {
+        return new SkillHandler(dalFactory.GetSkillDal());
+    }
 }

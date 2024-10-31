@@ -1,7 +1,9 @@
-﻿using Interface.Interface.Dal;
+﻿using Interface.Factories;
+using Interface.Interface.Dal;
 using Interface.Interface.Handlers;
 using Interface.Models;
 using Logic.Classes;
+using Logic.Containers;
 
 
 namespace Logic.Handlers;
@@ -31,6 +33,16 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
             throw new Exception("Flexworker not found");
         }
         await flexWorkerDal.DeleteFlexWorker(id);
+    }
+
+    public async Task AddSkills(int flexWorkerId, List<SkillModel> skills)
+    {
+        var flexWorker = await GetFlexworkerById(flexWorkerId);
+        if (flexWorker == null)
+        {
+            throw new Exception("Flexworker not found");
+        }
+        await flexWorkerDal.AddSkills(flexWorker ,skills);
     }
 
     public async Task UpdateFlexWorker(FlexworkerModel flexWorker)

@@ -9,4 +9,5 @@ public interface IFlexWorkerHandler
     public Task UpdateFlexWorker(FlexworkerModel flexWorker);
     public Task<FlexworkerModel?> GetFlexworkerById(int id);
     public Task DeleteFlexWorker(int id);
+    public Task AddSkills(int flexWorkerId, List<SkillModel> skills);
 }

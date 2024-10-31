@@ -29,6 +29,19 @@ public partial class dbo : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer();
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<FlexworkerModel>()
+            .HasMany(f => f.Skills)
+            .WithMany(s => s.Flexworkers)
+            .UsingEntity<Dictionary<string, object>>(
+                "FlexworkerSkill",
+                j => j.HasOne<SkillModel>().WithMany().HasForeignKey("SkillsId"),
+                j => j.HasOne<FlexworkerModel>().WithMany().HasForeignKey("FlexworkersId"));
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
