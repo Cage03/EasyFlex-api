@@ -15,7 +15,6 @@ public partial class SkillModel
     [Required]
     public virtual CategoryModel Category { get; set; } = null!;
 
-    public virtual ICollection<FlexworkerModel> Flexworkers { get; set; } = new List<FlexworkerModel>();
     public virtual ICollection<JobModel> Jobs { get; set; } = new List<JobModel>();
 
     // public SkillDto ToDto()

@@ -68,11 +68,14 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         return await context.Flexworkers.Skip(page * limit).Take(limit).ToListAsync();
     }
 
-    public async Task<FlexworkerModel?> GetFlexWorkerById(int id)
+    public async Task<FlexworkerModel> GetFlexWorkerById(int id)
     {
-        var flexworker = await context.Flexworkers.FindAsync(id);
-        if (flexworker == null) throw new Exception("Flexworker not found");
+        var flexworker = await context.Flexworkers
+            .Include(f => f.Skills)
+            .FirstOrDefaultAsync(f => f.Id == id);
 
+        if (flexworker == null) throw new Exception("Flexworker not found");
+        
         return flexworker;
     }
 }
