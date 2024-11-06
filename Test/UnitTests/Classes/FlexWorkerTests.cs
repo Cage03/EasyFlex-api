@@ -18,7 +18,7 @@ namespace Test.UnitTests.Classes
                 Id = 1,
                 Name = "John Doe",
                 Adress = "123 Street",
-                DateOfBirth = new DateTime(1990, 1, 1),
+                DateOfBirth = new DateOnly(1990, 1, 1),
                 Email = "john@example.com",
                 PhoneNumber = "123-456-7890",
                 ProfilePictureUrl = "https://example.com/profile.jpg",

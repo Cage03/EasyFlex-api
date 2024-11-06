@@ -13,7 +13,7 @@ public partial class FlexworkerModel
     public string Adress { get; set; } = null!;
 
     [Required]
-    public DateTime DateOfBirth { get; set; }
+    public DateOnly DateOfBirth { get; set; }
 
     [Required]
     public string Email { get; set; } = null!;
