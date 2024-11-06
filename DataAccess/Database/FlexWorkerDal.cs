@@ -55,7 +55,7 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 
     public async Task<FlexworkerModel?> GetFlexWorkerById(int id)
     {
-        var flexworker = await context.Flexworkers.FindAsync(id);
+        var flexworker = await context.Flexworkers.Include(f => f.Skills).FirstOrDefaultAsync(f => f.Id == id);
         if (flexworker == null) throw new Exception("Flexworker not found");
 
         return flexworker;

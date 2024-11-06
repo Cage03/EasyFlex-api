@@ -33,11 +33,19 @@ public partial class dbo : DbContext
     {
         modelBuilder.Entity<FlexworkerModel>()
             .HasMany(f => f.Skills)
-            .WithMany(s => s.Flexworkers)
+            .WithMany()
             .UsingEntity<Dictionary<string, object>>(
                 "FlexworkerSkill",
                 j => j.HasOne<SkillModel>().WithMany().HasForeignKey("SkillsId"),
                 j => j.HasOne<FlexworkerModel>().WithMany().HasForeignKey("FlexworkersId"));
+        
+        modelBuilder.Entity<JobModel>()
+            .HasMany(j => j.Skills)
+            .WithMany()
+            .UsingEntity<Dictionary<string, object>>(
+                "JobSkill",
+                j => j.HasOne<SkillModel>().WithMany().HasForeignKey("SkillsId"),
+                j => j.HasOne<JobModel>().WithMany().HasForeignKey("JobsId"));
 
         OnModelCreatingPartial(modelBuilder);
     }
