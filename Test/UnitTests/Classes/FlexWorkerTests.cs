@@ -30,7 +30,6 @@ namespace Test.UnitTests.Classes
                         CategoryId = 100,
                         Name = "C#",
                         Category = new CategoryModel { Id = 100, Name = "Programming" },
-                        Flexworkers = new List<FlexworkerModel>(),
                         Jobs = new List<JobModel>()
                     },
                     new SkillModel
@@ -39,7 +38,6 @@ namespace Test.UnitTests.Classes
                         CategoryId = 101,
                         Name = "SQL",
                         Category = new CategoryModel { Id = 101, Name = "Database" },
-                        Flexworkers = new List<FlexworkerModel>(),
                         Jobs = new List<JobModel>()
                     }
                 }
