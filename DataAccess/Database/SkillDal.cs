@@ -28,4 +28,18 @@ public class SkillDal(dbo context) : ISkillDal
         }
         return await context.Skills.Where(skill => skill.CategoryId == categoryId).Skip(limit * page).Take(limit).ToListAsync();
     }
+
+    public async Task CreateSkill(SkillModel skill)
+    {
+        var skillExists = await context.Skills.AnyAsync(s => s.Name == skill.Name);
+
+        if (skillExists)
+        {
+            throw new Exception($"A skill with the name '{skill.Name}' already exists.");
+        }
+        
+        await context.Skills.AddAsync(skill);
+        
+        await context.SaveChangesAsync();
+    }
 }
