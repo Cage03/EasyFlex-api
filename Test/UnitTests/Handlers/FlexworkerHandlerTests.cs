@@ -26,18 +26,18 @@ public class FlexworkerHandlerTests
         {
             new()
             {
-                Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
-                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+                Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
             },
             new()
             {
-                Id = 2, Name = "Flexworker2", Email = "email2@email.nl", Adress = "Adress2",
-                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2"
+                Id = 2, Name = "Flexworker2", Email = "email2@email.nl", Address = "Adress2",
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2"
             },
             new()
             {
-                Id = 3, Name = "Flexworker3", Email = "email3@email.nl", Adress = "Adress3",
-                DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3"
+                Id = 3, Name = "Flexworker3", Email = "email3@email.nl", Address = "Adress3",
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3"
             },
         };
 
@@ -81,8 +81,8 @@ public class FlexworkerHandlerTests
         // Arrange
         var flexWorker = new FlexworkerModel
         {
-            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
-            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
+            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
         };
 
         _mockFlexworkerDal.Setup(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()));
@@ -100,8 +100,8 @@ public class FlexworkerHandlerTests
         // Arrange
         var flexWorker = new FlexworkerModel
         {
-            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
-            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
+            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
         };
 
         _mockFlexworkerDal.Setup(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()))
@@ -119,8 +119,8 @@ public class FlexworkerHandlerTests
         // Arrange
         var flexWorker = new FlexworkerModel
         {
-            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
-            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
+            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
         };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
@@ -150,8 +150,8 @@ public class FlexworkerHandlerTests
         // Arrange
         var flexWorker = new FlexworkerModel
         {
-            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Adress = "Adress1",
-            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
+            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
         };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
@@ -184,13 +184,13 @@ public class FlexworkerHandlerTests
         // Arrange
         var oldFlexWorker = new FlexworkerModel
         {
-            Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Adress = "Old_Adress",
-            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
+            Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Address = "Old_Adress",
+            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
         };
         var updatedFlexWorker = new FlexworkerModel
         {
-            Id = 1, Name = "New_Flexworker", Email = "new@email.nl", Adress = "New_Adress",
-            DateOfBirth = new DateTime(2000, 11, 19), PhoneNumber = "new_0612345678", ProfilePictureUrl = "new_url"
+            Id = 1, Name = "New_Flexworker", Email = "new@email.nl", Address = "New_Adress",
+            DateOfBirth = new DateOnly(2000, 11, 19), PhoneNumber = "new_0612345678", ProfilePictureUrl = "new_url"
         };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(oldFlexWorker);
@@ -204,7 +204,7 @@ public class FlexworkerHandlerTests
             fw => fw.Id == updatedFlexWorker.Id &&
                   fw.Name == updatedFlexWorker.Name &&
                   fw.Email == updatedFlexWorker.Email &&
-                  fw.Adress == updatedFlexWorker.Adress &&
+                  fw.Address == updatedFlexWorker.Address &&
                   fw.PhoneNumber == updatedFlexWorker.PhoneNumber &&
                   fw.ProfilePictureUrl == updatedFlexWorker.ProfilePictureUrl
         )), Times.Once);
@@ -216,14 +216,14 @@ public class FlexworkerHandlerTests
         // Arrange
         var existingFlexWorker = new FlexworkerModel
         {
-            Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Adress = "Old_Adress",
-            DateOfBirth = new DateTime(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
+            Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Address = "Old_Adress",
+            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
         };
 
         var updatedFlexWorker = new FlexworkerModel
         {
-            Id = 1, Name = "Updated_Flexworker", Email = "updated@email.nl", Adress = "Updated_Adress",
-            DateOfBirth = new DateTime(2000, 11, 19), PhoneNumber = "New_0612345678", ProfilePictureUrl = "new_url"
+            Id = 1, Name = "Updated_Flexworker", Email = "updated@email.nl", Address = "Updated_Adress",
+            DateOfBirth = new DateOnly(2000, 11, 19), PhoneNumber = "New_0612345678", ProfilePictureUrl = "new_url"
         };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(existingFlexWorker);
@@ -237,7 +237,7 @@ public class FlexworkerHandlerTests
             fw => fw.Id == updatedFlexWorker.Id &&
                   fw.Name == updatedFlexWorker.Name &&
                   fw.Email == updatedFlexWorker.Email &&
-                  fw.Adress == updatedFlexWorker.Adress &&
+                  fw.Address == updatedFlexWorker.Address &&
                   fw.PhoneNumber == updatedFlexWorker.PhoneNumber &&
                   fw.ProfilePictureUrl == updatedFlexWorker.ProfilePictureUrl
         )), Times.Once);

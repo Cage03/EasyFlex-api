@@ -1,7 +1,6 @@
 using Interface.Interface.Dal;
 using Interface.Interface.Handlers;
 using Interface.Models;
-using Logic.Classes;
 
 namespace Logic.Handlers;
 
@@ -9,11 +8,30 @@ public class SkillHandler(ISkillDal skillDal) : ISkillHandler
 {
     public async Task<List<SkillModel>> GetSkillsFromIds(List<int> skillIds)
     {
-        return await skillDal.GetSkills(skillIds);
+        var skills = await skillDal.GetSkills(skillIds);
+
+        if (skills.Count != skillIds.Count)
+        {
+            throw new Exception("Not all skills found");
+        }
+
+        return skills;
     }
+
 
     public async Task<List<SkillModel>> GetSkillsFromCategory(int limit, int page, int categoryId)
     {
+        if (categoryId <= 0)
+        {
+            throw new Exception("Invalid category id");
+        }
+
         return await skillDal.GetSkillsFromCategory(limit, page, categoryId);
+    }
+
+
+    public async Task CreateSkill(string name, int categoryId)
+    {
+        await skillDal.CreateSkill(name, categoryId);
     }
 }

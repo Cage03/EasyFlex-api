@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
 
-public class SkillDal(dbo context) : ISkillDal
+public class SkillDal(dbo context):ISkillDal
 {
     public async Task<List<SkillModel>> GetSkills(List<int> skillIds)
     {
@@ -27,5 +27,23 @@ public class SkillDal(dbo context) : ISkillDal
             throw new Exception("Invalid category id");
         }
         return await context.Skills.Where(skill => skill.CategoryId == categoryId).Skip(limit * page).Take(limit).ToListAsync();
+    }
+
+    public async Task CreateSkill(string name, int categoryId)
+    {
+        var skillExists = await context.Skills.AnyAsync(s => s.Name == name);
+
+        if (skillExists)
+        {
+            throw new Exception($"A skill with the name '{name}' already exists.");
+        }
+        
+        await context.Skills.AddAsync(new SkillModel()
+        {
+            Name = name,
+            CategoryId = categoryId
+        });
+        
+        await context.SaveChangesAsync();
     }
 }

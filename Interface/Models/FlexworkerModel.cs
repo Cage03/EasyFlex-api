@@ -10,10 +10,10 @@ public partial class FlexworkerModel
     public string Name { get; set; } = null!;
 
     [Required]
-    public string Adress { get; set; } = null!;
+    public string Address { get; set; } = null!;
 
     [Required]
-    public DateTime DateOfBirth { get; set; }
+    public DateOnly DateOfBirth { get; set; }
 
     [Required]
     public string Email { get; set; } = null!;
