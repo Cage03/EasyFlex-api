@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
+[Route("Skill")]
+[ApiController]
 public class SkillController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
     private readonly ISkillHandler _skillHandler = logicFactoryBuilder.BuildHandlerFactory().GetSkillHandler();
