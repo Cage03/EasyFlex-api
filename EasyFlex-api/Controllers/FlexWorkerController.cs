@@ -73,7 +73,7 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         }
     } 
     
-    [HttpPut]
+    [HttpPost]
     [Route("Update")]
     public async Task<IActionResult> UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
     {

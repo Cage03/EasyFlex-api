@@ -20,7 +20,7 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         {
             existingFlexworker.Result.Name = flexWorker.Name;
             existingFlexworker.Result.Email = flexWorker.Email;
-            existingFlexworker.Result.Adress = flexWorker.Adress;
+            existingFlexworker.Result.Address = flexWorker.Address;
             existingFlexworker.Result.DateOfBirth = flexWorker.DateOfBirth;
             existingFlexworker.Result.PhoneNumber = flexWorker.PhoneNumber;
             existingFlexworker.Result.ProfilePictureUrl = flexWorker.ProfilePictureUrl;

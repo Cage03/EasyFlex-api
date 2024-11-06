@@ -5,7 +5,7 @@ namespace Logic.Classes;
 public class Job
 {
     public int Id { get; set; }
-    public string Adress { get; set; }
+    public string Address { get; set; }
     public string? Description { get; set; }
     public int MinHours { get; set; }
     public int MaxHours { get; set; }
@@ -16,7 +16,7 @@ public class Job
     public Job(JobModel jobModel)
     {
         Id = jobModel.Id;
-        Adress = jobModel.Address;
+        Address = jobModel.Address;
         Description = jobModel.Description;
         MinHours = jobModel.MinHours;
         MaxHours = jobModel.MaxHours;
@@ -29,7 +29,7 @@ public class Job
         return new JobModel
         {
             Id = Id,
-            Address = Adress,
+            Address = Address,
             Description = Description,
             MinHours = MinHours,
             MaxHours = MaxHours,
