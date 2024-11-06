@@ -17,7 +17,7 @@ namespace Test.UnitTests.Classes
             {
                 Id = 1,
                 Name = "John Doe",
-                Adress = "123 Street",
+                Address = "123 Street",
                 DateOfBirth = new DateOnly(1990, 1, 1),
                 Email = "john@example.com",
                 PhoneNumber = "123-456-7890",
@@ -52,7 +52,7 @@ namespace Test.UnitTests.Classes
             // Assert the properties were set correctly by the constructor
             Assert.AreEqual(_flexWorkerModel.Id, _flexWorker.Id);
             Assert.AreEqual(_flexWorkerModel.Name, _flexWorker.Name);
-            Assert.AreEqual(_flexWorkerModel.Adress, _flexWorker.Adress);
+            Assert.AreEqual(_flexWorkerModel.Address, _flexWorker.Address);
             Assert.AreEqual(_flexWorkerModel.DateOfBirth, _flexWorker.DateOfBirth);
             Assert.AreEqual(_flexWorkerModel.Email, _flexWorker.Email);
             Assert.AreEqual(_flexWorkerModel.PhoneNumber, _flexWorker.PhoneNumber);
@@ -73,7 +73,7 @@ namespace Test.UnitTests.Classes
             // Assert the properties are mapped correctly back to the model
             Assert.AreEqual(_flexWorker.Id, model.Id);
             Assert.AreEqual(_flexWorker.Name, model.Name);
-            Assert.AreEqual(_flexWorker.Adress, model.Adress);
+            Assert.AreEqual(_flexWorker.Address, model.Address);
             Assert.AreEqual(_flexWorker.DateOfBirth, model.DateOfBirth);
             Assert.AreEqual(_flexWorker.Email, model.Email);
             Assert.AreEqual(_flexWorker.PhoneNumber, model.PhoneNumber);
