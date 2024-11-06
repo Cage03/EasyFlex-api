@@ -30,4 +30,9 @@ public partial class SkillModel
     //         Jobs = Jobs.Select(j => j.ToDto()).ToList()
     //     };
     // }
+
+    public override string ToString()
+    {
+        return Name;
+    }
 }
