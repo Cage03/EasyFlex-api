@@ -10,7 +10,7 @@ public partial class FlexworkerModel
     public string Name { get; set; } = null!;
 
     [Required]
-    public string Adress { get; set; } = null!;
+    public string Address { get; set; } = null!;
 
     [Required]
     public DateOnly DateOfBirth { get; set; }

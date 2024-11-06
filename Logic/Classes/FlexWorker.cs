@@ -17,7 +17,7 @@ public class FlexWorker
     {
         Id = flexworkerModel.Id;
         Name = flexworkerModel.Name;
-        Adress = flexworkerModel.Adress;
+        Adress = flexworkerModel.Address;
         DateOfBirth = flexworkerModel.DateOfBirth;
         Email = flexworkerModel.Email;
         PhoneNumber = flexworkerModel.PhoneNumber;
@@ -30,7 +30,7 @@ public class FlexWorker
         {
             Id = Id,
             Name = Name,
-            Adress = Adress,
+            Address = Adress,
             DateOfBirth = DateOfBirth,
             Email = Email,
             PhoneNumber = PhoneNumber,
