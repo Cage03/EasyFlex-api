@@ -6,5 +6,5 @@ public interface ISkillDal
 {
     public Task<List<SkillModel>> GetSkills(List<int> skillIds);
     public Task<List<SkillModel>> GetSkillsFromCategory(int limit, int page, int categoryId);
-    public Task CreateSkill(string name);
+    public Task CreateSkill(string name, int categoryId);
 }

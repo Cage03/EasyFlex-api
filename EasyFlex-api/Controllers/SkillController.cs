@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Interface.Factories;
 using Interface.Interface.Handlers;
 using Interface.Models;
@@ -28,11 +29,16 @@ public class SkillController(ILogicFactoryBuilder logicFactoryBuilder) : Control
 
     [HttpPost]
     [Route("Create")]
-    public async Task<IActionResult> CreateSkill([FromBody]string name) //todo rework to dto object when categories are implemented
+    public async Task<IActionResult> CreateSkill([FromBody] JsonElement body)
     {
         try
         {
-            await _skillHandler.CreateSkill(name);
+            string? name = body.GetProperty("name").GetString();
+            int categoryId = body.GetProperty("categoryId").GetInt32();
+
+            if (string.IsNullOrEmpty(name) || categoryId <= 0) throw new Exception("Missing values for creating a new skill");
+
+            await _skillHandler.CreateSkill(name, categoryId);
             return Ok();
         }
         catch (Exception e)

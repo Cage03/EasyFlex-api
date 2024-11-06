@@ -102,17 +102,18 @@ namespace Test.UnitTests.Handlers
         }
 
         [TestMethod]
-        public async Task CreateSkill_ShouldCallDalCreateSkill()
+        public async Task CreateSkill_ShouldCallDalCreateSkillWithCorrectParameters()
         {
             // Arrange
             string skillName = "UniqueSkill";
-            _mockSkillDal.Setup(x => x.CreateSkill(skillName)).Returns(Task.CompletedTask);
+            int categoryId = 1;
+            _mockSkillDal.Setup(x => x.CreateSkill(skillName, categoryId)).Returns(Task.CompletedTask);
 
             // Act
-            await _skillHandler.CreateSkill(skillName);
+            await _skillHandler.CreateSkill(skillName, categoryId);
 
             // Assert
-            _mockSkillDal.Verify(x => x.CreateSkill(skillName), Times.Once);
+            _mockSkillDal.Verify(x => x.CreateSkill(skillName, categoryId), Times.Once);
         }
 
         [TestMethod]
@@ -120,13 +121,14 @@ namespace Test.UnitTests.Handlers
         {
             // Arrange
             string duplicateSkillName = "DuplicateSkill";
+            int categoryId = 1;
             _mockSkillDal
-                .Setup(x => x.CreateSkill(duplicateSkillName))
+                .Setup(x => x.CreateSkill(duplicateSkillName, categoryId))
                 .ThrowsAsync(new Exception("A skill with this name already exists."));
 
             // Act & Assert
             await Assert.ThrowsExceptionAsync<Exception>(async () => 
-                await _skillHandler.CreateSkill(duplicateSkillName));
+                await _skillHandler.CreateSkill(duplicateSkillName, categoryId));
         }
     }
 }
