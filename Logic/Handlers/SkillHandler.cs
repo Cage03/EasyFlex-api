@@ -30,8 +30,8 @@ public class SkillHandler(ISkillDal skillDal) : ISkillHandler
     }
 
 
-    public async Task CreateSkill(SkillModel skill)
+    public async Task CreateSkill(string name)
     {
-        await skillDal.CreateSkill(skill);
+        await skillDal.CreateSkill(name);
     }
 }

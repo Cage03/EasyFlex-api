@@ -28,11 +28,11 @@ public class SkillController(ILogicFactoryBuilder logicFactoryBuilder) : Control
 
     [HttpPost]
     [Route("Create")]
-    public async Task<IActionResult> CreateSkill(SkillModel skill)
+    public async Task<IActionResult> CreateSkill([FromBody]string name) //todo rework to dto object when categories are implemented
     {
         try
         {
-            await _skillHandler.CreateSkill(skill);
+            await _skillHandler.CreateSkill(name);
             return Ok();
         }
         catch (Exception e)

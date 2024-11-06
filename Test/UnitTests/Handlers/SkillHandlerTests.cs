@@ -105,27 +105,28 @@ namespace Test.UnitTests.Handlers
         public async Task CreateSkill_ShouldCallDalCreateSkill()
         {
             // Arrange
-            var skill = new SkillModel { Id = 1, Name = "Skill1", CategoryId = 1 };
-            _mockSkillDal.Setup(x => x.CreateSkill(It.IsAny<SkillModel>())).Returns(Task.CompletedTask);
+            string skillName = "UniqueSkill";
+            _mockSkillDal.Setup(x => x.CreateSkill(skillName)).Returns(Task.CompletedTask);
 
             // Act
-            await _skillHandler.CreateSkill(skill);
+            await _skillHandler.CreateSkill(skillName);
 
             // Assert
-            _mockSkillDal.Verify(x => x.CreateSkill(skill), Times.Once);
+            _mockSkillDal.Verify(x => x.CreateSkill(skillName), Times.Once);
         }
 
         [TestMethod]
         public async Task CreateSkill_ShouldThrowExceptionIfSkillAlreadyExists()
         {
             // Arrange
-            var skill = new SkillModel { Id = 1, Name = "DuplicateSkill", CategoryId = 1 };
+            string duplicateSkillName = "DuplicateSkill";
             _mockSkillDal
-                .Setup(x => x.CreateSkill(It.IsAny<SkillModel>()))
+                .Setup(x => x.CreateSkill(duplicateSkillName))
                 .ThrowsAsync(new Exception("A skill with this name already exists."));
 
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<Exception>(async () => await _skillHandler.CreateSkill(skill));
+            await Assert.ThrowsExceptionAsync<Exception>(async () => 
+                await _skillHandler.CreateSkill(duplicateSkillName));
         }
     }
 }
