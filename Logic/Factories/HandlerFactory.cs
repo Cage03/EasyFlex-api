@@ -21,4 +21,9 @@ public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
     {
         return new SkillHandler(dalFactory.GetSkillDal());
     }
+
+    public ICategoryHandler GetCategoryHandler()
+    {
+        return new CategoryHandler(dalFactory.GetCategoryDal());
+    }
 }
