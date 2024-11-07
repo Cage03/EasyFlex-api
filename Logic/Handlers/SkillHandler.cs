@@ -45,10 +45,7 @@ public class SkillHandler(ISkillDal skillDal) : ISkillHandler
 
     public async Task UpdateSkill(SkillDto skill)
     {
-        if (skill.Id <= 0)
-        {
-            throw new Exception("Invalid or no skill id provided");
-        }
+        if (skill.Id <= 0) throw new Exception("Invalid or no skill id provided");
 
         await skillDal.UpdateSkill(skill);
     }
