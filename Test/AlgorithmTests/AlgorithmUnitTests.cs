@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,9 +34,9 @@ namespace Test.AlgorithmTests
             List<FlexworkerModel> flexworkers = flexworkerGenerator.FlexworkersForTest1();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[0], flexworkers);
 
-            Assert.AreEqual(results[0].FlexworkerId, 0);
-            Assert.AreEqual(results[0].Compatibility, 100);
-            Assert.AreEqual(results.Count, 1);
+            Assert.AreEqual(1, results[0].FlexworkerId);
+            Assert.AreEqual(100, results[0].Compatibility);
+            Assert.AreEqual(1, results.Count);
         }
 
         [TestMethod]
@@ -45,9 +45,9 @@ namespace Test.AlgorithmTests
             List<FlexworkerModel> flexworkers = flexworkerGenerator.FlexworkersForTest2();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[1], flexworkers);
 
-            Assert.AreEqual(results[0].FlexworkerId, 2);
-            Assert.AreEqual(results[0].Compatibility, 100);
-            Assert.AreEqual(results.Count, 1);
+            Assert.AreEqual(3, results[0].FlexworkerId);
+            Assert.AreEqual(100, results[0].Compatibility);
+            Assert.AreEqual(1, results.Count);
         }
 
         [TestMethod]
@@ -56,9 +56,9 @@ namespace Test.AlgorithmTests
             List<FlexworkerModel> flexworkers = flexworkerGenerator.FlexworkersForTest1();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[2], flexworkers);
 
-            Assert.AreEqual(results[0].Compatibility, 100);
-            Assert.AreEqual(results[1].Compatibility, 0);
-            Assert.AreEqual(results.Count, 2);
+            Assert.AreEqual(100, results[0].Compatibility);
+            Assert.AreEqual(0, results[1].Compatibility);
+            Assert.AreEqual(2, results.Count);
         }
 
         [TestMethod]
