@@ -1,4 +1,4 @@
-﻿using Interface.Models;
+using Interface.Models;
 using Logic.Classes;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
