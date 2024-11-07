@@ -12,10 +12,12 @@ namespace Test.AlgorithmTests
     [TestClass]
     public class AlgorithmUnitTests
     {
-        private SkillGenerator? skillGenerator;
-        private PreferenceGenerator? preferenceGenerator;
-        private JobGenerator? jobGenerator;
-        private FlexworkerGenerator? flexworkerGenerator;
+        #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        private SkillGenerator skillGenerator;
+        private PreferenceGenerator preferenceGenerator;
+        private JobGenerator jobGenerator;
+        private FlexworkerGenerator flexworkerGenerator;
+        #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
 
         [TestInitialize]
@@ -31,7 +33,7 @@ namespace Test.AlgorithmTests
         [TestMethod]
         public void Test_Sc_1()
         {
-            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexwerkers_Sc_1_3();
+            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_1_3();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[0], flexworkers);
 
             Assert.AreEqual(0, results[0].FlexworkerId);
@@ -42,7 +44,7 @@ namespace Test.AlgorithmTests
         [TestMethod]
         public void Test_Sc_2()
         {
-            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexwerkers_Sc_2_4();
+            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_2_4();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[1], flexworkers);
 
             Assert.AreEqual(2, results[0].FlexworkerId);
@@ -53,7 +55,7 @@ namespace Test.AlgorithmTests
         [TestMethod]
         public void Test_Sc_3()
         {
-            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexwerkers_Sc_1_3();
+            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_1_3();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[2], flexworkers);
 
             Assert.AreEqual(100, results[0].Compatibility);
@@ -64,7 +66,7 @@ namespace Test.AlgorithmTests
         [TestMethod]
         public void Test_Sc_4()
         {
-            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexwerkers_Sc_2_4();
+            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_2_4();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[3], flexworkers);
 
             Assert.AreEqual(Math.Round(2.0 / 3.0 * 100.0), results[0].Compatibility);
@@ -73,6 +75,15 @@ namespace Test.AlgorithmTests
             Assert.AreEqual(Math.Round(1.0 / 3.0 * 100.0), results[3].Compatibility);
         }
 
+        [TestMethod]
+        public void Test_Sc_5()
+        {
+            List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexwerkers_Sc_5();
+            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[4], flexworkers);
+
+            Assert.AreEqual(100, results[0].Compatibility);
+            Assert.AreEqual(50, results[1].Compatibility);
+        }
 
         [TestMethod]
         public void Test_Sc_6()
