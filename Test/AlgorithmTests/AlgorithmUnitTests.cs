@@ -113,17 +113,11 @@ namespace Test.AlgorithmTests
 
             Assert.AreEqual(4, results.Count);
 
-<<<<<<< HEAD
+
             Assert.AreEqual(100, results[0].Compatibility);
             Assert.AreEqual(78, results[1].Compatibility);
             Assert.AreEqual(67, results[2].Compatibility);
             Assert.AreEqual(44, results[3].Compatibility);
-=======
-            Assert.AreEqual(100, results[3].Compatibility);
-            Assert.AreEqual(78, results[2].Compatibility);
-            Assert.AreEqual(67, results[1].Compatibility);
-            Assert.AreEqual(44, results[0].Compatibility);
->>>>>>> origin/algoritme
         }
 
         [TestMethod]
