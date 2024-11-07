@@ -9,10 +9,19 @@ public class CategoryDal(dbo context) : ICategoryDal
 {
     public async Task<int> CreateCategory(CategoryModel category)
     {
-        context.Categories.Add(category);
-        await context.SaveChangesAsync();
-        int id = category.Id;
-        return id;
+        bool alreadyExists = context.Categories.AnyAsync(model => model.Name.ToLower() == category.Name.ToLower() ).Result;
+        if (!alreadyExists)
+        {
+            context.Categories.Add(category);
+            await context.SaveChangesAsync();
+            int id = category.Id;
+            return id;
+        }
+        else
+        {
+            return 0;
+        }
+
     }
 
     public async Task<CategoryModel?> GetCategoryById(int id)
@@ -20,7 +29,7 @@ public class CategoryDal(dbo context) : ICategoryDal
         return await context.Categories.Include(c => c.Skills).FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<CategoryModel?>> GetCategories(int offset, int limit)
+    public async Task<List<CategoryModel>> GetCategories(int offset, int limit)
     {
         return await context.Categories
             .Skip(offset)

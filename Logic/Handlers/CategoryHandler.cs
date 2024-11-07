@@ -16,10 +16,10 @@ public class CategoryHandler(ICategoryDal categoryDal) : ICategoryHandler
         return await categoryDal.GetCategoryById(id);
     }
 
-    public async Task<List<CategoryModel?>> GetCategories(int pageNumber, int limit)
+    public async Task<List<CategoryModel>> GetCategories(int pageNumber, int limit)
     {
         var offset = (pageNumber - 1) * limit;
-        List<CategoryModel?> categories = await categoryDal.GetCategories(offset, limit);
+        List<CategoryModel> categories = await categoryDal.GetCategories(offset, limit);
         
         return categories;
     }

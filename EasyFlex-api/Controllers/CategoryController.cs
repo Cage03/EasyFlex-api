@@ -21,7 +21,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         {
             int id = await _categoryHandler.CreateCategory(category);
             if (id == 0)
-            { return StatusCode(400, "Failed to create category."); }
+            { return StatusCode(400,new { Message = "Failed to create category.", isDuplicate = true }); }
             else { return Ok(id); }
         }
         catch (Exception ex)
