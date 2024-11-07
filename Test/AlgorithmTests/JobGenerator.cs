@@ -1,4 +1,4 @@
-﻿using DataAccess.Database;
+using DataAccess.Database;
 using Interface.Models;
 using System;
 using System.Collections.Generic;
@@ -26,6 +26,9 @@ namespace Test.AlgorithmTests
                 (5, new List<int> { 1, 4 }),
                 (6, new List<int> { 0, 3, 5}),
                 (7, new List<int>{ 0, 1, 5, 6})
+
+                //job voor scenario 5
+                (7, new List<int> { 2, 3, 5 }),
             };
 
             foreach(var job in jobData)

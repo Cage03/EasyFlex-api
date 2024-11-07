@@ -79,10 +79,14 @@ namespace Test.AlgorithmTests
         public void Test_Sc_5()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_5();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[4], flexworkers);
+            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[7], flexworkers);
 
             Assert.AreEqual(100, results[0].Compatibility);
-            Assert.AreEqual(50, results[1].Compatibility);
+            Assert.AreEqual(Math.Round(175.0 / 225.0 * 100.0), results[1].Compatibility);
+            Assert.AreEqual(Math.Round(150.0 / 225.0 * 100.0), results[2].Compatibility);
+            Assert.AreEqual(Math.Round(125.0 / 225.0 * 100.0), results[3].Compatibility);
+            Assert.AreEqual(Math.Round(75.0 / 225.0 * 100.0), results[4].Compatibility);
+            Assert.AreEqual(Math.Round(50.0 / 225.0 * 100.0), results[5].Compatibility);
         }
 
         [TestMethod]
