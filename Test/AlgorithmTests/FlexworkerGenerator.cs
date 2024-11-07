@@ -47,7 +47,7 @@ namespace Test.AlgorithmTests
             }
         }
 
-        public List<FlexworkerModel> FlexworkersForTest1()
+        public List<FlexworkerModel> Flexwerkers_Sc_1_3()
         {
             List<FlexworkerModel> output = new List<FlexworkerModel>();
             output.Add(flexworkers[0]);
@@ -56,18 +56,7 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<FlexworkerModel> FlexworkersForTest2()
-        {
-            List<FlexworkerModel> output = new List<FlexworkerModel>();
-            output.Add(flexworkers[0]);
-            output.Add(flexworkers[1]);
-            output.Add(flexworkers[2]);
-            output.Add(flexworkers[3]);
-
-            return output;
-        }
-
-        public List<FlexworkerModel> FlexworkersForTest4()
+        public List<FlexworkerModel> Flexwerkers_Sc_2_4()
         {
             List<FlexworkerModel> output = new List<FlexworkerModel>();
             //Nederlandstalig
@@ -82,7 +71,7 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<FlexworkerModel> FlexworkersForTest5()
+        public List<FlexworkerModel> Flexworkers_Sc_6()
         {
             List<FlexworkerModel> output = new List<FlexworkerModel>();
             //Nederlands en Engels
@@ -95,7 +84,7 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<FlexworkerModel> FlexworkersForTest6()
+        public List<FlexworkerModel> Flexworkers_Sc_7()
         {
             List<FlexworkerModel> output = new List<FlexworkerModel>();
             output.Add(flexworkers[0]);
