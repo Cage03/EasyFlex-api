@@ -77,11 +77,17 @@ namespace Test.AlgorithmTests
         {
             List<FlexworkerModel> output = new List<FlexworkerModel>();
 
+            //Nederlands, Havodiploma, engels
             output.Add(flexworkers[5]);
+            //Nederlands en Havodiploma
             output.Add(flexworkers[4]);
+            //Nederlands en engels
             output.Add(flexworkers[2]);
+            //Engels, Havodiploma
             output.Add(flexworkers[6]);
+            //Havodiploma
             output.Add(flexworkers[7]);
+            //Engels
             output.Add(flexworkers[3]);
 
             return output;
