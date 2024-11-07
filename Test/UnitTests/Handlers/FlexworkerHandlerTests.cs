@@ -137,7 +137,7 @@ public class FlexworkerHandlerTests
     public async Task DeleteFlexWorker_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
     {
         // Arrange
-        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel)null);
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel?)null);
 
         // Act & Assert
         var exception = await Assert.ThrowsExceptionAsync<Exception>(() => _flexWorkerHandler.DeleteFlexWorker(1));
