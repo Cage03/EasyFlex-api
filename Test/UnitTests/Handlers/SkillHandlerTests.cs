@@ -130,5 +130,30 @@ namespace Test.UnitTests.Handlers
             await Assert.ThrowsExceptionAsync<Exception>(async () => 
                 await _skillHandler.CreateSkill(duplicateSkillName, categoryId));
         }
+        
+        [TestMethod]
+        public async Task DeleteSkill_ShouldCallDalDeleteSkillWithCorrectId()
+        {
+            // Arrange
+            int validSkillId = 1;
+            _mockSkillDal.Setup(x => x.DeleteSkill(validSkillId)).Returns(Task.CompletedTask);
+
+            // Act
+            await _skillHandler.DeleteSkill(validSkillId);
+
+            // Assert
+            _mockSkillDal.Verify(x => x.DeleteSkill(validSkillId), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DeleteSkill_ShouldThrowExceptionIfIdIsInvalid()
+        {
+            // Arrange
+            int invalidSkillId = -1;
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<IndexOutOfRangeException>(async () =>
+                await _skillHandler.DeleteSkill(invalidSkillId));
+        }
     }
 }

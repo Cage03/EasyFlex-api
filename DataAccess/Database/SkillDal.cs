@@ -46,4 +46,17 @@ public class SkillDal(dbo context):ISkillDal
         
         await context.SaveChangesAsync();
     }
+
+    public async Task DeleteSkill(int id)
+    {
+        var skill = await context.Skills.FindAsync(id);
+
+        if (skill == null)
+        {
+            throw new Exception($"Skill with id '{id}' not found.");
+        }
+
+        context.Skills.Remove(skill);
+        await context.SaveChangesAsync();
+    }
 }

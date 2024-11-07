@@ -34,4 +34,11 @@ public class SkillHandler(ISkillDal skillDal) : ISkillHandler
     {
         await skillDal.CreateSkill(name, categoryId);
     }
+
+    public async Task DeleteSkill(int id)
+    {
+        if (id <= 0) throw new IndexOutOfRangeException();
+    
+        await skillDal.DeleteSkill(id);
+    }
 }
