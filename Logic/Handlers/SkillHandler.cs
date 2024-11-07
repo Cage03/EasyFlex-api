@@ -1,3 +1,4 @@
+using Interface.Dto;
 using Interface.Interface.Dal;
 using Interface.Interface.Handlers;
 using Interface.Models;
@@ -40,5 +41,15 @@ public class SkillHandler(ISkillDal skillDal) : ISkillHandler
         if (id <= 0) throw new IndexOutOfRangeException();
     
         await skillDal.DeleteSkill(id);
+    }
+
+    public async Task UpdateSkill(SkillDto skill)
+    {
+        if (skill.Id <= 0)
+        {
+            throw new Exception("Invalid or no skill id provided");
+        }
+
+        await skillDal.UpdateSkill(skill);
     }
 }

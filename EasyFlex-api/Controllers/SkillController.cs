@@ -1,7 +1,7 @@
 using System.Text.Json;
+using Interface.Dto;
 using Interface.Factories;
 using Interface.Interface.Handlers;
-using Interface.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
@@ -54,6 +54,21 @@ public class SkillController(ILogicFactoryBuilder logicFactoryBuilder) : Control
         try
         {
             await _skillHandler.DeleteSkill(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
+    
+    [HttpPost]
+    [Route("Update")]
+    public async Task<IActionResult> UpdateSkill([FromBody] SkillDto skill)
+    {
+        try
+        {
+            await _skillHandler.UpdateSkill(skill);
             return Ok();
         }
         catch (Exception ex)
