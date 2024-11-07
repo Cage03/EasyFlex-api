@@ -18,11 +18,13 @@ namespace Test.AlgorithmTests
 
             var jobData = new List<(int Id, List<int> preferenceIndices)>
             {
-                (1, new List<int> { 0 }),
-                (2, new List < int > { 0, 1 }),
-                (3, new List<int> { 2 }),
-                (4, new List<int> { 2, 3 }),
-                (5, new List<int> { 0, 4 })
+                (0, new List<int> { 0 }),
+                (1, new List < int > { 0, 1 }),
+                (2, new List<int> { 2 }),
+                (3, new List<int> { 2, 3 }),
+                (4, new List<int> { 0, 4 }),
+                (5, new List<int> { 1, 4 }),
+                (6, new List<int> { 0, 3, 5}),
             };
 
             foreach(var job in jobData)

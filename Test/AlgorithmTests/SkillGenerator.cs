@@ -15,9 +15,9 @@ namespace Test.AlgorithmTests
         {
             var skillData = new List<(int Id, string Name)>
             {
-                (1, "Nederlandstalig"),
-                (2, "Engelstalig"),
-                
+                (0, "Nederlandstalig"),
+                (1, "Engelstalig"),
+                (2, "Havodiploma"),
             };
 
             foreach (var data in skillData)

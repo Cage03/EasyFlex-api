@@ -15,11 +15,12 @@ namespace Test.AlgorithmTests
         {
             var preferenceData = new List<(int Id, string Name, int SkillId, bool IsRequired, int Weight)>
             {
-                (1, "Nederlands", 1, true, 100),
-                (2, "Engels", 2, true, 100),
-                (3, "Nederlands", 1, false, 100),
-                (4, "Engels", 2, false, 50),
-                (5, "Engels", 2, false, 100)
+                (0, "Nederlands", 0, true, 100),
+                (1, "Engels", 1, true, 100),
+                (2, "Nederlands", 0, false, 100),
+                (3, "Engels", 1, false, 50),
+                (4, "Engels", 1, false, 100),
+                (5, "Havodiploma", 2, false, 75)
             };
 
             foreach (var data in preferenceData)

@@ -17,10 +17,12 @@ namespace Test.AlgorithmTests
 
             var flexworkerData = new List<(int Id, string Name, List<int> SkillIndices)>
             {
-                (1, "Nederlandstalig", new List<int> { 0 }),
-                (2, "Geen skills",new List<int>()),
-                (3, "Nederlands en engels",new List < int > { 0, 1 }),
-                (4, "Engels",new List < int > { 1 })
+                (0, "Nederlandstalig", new List<int> { 0 }),
+                (1, "Geen skills",new List<int>()),
+                (2, "Nederlands en engels",new List < int > { 0, 1 }),
+                (3, "Engels",new List < int > { 1 }),
+                (4, "Nederlands en Havodiploma",new List < int > { 0, 2}),
+                (5, "Nederlands, Havodiploma, engels",new List < int > { 0, 1, 2}),
             };
 
             foreach (var data in flexworkerData)
@@ -90,6 +92,17 @@ namespace Test.AlgorithmTests
             //Geen skills
             output.Add(flexworkers[1]);
 
+            return output;
+        }
+
+        public List<FlexworkerModel> FlexworkersForTest6()
+        {
+            List<FlexworkerModel> output = new List<FlexworkerModel>();
+            output.Add(flexworkers[0]);
+            output.Add(flexworkers[2]);
+            output.Add(flexworkers[3]);
+            output.Add(flexworkers[4]);
+            output.Add(flexworkers[5]);
             return output;
         }
     }
