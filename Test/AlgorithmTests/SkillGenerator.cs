@@ -18,6 +18,7 @@ namespace Test.AlgorithmTests
                 (0, "Nederlandstalig"),
                 (1, "Engelstalig"),
                 (2, "Havodiploma"),
+                (3, "Heftruck")
             };
 
             foreach (var data in skillData)

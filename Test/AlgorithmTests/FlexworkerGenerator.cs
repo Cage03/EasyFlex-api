@@ -22,7 +22,9 @@ namespace Test.AlgorithmTests
                 (2, "Nederlands en engels",new List < int > { 0, 1 }),
                 (3, "Engels",new List < int > { 1 }),
                 (4, "Nederlands en Havodiploma",new List < int > { 0, 2}),
-                (5, "Nederlands, Havodiploma, engels",new List < int > { 0, 1, 2}),
+                (5, "Nederlands, Engels, Havodiploma",new List < int > { 0, 1, 2}),
+                (6, "Nederlands, engels, havo en heftruck", new List < int > { 0, 1, 2, 3}),
+                (7, "Nederlands, havo en heftruck", new List < int > { 0, 2, 3})
             };
 
             foreach (var data in flexworkerData)
@@ -98,6 +100,17 @@ namespace Test.AlgorithmTests
             output.Add(flexworkers[3]);
             output.Add(flexworkers[4]);
             output.Add(flexworkers[5]);
+            return output;
+        }
+
+        public List<FlexworkerModel> Flexworkers_Sc_8()
+        {
+            List<FlexworkerModel> output = new List<FlexworkerModel>();
+            output.Add(flexworkers[6]);
+            output.Add(flexworkers[5]);
+            output.Add(flexworkers[2]);
+            output.Add(flexworkers[7]);
+            output.Add(flexworkers[3]);
             return output;
         }
     }

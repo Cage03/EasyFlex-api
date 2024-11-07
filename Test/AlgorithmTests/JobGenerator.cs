@@ -25,6 +25,7 @@ namespace Test.AlgorithmTests
                 (4, new List<int> { 0, 4 }),
                 (5, new List<int> { 1, 4 }),
                 (6, new List<int> { 0, 3, 5}),
+                (7, new List<int>{ 0, 1, 5, 6})
             };
 
             foreach(var job in jobData)
