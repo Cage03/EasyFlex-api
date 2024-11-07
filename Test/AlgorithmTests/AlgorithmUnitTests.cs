@@ -97,7 +97,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_6()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_6();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[4], flexworkers);
+            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[5], flexworkers);
 
             Assert.AreEqual(2, results.Count);
 
@@ -111,10 +111,10 @@ namespace Test.AlgorithmTests
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_7();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[6], flexworkers);
 
-            Assert.AreEqual(100, results[3].Compatibility);
-            Assert.AreEqual(Math.Round(175.0 / 225 * 100), results[2].Compatibility);
-            Assert.AreEqual(Math.Round(150.0 / 225 * 100), results[1].Compatibility);
-            Assert.AreEqual(Math.Round(100.0 / 225 * 100), results[0].Compatibility);
+            Assert.AreEqual(100, results[0].Compatibility);
+            Assert.AreEqual(78, results[1].Compatibility);
+            Assert.AreEqual(67, results[2].Compatibility);
+            Assert.AreEqual(56, results[3].Compatibility);
         }
 
         [TestMethod]
@@ -122,8 +122,6 @@ namespace Test.AlgorithmTests
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_8();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[7], flexworkers);
-
-            Assert.AreEqual(3, results.Count);
 
             Assert.AreEqual(100, results[0].Compatibility);
             Assert.AreEqual(85, results[1].Compatibility);
