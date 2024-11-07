@@ -63,14 +63,15 @@ namespace Test.AlgorithmTests
         public List<FlexworkerModel> Flexworkers_Sc_2_4()
         {
             List<FlexworkerModel> output = new List<FlexworkerModel>();
-            //Nederlandstalig
-            output.Add(flexworkers[0]);
-            //Geen skills
-            output.Add(flexworkers[1]);
+
             //Nederlands en engels
             output.Add(flexworkers[2]);
+            //Nederlandstalig
+            output.Add(flexworkers[0]);
             //Engels
             output.Add(flexworkers[3]);
+            //Geen skills
+            output.Add(flexworkers[1]);
 
             return output;
         }
