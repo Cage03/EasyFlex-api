@@ -31,8 +31,8 @@ namespace Test.AlgorithmTests
                     Name = data.Name,
                     Email = "email",
                     PhoneNumber = "0612345678",
-                    DateOfBirth = new DateTime(1990, 10, 1),
-                    Adress = "Adress",
+                    DateOfBirth = new DateOnly(1990, 10, 1),
+                    Address = "Adress",
                     ProfilePictureUrl = "url",
                 };
 
@@ -68,9 +68,13 @@ namespace Test.AlgorithmTests
         public List<FlexworkerModel> FlexworkersForTest4()
         {
             List<FlexworkerModel> output = new List<FlexworkerModel>();
+            //Nederlandstalig
             output.Add(flexworkers[0]);
+            //Geen skills
             output.Add(flexworkers[1]);
+            //Nederlands en engels
             output.Add(flexworkers[2]);
+            //Engels
             output.Add(flexworkers[3]);
 
             return output;
@@ -79,8 +83,11 @@ namespace Test.AlgorithmTests
         public List<FlexworkerModel> FlexworkersForTest5()
         {
             List<FlexworkerModel> output = new List<FlexworkerModel>();
+            //Nederlands en Engels
             output.Add(flexworkers[2]);
+            //Nederlands
             output.Add(flexworkers[0]);
+            //Geen skills
             output.Add(flexworkers[1]);
 
             return output;

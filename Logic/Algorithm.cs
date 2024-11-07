@@ -38,10 +38,11 @@ namespace Logic
 
                 if (match)
                 {
+                    double compatibility = Math.Round(weight / totalWeight * 100);
                     results.Add(new ResultModel
                     {
                         FlexworkerId = flexworker.Id,
-                        Compatibility = (weight / totalWeight * 100)
+                        Compatibility = compatibility
                     });
                 }
             }

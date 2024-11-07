@@ -67,10 +67,10 @@ namespace Test.AlgorithmTests
             List<FlexworkerModel> flexworkers = flexworkerGenerator.FlexworkersForTest4();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[3], flexworkers);
 
-            Assert.AreEqual(results[0].Compatibility, (2/3*100));
-            Assert.AreEqual(results[1].Compatibility, 0);
-            Assert.AreEqual(results[2].Compatibility, 100);
-            Assert.AreEqual(results[3].Compatibility, (1/3*100));
+            Assert.AreEqual(Math.Round(2.0 / 3.0 * 100.0), results[0].Compatibility);
+            Assert.AreEqual(0, results[1].Compatibility);
+            Assert.AreEqual(100, results[2].Compatibility);
+            Assert.AreEqual(Math.Round(1.0 / 3.0 * 100.0), results[3].Compatibility);
         }
 
 
