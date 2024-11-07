@@ -7,7 +7,7 @@ namespace Logic.Handlers;
 
 public class SkillHandler(ISkillDal skillDal) : ISkillHandler
 {
-    public async Task<List<SkillModel>> GetSkills(List<int> skillIds)
+    public async Task<List<SkillModel>> GetSkills(List<int>? skillIds)
     {
         return await skillDal.GetSkills(skillIds);
     }

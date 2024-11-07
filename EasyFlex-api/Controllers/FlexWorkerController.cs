@@ -1,4 +1,5 @@
-﻿using Interface.Factories;
+﻿using System.Text.Json;
+using Interface.Factories;
 using Interface.Interface.Handlers;
 using Interface.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -90,12 +91,18 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     
     [HttpPost]
     [Route("AddSkills")]
-    public async Task<IActionResult> AddSkills(int flexWorkerId, List<int> skillIds)
+    public async Task<IActionResult> AddSkills(JsonElement body)
     {
         try
         {
+            int? flexWorkerId = body.GetProperty("flexWorkerId").GetInt32();
+            List<int>? skillIds = JsonSerializer.Deserialize<List<int>>(body.GetProperty("skillIds").ToString());
+            
+            if(skillIds is { Count: 0 })
+                return BadRequest("No skills provided");
+            
             List<SkillModel> skills = await _skillHandler.GetSkills(skillIds);
-            await _flexWorkerHandler.AddSkills(flexWorkerId, skills);
+            await _flexWorkerHandler.AddSkills((int)flexWorkerId, skills);
             return Ok();
         }
         catch (Exception e)
