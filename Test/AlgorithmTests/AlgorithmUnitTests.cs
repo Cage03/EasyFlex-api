@@ -69,24 +69,24 @@ namespace Test.AlgorithmTests
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_2_4();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[3], flexworkers);
 
-            Assert.AreEqual(Math.Round(2.0 / 3.0 * 100.0), results[0].Compatibility);
+            Assert.AreEqual(67, results[0].Compatibility);
             Assert.AreEqual(0, results[1].Compatibility);
             Assert.AreEqual(100, results[2].Compatibility);
-            Assert.AreEqual(Math.Round(1.0 / 3.0 * 100.0), results[3].Compatibility);
+            Assert.AreEqual(33, results[3].Compatibility);
         }
 
         [TestMethod]
         public void Test_Sc_5()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_5();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[7], flexworkers);
+            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[4], flexworkers);
 
             Assert.AreEqual(100, results[0].Compatibility);
-            Assert.AreEqual(Math.Round(175.0 / 225.0 * 100.0), results[1].Compatibility);
-            Assert.AreEqual(Math.Round(150.0 / 225.0 * 100.0), results[2].Compatibility);
-            Assert.AreEqual(Math.Round(125.0 / 225.0 * 100.0), results[3].Compatibility);
-            Assert.AreEqual(Math.Round(75.0 / 225.0 * 100.0), results[4].Compatibility);
-            Assert.AreEqual(Math.Round(50.0 / 225.0 * 100.0), results[5].Compatibility);
+            Assert.AreEqual(78, results[1].Compatibility);
+            Assert.AreEqual(67, results[2].Compatibility);
+            Assert.AreEqual(56, results[3].Compatibility);
+            Assert.AreEqual(33, results[4].Compatibility);
+            Assert.AreEqual(22, results[5].Compatibility);
         }
 
         [TestMethod]

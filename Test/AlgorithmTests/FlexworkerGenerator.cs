@@ -24,7 +24,9 @@ namespace Test.AlgorithmTests
                 (4, "Nederlands en Havodiploma",new List < int > { 0, 2}),
                 (5, "Nederlands, Engels, Havodiploma",new List < int > { 0, 1, 2}),
                 (6, "Nederlands, engels, havo en heftruck", new List < int > { 0, 1, 2, 3}),
-                (7, "Nederlands, havo en heftruck", new List < int > { 0, 2, 3})
+                (7, "Nederlands, havo en heftruck", new List < int > { 0, 2, 3}),
+                (8, "engels en havo", new List < int > { 1, 2}),
+                (9, "havo", new List<int> { 2}),
             };
 
             foreach (var data in flexworkerData)
@@ -84,9 +86,9 @@ namespace Test.AlgorithmTests
             //Nederlands en engels
             output.Add(flexworkers[2]);
             //Engels, Havodiploma
-            output.Add(flexworkers[6]);
+            output.Add(flexworkers[8]);
             //Havodiploma
-            output.Add(flexworkers[7]);
+            output.Add(flexworkers[9]);
             //Engels
             output.Add(flexworkers[3]);
 
