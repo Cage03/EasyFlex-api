@@ -1,4 +1,5 @@
-﻿using Interface.Interface.Dal;
+﻿using Interface.Dto;
+using Interface.Interface.Dal;
 using Interface.Models;
 using Logic.Handlers;
 using Moq;
@@ -154,6 +155,31 @@ namespace Test.UnitTests.Handlers
             // Act & Assert
             await Assert.ThrowsExceptionAsync<IndexOutOfRangeException>(async () =>
                 await _skillHandler.DeleteSkill(invalidSkillId));
+        }
+        
+        [TestMethod]
+        public async Task UpdateSkill_ShouldCallDalUpdateSkillWithCorrectSkill()
+        {
+            // Arrange
+            var validSkillDto = new SkillDto { Id = 1, Name = "UpdatedSkill", CategoryId = 1 };
+            _mockSkillDal.Setup(x => x.UpdateSkill(validSkillDto)).Returns(Task.CompletedTask);
+
+            // Act
+            await _skillHandler.UpdateSkill(validSkillDto);
+
+            // Assert
+            _mockSkillDal.Verify(x => x.UpdateSkill(validSkillDto), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task UpdateSkill_ShouldThrowExceptionIfSkillIdIsInvalid()
+        {
+            // Arrange
+            var invalidSkillDto = new SkillDto { Id = 0, Name = "InvalidSkill", CategoryId = 1 };
+
+            // Act & Assert
+            await Assert.ThrowsExceptionAsync<Exception>(async () =>
+                await _skillHandler.UpdateSkill(invalidSkillDto));
         }
     }
 }
