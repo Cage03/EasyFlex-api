@@ -111,10 +111,12 @@ namespace Test.AlgorithmTests
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_7();
             List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[6], flexworkers);
 
-            Assert.AreEqual(100, results[0].Compatibility);
-            Assert.AreEqual(78, results[1].Compatibility);
-            Assert.AreEqual(67, results[2].Compatibility);
-            Assert.AreEqual(56, results[3].Compatibility);
+            Assert.AreEqual(4, results.Count);
+
+            Assert.AreEqual(100, results[3].Compatibility);
+            Assert.AreEqual(78, results[2].Compatibility);
+            Assert.AreEqual(67, results[1].Compatibility);
+            Assert.AreEqual(44, results[0].Compatibility);
         }
 
         [TestMethod]
