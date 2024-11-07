@@ -18,8 +18,8 @@ namespace Logic
             foreach (FlexworkerModel flexworker in flexworkers)
             {
                 bool match = true;
-                int totalWeight = 0;
-                int weight = 0;
+                float totalWeight = 0;
+                float weight = 0;
 
                 foreach (PreferenceModel preference in job.Preferences)
                 {
@@ -29,10 +29,10 @@ namespace Logic
                     {
                         weight += preference.Weight;
                     }
-
                     else if (preference.IsRequired)
                     {
                         match = false;
+                        break;
                     }
                 }
 
@@ -41,7 +41,7 @@ namespace Logic
                     results.Add(new ResultModel
                     {
                         FlexworkerId = flexworker.Id,
-                        Compatibility = (weight / totalWeight) * 100 
+                        Compatibility = (weight / totalWeight * 100)
                     });
                 }
             }
