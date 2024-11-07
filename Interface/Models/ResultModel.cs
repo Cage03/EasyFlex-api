@@ -9,6 +9,6 @@ namespace Interface.Models
     public class ResultModel
     {
         public int FlexworkerId { get; set; }
-        public int Compatibility { get; set; }
+        public double Compatibility { get; set; }
     }
 }

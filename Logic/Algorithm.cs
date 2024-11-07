@@ -18,8 +18,8 @@ namespace Logic
             foreach (FlexworkerModel flexworker in flexworkers)
             {
                 bool match = true;
-                int totalWeight = 0;
-                int weight = 0;
+                double totalWeight = 0;
+                double weight = 0;
 
                 foreach (PreferenceModel preference in job.Preferences)
                 {
