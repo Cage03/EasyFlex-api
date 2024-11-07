@@ -46,4 +46,19 @@ public class SkillController(ILogicFactoryBuilder logicFactoryBuilder) : Control
             return NotFound(e);
         }
     }
+    
+    [HttpDelete]
+    [Route("Delete")]
+    public async Task<IActionResult> DeleteSkill([FromQuery] int id)
+    {
+        try
+        {
+            await _skillHandler.DeleteSkill(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
 }
