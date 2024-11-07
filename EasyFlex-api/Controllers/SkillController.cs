@@ -49,7 +49,7 @@ public class SkillController(ILogicFactoryBuilder logicFactoryBuilder) : Control
     
     [HttpDelete]
     [Route("Delete")]
-    public async Task<IActionResult> DeleteJob([FromQuery] int id)
+    public async Task<IActionResult> DeleteSkill([FromQuery] int id)
     {
         try
         {
