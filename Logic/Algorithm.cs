@@ -35,6 +35,8 @@ namespace Logic
                 results.Add(new ResultModel
                 {
                     FlexworkerId = flexworker.Id,
+                    FlexworkerName = flexworker.Name,
+                    ProfilePictureUrl = flexworker.ProfilePictureUrl,
                     Compatibility = compatibility
                 });
             }
