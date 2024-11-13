@@ -50,6 +50,21 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         await flexWorkerDal.AddSkills(flexWorker ,skills);
     }
 
+    public async Task RemoveSkills(int flexWorkerId, List<SkillModel> skills)
+    {
+        var flexWorker = await GetFlexworkerById(flexWorkerId);
+        if (flexWorker == null)
+        {
+            throw new Exception("Flexworker not found");
+        }
+        
+        if (skills.Count == 0)
+        {
+            throw new Exception("No skills provided");
+        }
+        await flexWorkerDal.RemoveSkills(flexWorker, skills);
+    }
+
     public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
     {
         await flexWorkerDal.UpdateFlexWorker(flexWorker);
