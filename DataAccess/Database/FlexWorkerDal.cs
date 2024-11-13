@@ -35,6 +35,19 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         await context.SaveChangesAsync();
     }
 
+    public async Task AddSkills(FlexworkerModel flexworker, List<SkillModel> skills)
+    {
+        foreach (var skill in skills)
+        {
+            var existingSkill = context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
+            if (existingSkill.Result != null)
+            {
+                flexworker.Skills.Add(existingSkill.Result);
+            }
+        }
+        await context.SaveChangesAsync();
+    }
+
     public async Task<List<FlexworkerModel>> GetAllFlexWorkers(int limit, int page)
     {
         return await context.Flexworkers.Skip(page * limit).Take(limit).ToListAsync();
@@ -42,7 +55,7 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 
     public async Task<FlexworkerModel?> GetFlexWorkerById(int id)
     {
-        var flexworker = await context.Flexworkers.FindAsync(id);
+        var flexworker = await context.Flexworkers.Include(f => f.Skills).FirstOrDefaultAsync(f => f.Id == id);
         if (flexworker == null) throw new Exception("Flexworker not found");
 
         return flexworker;

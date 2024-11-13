@@ -137,7 +137,7 @@ public class FlexworkerHandlerTests
     public async Task DeleteFlexWorker_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
     {
         // Arrange
-        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel)null);
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel?)null);
 
         // Act & Assert
         var exception = await Assert.ThrowsExceptionAsync<Exception>(() => _flexWorkerHandler.DeleteFlexWorker(1));
@@ -242,4 +242,80 @@ public class FlexworkerHandlerTests
                   fw.ProfilePictureUrl == updatedFlexWorker.ProfilePictureUrl
         )), Times.Once);
     }
+
+    [TestMethod]
+    public async Task AddSkills_ShouldAddSkillsToFlexWorker()
+    {
+        // Arrange
+        var flexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
+            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+        };
+
+        var skills = new List<SkillModel>
+        {
+            new SkillModel
+            {
+                Id = 1,
+                CategoryId = 100,
+                Name = "C#",
+                Category = new CategoryModel { Id = 100, Name = "Programming" },
+            },
+            new SkillModel
+            {
+                Id = 2,
+                CategoryId = 101,
+                Name = "SQL",
+                Category = new CategoryModel { Id = 101, Name = "Database" },
+            }
+        };
+
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
+        _mockFlexworkerDal.Setup(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()));
+        // Act
+        await _flexWorkerHandler.AddSkills(flexWorker.Id, skills);
+
+        // Assert
+        _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task AddSkills_ShouldThrowExceptionIfNoSkillsProvided()
+    {
+        // Arrange
+        var flexWorker = new FlexworkerModel
+        {
+            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
+            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+        };
+
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
+
+        // Act & Assert
+        var exception = await Assert.ThrowsExceptionAsync<Exception>(() =>
+            _flexWorkerHandler.AddSkills(flexWorker.Id, new List<SkillModel>()));
+
+        Assert.AreEqual("No skills provided", exception.Message);
+
+        _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()),
+            Times.Never);
+    }
+    
+    [TestMethod]
+    public async Task AddSkills_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
+    {
+        // Arrange
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel?)null);
+
+        // Act & Assert
+        var exception = await Assert.ThrowsExceptionAsync<Exception>(() =>
+            _flexWorkerHandler.AddSkills(1, new List<SkillModel>()));
+
+        Assert.AreEqual("Flexworker not found", exception.Message);
+
+        _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()),
+            Times.Never);
+    }
+
 }
