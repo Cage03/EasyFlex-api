@@ -42,6 +42,11 @@ public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandle
         {
             throw new Exception("Flexworker not found");
         }
+        
+        if (skills.Count == 0)
+        {
+            throw new Exception("No skills provided");
+        }
         await flexWorkerDal.AddSkills(flexWorker ,skills);
     }
 
