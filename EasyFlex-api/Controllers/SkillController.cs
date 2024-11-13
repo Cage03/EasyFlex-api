@@ -1,7 +1,6 @@
 using System.Text.Json;
 using Interface.Factories;
 using Interface.Interface.Handlers;
-using Interface.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
