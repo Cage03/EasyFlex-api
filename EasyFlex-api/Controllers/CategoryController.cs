@@ -105,4 +105,19 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
             return StatusCode(400,new { message = ex.Message, alreadyExists = alreadyExists, doesNotExist = doesNotExist, isSameName = isSameName });
         }
     }
+    
+    [HttpDelete]
+    [Route("Delete")]
+    public async Task<IActionResult> DeleteCategorie([FromQuery] int id)
+    {
+        try
+        {
+            await _categoryHandler.DeleteCategory(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
 }

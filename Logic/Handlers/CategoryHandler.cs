@@ -28,4 +28,11 @@ public class CategoryHandler(ICategoryDal categoryDal) : ICategoryHandler
     {
         await categoryDal.UpdateCategory(category);
     }
+
+    public async Task DeleteCategory(int id)
+    {
+        if (id <= 0) throw new IndexOutOfRangeException();
+        
+        await categoryDal.DeleteCategory(id);
+    }
 }

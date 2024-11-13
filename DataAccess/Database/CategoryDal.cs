@@ -64,4 +64,14 @@ public class CategoryDal(dbo context) : ICategoryDal
             throw new Exception("doesNotExist");
         }
     }
+
+    public async Task DeleteCategory(int id)
+    {
+        var category = context.Categories.FirstOrDefaultAsync(model => model.Id == id).Result;
+        if (category != null)
+        {
+            context.Categories.Remove(category);
+        }
+        await context.SaveChangesAsync();
+    }
 }
