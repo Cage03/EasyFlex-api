@@ -37,4 +37,31 @@ public class CategoryDal(dbo context) : ICategoryDal
             .Include(c => c.Skills)
             .ToListAsync(); 
     }
+
+    public async Task UpdateCategory(CategoryModel category)
+    {
+        var oldCategory = context.Categories.FirstOrDefaultAsync(model => model.Id == category.Id).Result;
+        bool alreadyExists = context.Categories.AnyAsync(model =>  model.Name.ToLower() == category.Name.ToLower() && model.Id != category.Id ).Result;
+        
+        if (alreadyExists)
+        {
+            throw new Exception("alreadyExists");
+        }
+
+        if (oldCategory != null)
+        {
+            // Check if the new name only changes in case or if it's unique
+            if (oldCategory.Name.ToLower() == category.Name.ToLower() && oldCategory.Name == category.Name)
+            {
+                throw new Exception("isSameName");
+            }
+
+            oldCategory.Name = category.Name;
+            await context.SaveChangesAsync();
+        }
+        else
+        {
+            throw new Exception("doesNotExist");
+        }
+    }
 }

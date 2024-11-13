@@ -6,7 +6,7 @@ namespace Logic.Handlers;
 
 public class CategoryHandler(ICategoryDal categoryDal) : ICategoryHandler
 {
-    public async Task<int> CreateCategory(CategoryModel? category)
+    public async Task<int> CreateCategory(CategoryModel category)
     {
         return await categoryDal.CreateCategory(category);
     }
@@ -22,5 +22,10 @@ public class CategoryHandler(ICategoryDal categoryDal) : ICategoryHandler
         List<CategoryModel> categories = await categoryDal.GetCategories(offset, limit);
         
         return categories;
+    }
+
+    public async Task UpdateCategory(CategoryModel category)
+    {
+        await categoryDal.UpdateCategory(category);
     }
 }
