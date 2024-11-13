@@ -7,4 +7,5 @@ public interface IHandlerFactory
 {
     public IFlexWorkerHandler GetFlexWorkerHandler();
     public IJobHandler GetJobHandler();
+    public IMatchingHandler GetMatchingHandler();
 }

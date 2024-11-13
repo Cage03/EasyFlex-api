@@ -45,7 +45,7 @@ public class FlexworkerHandlerTests
         int limit = 2;
 
         _mockFlexworkerDal
-            .Setup(x => x.GetAllFlexWorkers(It.IsAny<int>(), It.IsAny<int>()))
+            .Setup(x => x.GetFlexWorkersByPage(It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(flexWorkers.Take(limit).ToList());
 
         // Act
@@ -63,7 +63,7 @@ public class FlexworkerHandlerTests
         // Arrange
         var flexWorkers = new List<FlexworkerModel>(); // No flexworkers
 
-        _mockFlexworkerDal.Setup(x => x.GetAllFlexWorkers(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(flexWorkers);
+        _mockFlexworkerDal.Setup(x => x.GetFlexWorkersByPage(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(flexWorkers);
 
         int pageNumber = 1;
         int limit = 2;

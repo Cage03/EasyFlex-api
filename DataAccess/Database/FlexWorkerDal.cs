@@ -7,6 +7,11 @@ namespace DataAccess.Database;
 
 public class FlexWorkerDal(dbo context) : IFlexWorkerDal
 {
+    public async Task<List<FlexworkerModel>> GetAllFlexWorkers()
+    {
+        return await context.Flexworkers.ToListAsync();
+    }
+
     public async Task AddFlexWorker(FlexworkerModel flexWorker)
     {
         context.Flexworkers.Add(flexWorker);
@@ -35,7 +40,7 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         await context.SaveChangesAsync();
     }
 
-    public async Task<List<FlexworkerModel>> GetAllFlexWorkers(int limit, int page)
+    public async Task<List<FlexworkerModel>> GetFlexWorkersByPage(int limit, int page)
     {
         return await context.Flexworkers.Skip(page * limit).Take(limit).ToListAsync();
     }

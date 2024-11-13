@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Interface.Models
 {
-    public class PreferenceModel
+    public struct PreferenceModel
     {
         public int Id { get; set; }
         public int SkillId { get; set; }

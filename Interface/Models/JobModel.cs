@@ -27,20 +27,4 @@ public partial class JobModel
     public DateOnly? EndDate { get; set; }
 
     public virtual ICollection<PreferenceModel> Preferences { get; set; } = new List<PreferenceModel>();
-
-    // public JobDto ToDto()
-    // {
-    //     return new JobDto
-    //     {
-    //         Id = Id,
-    //         Adress = Adress,
-    //         Description = Description,
-    //         MinHours = MinHours,
-    //         MaxHours = MaxHours,
-    //         StartDate = StartDate,
-    //         EndDate = EndDate,
-    //         Flexworkers = Flexworkers.Select(f => f.ToDto()).ToList(),
-    //         Skills = Skills.Select(s => s.ToDto()).ToList()
-    //     };
-    // }
 }

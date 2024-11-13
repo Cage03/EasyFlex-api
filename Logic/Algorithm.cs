@@ -1,11 +1,4 @@
 using Interface.Models;
-using Logic.Classes;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Logic
 {
@@ -13,15 +6,15 @@ namespace Logic
     {
         public static List<ResultModel> Execute(JobModel job, List<FlexworkerModel> flexworkers)
         {
-            List<ResultModel> results = new List<ResultModel>();
+            var results = new List<ResultModel>();
 
             foreach (FlexworkerModel flexworker in flexworkers)
             {
-                bool match = true;
+                var match = true;
                 float totalWeight = 0;
                 float weight = 0;
 
-                foreach (PreferenceModel preference in job.Preferences)
+                foreach (var preference in job.Preferences)
                 {
                     totalWeight += preference.Weight;
 
@@ -36,15 +29,14 @@ namespace Logic
                     }
                 }
 
-                if (match)
+                if (!match) continue;
+                
+                var compatibility = Math.Round(weight / totalWeight * 100);
+                results.Add(new ResultModel
                 {
-                    double compatibility = Math.Round(weight / totalWeight * 100);
-                    results.Add(new ResultModel
-                    {
-                        FlexworkerId = flexworker.Id,
-                        Compatibility = compatibility
-                    });
-                }
+                    FlexworkerId = flexworker.Id,
+                    Compatibility = compatibility
+                });
             }
             return results;
         }
