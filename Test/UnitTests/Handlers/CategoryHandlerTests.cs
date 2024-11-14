@@ -116,5 +116,64 @@ public class CategoryHandlerTests
         //Assert
         Assert.IsNull(result);
     }
+
+
+    [TestMethod]
+    public async Task UpdateCategory_ShouldReturnShouldBeSuccessful()
+    {
+        //Arrange
+        CategoryModel oldCategory = new() { Id = 1, Name = "categorie1" };
+        
+        _mockCategoryDal.Setup(x => x.UpdateCategory(It.IsAny<CategoryModel>())).Returns(Task.CompletedTask);
+        //Act
+        
+        await _categoryHandler.UpdateCategory(oldCategory);
+        
+        
+        //Assert
+       _mockCategoryDal.Verify(x => x.UpdateCategory(oldCategory), Times.Once);
+        
+    }
+    [TestMethod]
+    public async Task UpdateCategory_ShouldThrowAlreadyExists_WhenNameExistsWithDifferentId()
+    {
+        // Arrange
+        var categoryToUpdate = new CategoryModel { Id = 1, Name = "categorie1" };
+    
+        _mockCategoryDal.Setup(x => x.UpdateCategory(It.IsAny<CategoryModel>())).ThrowsAsync(new Exception("alreadyExists"));
+        // Act
+        async Task Act() => await _categoryHandler.UpdateCategory(categoryToUpdate);
+
+        //Assert
+        await Assert.ThrowsExceptionAsync<Exception>(Act);
+    }
+
+    [TestMethod]
+    public async Task UpdateCategory_ShouldThrowIsSameName_WhenNameIsSame()
+    {
+        // Arrange
+        var categoryToUpdate = new CategoryModel { Id = 1, Name = "categorie1" };
+
+        _mockCategoryDal.Setup(x => x.UpdateCategory(It.IsAny<CategoryModel>())).ThrowsAsync(new Exception("isSameName"));
+        // Act
+        async Task Act() => await _categoryHandler.UpdateCategory(categoryToUpdate);
+
+        //Assert
+        await Assert.ThrowsExceptionAsync<Exception>(Act);
+    }
+
+    [TestMethod]
+    public async Task UpdateCategory_ShouldThrowDoesNotExist_WhenCategoryDoesNotExist()
+    {
+        // Arrange
+        var categoryToUpdate = new CategoryModel { Id = 1, Name = "categorie1" };
+
+        _mockCategoryDal.Setup(x => x.UpdateCategory(It.IsAny<CategoryModel>())).ThrowsAsync(new Exception("doesNotExist"));
+        // Act
+        async Task Act() => await _categoryHandler.UpdateCategory(categoryToUpdate);
+
+        //Assert
+        await Assert.ThrowsExceptionAsync<Exception>(Act);
+    }
 }
 
