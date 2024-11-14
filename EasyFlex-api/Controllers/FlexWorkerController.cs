@@ -109,5 +109,27 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         {
             return NotFound(e);
         }
-    }   
+    } 
+    
+    [HttpDelete]
+    [Route("RemoveSkills")]
+    public async Task<IActionResult> RemoveSkills(JsonElement body)
+    {
+        try
+        {
+            int? flexWorkerId = body.GetProperty("flexWorkerId").GetInt32();
+            List<int>? skillIds = JsonSerializer.Deserialize<List<int>>(body.GetProperty("skillIds").ToString());
+            
+            if(skillIds is { Count: 0 })
+                return BadRequest("No skills provided");
+            
+            List<SkillModel> skills = await _skillHandler.GetSkills(skillIds);
+            await _flexWorkerHandler.RemoveSkills((int)flexWorkerId, skills);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound(e);
+        }
+    }
 }

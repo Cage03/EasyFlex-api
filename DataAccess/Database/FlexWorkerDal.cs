@@ -48,6 +48,19 @@ public class FlexWorkerDal(dbo context) : IFlexWorkerDal
         await context.SaveChangesAsync();
     }
 
+    public async Task RemoveSkills(FlexworkerModel flexWorker, List<SkillModel> skills)
+    {
+        foreach (var skill in skills)
+        {
+            var existingSkill = context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
+            if (existingSkill.Result != null)
+            {
+                flexWorker.Skills.Remove(existingSkill.Result);
+            }
+        }
+        await context.SaveChangesAsync();
+    }
+
     public async Task<List<FlexworkerModel>> GetAllFlexWorkers(int limit, int page)
     {
         return await context.Flexworkers.Skip(page * limit).Take(limit).ToListAsync();
