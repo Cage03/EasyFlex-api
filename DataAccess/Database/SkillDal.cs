@@ -1,4 +1,5 @@
 using DataAccess.Models;
+using Interface.Dto;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,19 @@ public class SkillDal(dbo context):ISkillDal
         }
 
         context.Skills.Remove(skill);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task UpdateSkill(SkillDto skill)
+    {
+        var model = new SkillModel()
+        {
+            Id = skill.Id,
+            Name = skill.Name,
+            CategoryId = skill.CategoryId
+        };
+        
+        context.Skills.Update(model);
         await context.SaveChangesAsync();
     }
 }
