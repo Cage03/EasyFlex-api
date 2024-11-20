@@ -1,5 +1,5 @@
+using DataAccess.Models;
 using Interface.Interface.Dal;
-using Interface.Models;
 using Logic.Handlers;
 using Moq;
 

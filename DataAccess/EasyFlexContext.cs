@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Interface.Models;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Models;
+namespace DataAccess;
 
-public partial class dbo : DbContext
+public partial class EasyFlexContext : DbContext
 {
-    public dbo()
+    public EasyFlexContext()
     {
     }
 
-    public dbo(DbContextOptions<dbo> options)
+    public EasyFlexContext(DbContextOptions<EasyFlexContext> options)
         : base(options)
     {
     }
@@ -23,8 +23,6 @@ public partial class dbo : DbContext
     public virtual DbSet<JobModel> Jobs { get; set; }
 
     public virtual DbSet<SkillModel> Skills { get; set; }
-
-    public virtual DbSet<UserModel> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer();
@@ -38,7 +36,7 @@ public partial class dbo : DbContext
                 "FlexworkerSkill",
                 j => j.HasOne<SkillModel>().WithMany().HasForeignKey("SkillsId"),
                 j => j.HasOne<FlexworkerModel>().WithMany().HasForeignKey("FlexworkersId"));
-        
+
         modelBuilder.Entity<JobModel>()
             .HasMany(j => j.Skills)
             .WithMany()

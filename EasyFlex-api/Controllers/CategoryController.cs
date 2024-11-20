@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using DataAccess.Models;
 using Interface.Factories;
 using Interface.Interface.Handlers;
 using Interface.Models;
@@ -36,7 +37,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
     {
         try
         {
-            List<CategoryModel?> categories = await _categoryHandler.GetCategories(pageNumber, limit);
+            List<CategoryModel> categories = await _categoryHandler.GetCategories(pageNumber, limit);
             // The reason for this is to counter recursion error due to skill having categorie field in it
             // This just enforces it by making sure the new list contains new categories with skills that only contain id and name
             List<CategoryModel> reformattedCategories = categories.ConvertAll<CategoryModel>(input => new CategoryModel
@@ -56,7 +57,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
     
     [HttpGet]
     [Route("Get")]
-    public async Task<IActionResult> GetCategorieByID([FromQuery] int id)
+    public async Task<IActionResult> GetCategoryByID([FromQuery] int id)
     {
         try
         {

@@ -1,6 +1,6 @@
-﻿using Interface.Factories;
+﻿using DataAccess.Models;
+using Interface.Factories;
 using Interface.Interface.Handlers;
-using Interface.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;

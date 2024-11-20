@@ -1,11 +1,10 @@
 using DataAccess.Models;
 using Interface.Interface.Dal;
-using Interface.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
 
-public class CategoryDal(dbo context) : ICategoryDal
+public class CategoryDal(EasyFlexContext context) : ICategoryDal
 {
     public async Task<int> CreateCategory(CategoryModel category)
     {

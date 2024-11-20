@@ -1,11 +1,10 @@
 using DataAccess.Models;
 using Interface.Interface.Dal;
-using Interface.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
 
-public class JobDal(dbo context) : IJobDal
+public class JobDal(EasyFlexContext context) : IJobDal
 {
     public async Task<int> CreateJob(JobModel job)
     {

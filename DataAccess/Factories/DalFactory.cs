@@ -1,11 +1,10 @@
 ﻿using DataAccess.Database;
-using DataAccess.Models;
 using Interface.Factories;
 using Interface.Interface.Dal;
 
 namespace DataAccess.Factories;
 
-public class DalFactory(dbo context) : IDalFactory
+public class DalFactory(EasyFlexContext context) : IDalFactory
 {
     public ICategoryDal GetCategoryDal()
     {
