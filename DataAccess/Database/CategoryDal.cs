@@ -2,6 +2,7 @@ using DataAccess.Models;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Microsoft.EntityFrameworkCore;
+using Exception = System.Exception;
 
 namespace DataAccess.Database;
 
@@ -67,10 +68,14 @@ public class CategoryDal(dbo context) : ICategoryDal
 
     public async Task DeleteCategory(int id)
     {
-        var category = context.Categories.FirstOrDefaultAsync(model => model.Id == id).Result;
-        if (category != null)
+        var category = context.Categories.FirstOrDefaultAsync(model => model.Id == id);
+        if (category.Result != null)
         {
-            context.Categories.Remove(category);
+            context.Categories.Remove(category.Result);
+        }
+        else
+        {
+            throw new Exception("The category you attempted to delete does not exist.");
         }
         await context.SaveChangesAsync();
     }
