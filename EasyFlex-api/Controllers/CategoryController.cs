@@ -26,7 +26,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         }
         catch (Exception ex)
         {
-            return StatusCode(400, ex);
+            return StatusCode(500, ex.Message);
         }
     }
 
@@ -49,7 +49,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         }
         catch(Exception ex)
         {
-            return StatusCode(400, ex);
+            return StatusCode(500, ex.Message);
         }
 
     }
@@ -78,7 +78,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         }
         catch (Exception ex)
         {
-            return StatusCode(400, ex);
+            return StatusCode(500, ex.Message);
         }
     }
 
@@ -100,9 +100,24 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
             if (ex.Message == "alreadyExists") alreadyExists = true;
             else if (ex.Message == "doesNotExist") doesNotExist = true;
             else if (ex.Message == "isSameName") isSameName = true;
-            else return StatusCode(400, ex);
+            else return StatusCode(500, ex.Message);
             
             return StatusCode(400,new { message = ex.Message, alreadyExists = alreadyExists, doesNotExist = doesNotExist, isSameName = isSameName });
+        }
+    }
+    
+    [HttpDelete]
+    [Route("Delete")]
+    public async Task<IActionResult> DeleteCategory([FromQuery] int id)
+    {
+        try
+        {
+            await _categoryHandler.DeleteCategory(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
         }
     }
 }
