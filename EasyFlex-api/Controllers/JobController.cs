@@ -1,4 +1,4 @@
-﻿using DataAccess.Models;
+﻿using Interface.Dtos;
 using Interface.Factories;
 using Interface.Interface.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +13,7 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
 
     [HttpPost]
     [Route("Register")]
-    public async Task<IActionResult> CreateJob([FromBody] JobModel job)
+    public async Task<IActionResult> CreateJob([FromBody] Job job)
     {
         try
         {
@@ -34,7 +34,7 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
-            JobModel? job = await _jobHandler.GetJob(id);
+            Job? job = await _jobHandler.GetJob(id);
             return Ok(job);
         }
         catch (Exception ex)
@@ -75,7 +75,7 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     
     [HttpPost]
     [Route("Update")]
-    public async Task<IActionResult> UpdateJob([FromBody] JobModel job)
+    public async Task<IActionResult> UpdateJob([FromBody] Job job)
     {
         try
         {

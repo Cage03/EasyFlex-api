@@ -1,5 +1,6 @@
-using DataAccess.Models;
+using Interface.Dtos;
 using Interface.Interface.Dal;
+using Interface.Models;
 using Logic.Handlers;
 using Moq;
 
@@ -22,7 +23,7 @@ namespace Test.UnitTests.Handlers
         public async Task GetJobs_ShouldReturnPaginatedJobs()
         {
             // Arrange
-            var jobs = new List<JobModel>
+            var jobs = new List<Job>
             {
                 new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) },
                 new() { Id = 2, Name = "Job2", Address = "Address2", MinHours = 15, MaxHours = 25, StartDate = new DateOnly(2024, 10, 2) },
@@ -37,7 +38,7 @@ namespace Test.UnitTests.Handlers
             
             _mockJobDal
                 .Setup(x => x.GetJobs(It.IsAny<int>(), It.IsAny<int>()))
-                .ReturnsAsync(jobs.Skip(offset).Take(limit).ToList());
+                .ReturnsAsync(jobs.Skip(offset).Take(limit).Select(JobHandler.ToModel).ToList());
 
             // Act
             var result = await _jobHandler.GetJobs(pageNumber, limit);
@@ -52,9 +53,9 @@ namespace Test.UnitTests.Handlers
         public async Task GetJobs_ShouldReturnEmptyArrayIfNoJobsAvailable()
         {
             // Arrange
-            var jobs = new List<JobModel>(); // No jobs
+            var jobs = new List<Job>(); // No jobs
 
-            _mockJobDal.Setup(x => x.GetJobs(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(jobs);
+            _mockJobDal.Setup(x => x.GetJobs(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(jobs.Select(JobHandler.ToModel).ToList());
 
             int pageNumber = 1;
             int limit = 2;
@@ -70,7 +71,7 @@ namespace Test.UnitTests.Handlers
         public async Task CreateJob_ShouldReturn1IfSuccessful ()
         {
             //Arrange
-            JobModel job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
+            Job job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
             _mockJobDal.Setup(x => x.CreateJob(It.IsAny<JobModel>())).ReturnsAsync(1);
 
             //Act
@@ -84,7 +85,7 @@ namespace Test.UnitTests.Handlers
         public async Task CreateJob_ShouldReturn0IfUnsuccessful()
         {
             //Arrange
-            JobModel job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
+            Job job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
             _mockJobDal.Setup(x => x.CreateJob(It.IsAny<JobModel>())).ReturnsAsync(0);
 
             //Act
@@ -123,21 +124,21 @@ namespace Test.UnitTests.Handlers
         public async Task UpdateJob_ShouldBeSuccessful()
         {
             //Arrange
-            JobModel job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
+            Job job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
             _mockJobDal.Setup(x => x.UpdateJob(It.IsAny<JobModel>())).Returns(Task.CompletedTask);
 
             //Act
             await _jobHandler.UpdateJob(job);
 
             //Assert
-            _mockJobDal.Verify(x => x.UpdateJob(job), Times.Once);
+            _mockJobDal.Verify(x => x.UpdateJob(JobHandler.ToModel(job)), Times.Once);
         }
         
         [TestMethod]
         public async Task UpdateJob_ShouldThrowExceptionIfUnsuccessful()
         {
             //Arrange
-            JobModel job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
+            Job job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
             _mockJobDal.Setup(x => x.UpdateJob(It.IsAny<JobModel>())).ThrowsAsync(new Exception());
 
             //Act
@@ -151,8 +152,8 @@ namespace Test.UnitTests.Handlers
         public async Task GetJob_ShouldReturnJob()
         {
             //Arrange
-            JobModel job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
-            _mockJobDal.Setup(x => x.GetJob(It.IsAny<int>())).ReturnsAsync(job);
+            Job job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
+            _mockJobDal.Setup(x => x.GetJob(It.IsAny<int>())).ReturnsAsync(JobHandler.ToModel(job));
 
             //Act
             var result = await _jobHandler.GetJob(1);
