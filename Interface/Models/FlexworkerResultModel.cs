@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Interface.Models
 {
-    public class ResultModel
+    public class FlexworkerResultModel
     {
         public int FlexworkerId { get; set; }
         public string FlexworkerName { get; set; }

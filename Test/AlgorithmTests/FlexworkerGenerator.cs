@@ -50,6 +50,10 @@ namespace Test.AlgorithmTests
                 flexworkers.Add(flexworker);
             }
         }
+        public FlexworkerModel Flexworker_Sc_1()
+        {
+            return flexworkers[0];
+        } 
 
         public List<FlexworkerModel> Flexworkers_Sc_1_3()
         {

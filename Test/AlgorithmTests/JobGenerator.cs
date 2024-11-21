@@ -25,7 +25,8 @@ namespace Test.AlgorithmTests
                 (4, new List<int> { 2, 3, 5 }),
                 (5, new List<int> { 0, 4 }),
                 (6, new List<int> { 0, 3, 5 }),
-                (7, new List<int> {  0, 1, 5, 6}),     
+                (7, new List<int> {  0, 1, 5, 6}),
+                (8, new List<int> { 6 })
             };
 
             foreach(var job in jobData)
@@ -46,6 +47,14 @@ namespace Test.AlgorithmTests
                 }
                 Jobs.Add(jobModel);
             }
+        }
+
+        public List<JobModel> Jobs_Sc_1()
+        {
+            List<JobModel> output = new List<JobModel>();
+            output.Add(Jobs[0]);
+            output.Add(Jobs[8]);
+            return output;
         }
     }
 }

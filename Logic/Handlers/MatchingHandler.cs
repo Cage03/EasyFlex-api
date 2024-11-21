@@ -6,7 +6,7 @@ namespace Logic.Handlers;
 
 public class MatchingHandler(IFlexWorkerDal flexWorkerDal, IJobDal jobDal) : IMatchingHandler
 {
-    public async Task<List<ResultModel>> GetMatches(int jobId)
+    public async Task<List<FlexworkerResultModel>> GetMatches(int jobId)
     {
         var job = await jobDal.GetJob(jobId);
         
@@ -14,6 +14,6 @@ public class MatchingHandler(IFlexWorkerDal flexWorkerDal, IJobDal jobDal) : IMa
         
         var flexWorkers = await flexWorkerDal.GetAllFlexWorkers();
         
-        return Algorithm.Execute(job, flexWorkers);
+        return Algorithm.FindFlexworkersForJob(job, flexWorkers);
     }
 }

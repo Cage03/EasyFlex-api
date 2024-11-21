@@ -54,7 +54,7 @@ public class MatchingHandlerTests
             }
         };
 
-        // Directly using Algorithm.Execute as it's static and cannot be mocked
+        // Directly using Algorithm.FindFlexworkersForJob as it's static and cannot be mocked
         _mockJobDal.Setup(x => x.GetJob(jobId)).ReturnsAsync(job);
         _mockFlexWorkerDal.Setup(x => x.GetAllFlexWorkers()).ReturnsAsync(flexWorkers);
 

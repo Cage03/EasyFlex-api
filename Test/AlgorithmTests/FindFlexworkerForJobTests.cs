@@ -34,7 +34,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_1_HardFilter()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_1_3();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[0], flexworkers);
+            List<FlexworkerResultModel> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[0], flexworkers);
 
             Assert.AreEqual(0, results[0].FlexworkerId);
             Assert.AreEqual(1, results.Count);
@@ -46,7 +46,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_2_HardFilter()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_2_4();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[1], flexworkers);
+            List<FlexworkerResultModel> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[1], flexworkers);
 
             Assert.AreEqual(2, results[0].FlexworkerId);
             Assert.AreEqual(1, results.Count);
@@ -58,7 +58,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_3()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_1_3();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[2], flexworkers);
+            List<FlexworkerResultModel> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[2], flexworkers);
 
 
             Assert.AreEqual(2, results.Count);
@@ -71,7 +71,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_4()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_2_4();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[3], flexworkers);
+            List<FlexworkerResultModel> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[3], flexworkers);
 
             Assert.AreEqual(100, results[0].Compatibility);
             Assert.AreEqual(67, results[1].Compatibility);
@@ -83,7 +83,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_5()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_5();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[4], flexworkers);
+            List<FlexworkerResultModel> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[4], flexworkers);
 
             Assert.AreEqual(100, results[0].Compatibility);
             Assert.AreEqual(78, results[1].Compatibility);
@@ -97,7 +97,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_6()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_6();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[5], flexworkers);
+            List<FlexworkerResultModel> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[5], flexworkers);
 
             Assert.AreEqual(2, results.Count);
 
@@ -109,7 +109,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_7()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_7();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[6], flexworkers);
+            List<FlexworkerResultModel> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[6], flexworkers);
 
             Assert.AreEqual(4, results.Count);
 
@@ -124,7 +124,7 @@ namespace Test.AlgorithmTests
         public void Test_Sc_8()
         {
             List<FlexworkerModel> flexworkers = flexworkerGenerator.Flexworkers_Sc_8();
-            List<ResultModel> results = Algorithm.Execute(jobGenerator.Jobs[7], flexworkers);
+            List<FlexworkerResultModel> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[7], flexworkers);
 
             Assert.AreEqual(100, results[0].Compatibility);
             Assert.AreEqual(85, results[1].Compatibility);
