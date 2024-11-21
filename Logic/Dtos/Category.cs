@@ -1,6 +1,7 @@
 using Interface.Models;
+using Logic.Classes;
 
-namespace Logic.Classes;
+namespace Logic.Dtos;
 
 public class Category
 {

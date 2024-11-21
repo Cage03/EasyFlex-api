@@ -1,5 +1,5 @@
-using DataAccess.Models;
 using Interface.Interface.Dal;
+using Interface.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
@@ -23,9 +23,13 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
 
     }
 
-    public async Task<CategoryModel?> GetCategoryById(int id)
+    public async Task<CategoryModel> GetCategoryById(int id)
     {
-        return await context.Categories.Include(c => c.Skills).FirstOrDefaultAsync(x => x.Id == id);
+        var category = await context.Categories.Include(c => c.Skills).FirstOrDefaultAsync(x => x.Id == id);
+        if (category == null)
+        { throw new Exception("doesNotExist"); }
+
+        return category;
     }
 
     public async Task<List<CategoryModel>> GetCategories(int offset, int limit)

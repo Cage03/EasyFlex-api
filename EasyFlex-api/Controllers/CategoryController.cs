@@ -1,8 +1,7 @@
-using System.Diagnostics;
-using DataAccess.Models;
 using Interface.Factories;
 using Interface.Interface.Handlers;
 using Interface.Models;
+using Logic.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
@@ -16,7 +15,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
 
     [HttpPost]
     [Route("Create")]
-    public async Task<IActionResult> CreateCategory([FromBody] CategoryModel category)
+    public async Task<IActionResult> CreateCategory([FromBody] Category category)
     {
         try
         {
