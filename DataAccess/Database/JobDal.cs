@@ -1,3 +1,4 @@
+using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Microsoft.EntityFrameworkCore;
@@ -30,9 +31,14 @@ public class JobDal(EasyFlexContext context) : IJobDal
             .ToListAsync();  // Now returns a List instead of IQueryable
     }
 
-    public async Task<JobModel?> GetJob(int id)
+    public async Task<JobModel> GetJob(int id)
     {
-        return await context.Jobs.FindAsync(id);
+        var job = await context.Jobs.FindAsync(id);
+        if (job == null)
+        {
+            throw new NotFoundException("Job not found");
+        }
+        return job;
     }
 
     public async Task UpdateJob(JobModel job)

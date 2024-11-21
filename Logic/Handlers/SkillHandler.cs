@@ -10,10 +10,6 @@ public class SkillHandler(ISkillDal skillDal) : ISkillHandler
     public async Task<List<Skill>> GetSkills(List<int> skillIds)
     {
         var skills = await skillDal.GetSkills(skillIds);
-        if (skills == null)
-        {
-            throw new Exception("Not Found");
-        }
         return skills.Select(ToDto).ToList();
     }
     

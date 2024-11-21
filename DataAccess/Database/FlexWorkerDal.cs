@@ -1,3 +1,4 @@
+using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,9 @@ public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
     {
         var flexworker = await context.Flexworkers.Include(f => f.Skills).FirstOrDefaultAsync(f => f.Id == id);
         if (flexworker == null)
-        { throw new Exception("Flexworker not found"); }
+        {
+            throw new NotFoundException("Flexworker not found");
+        }
 
         return flexworker;
     }
@@ -38,6 +41,7 @@ public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
             existingFlexworker.Result.PhoneNumber = flexworker.PhoneNumber;
             existingFlexworker.Result.ProfilePictureUrl = flexworker.ProfilePictureUrl;
         }
+
         await context.SaveChangesAsync();
     }
 
@@ -58,6 +62,7 @@ public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
                 flexworker.Skills.Add(existingSkill.Result);
             }
         }
+
         await context.SaveChangesAsync();
     }
 
@@ -71,6 +76,7 @@ public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
                 flexWorker.Skills.Remove(existingSkill.Result);
             }
         }
+
         await context.SaveChangesAsync();
     }
 }

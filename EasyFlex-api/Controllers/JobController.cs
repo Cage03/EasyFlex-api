@@ -1,4 +1,5 @@
 ﻿using Interface.Dtos;
+using Interface.Exceptions;
 using Interface.Factories;
 using Interface.Interface.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,10 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
             Job? job = await _jobHandler.GetJob(id);
             return Ok(job);
         }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
         catch (Exception ex)
         {
             return StatusCode(400, ex);
@@ -51,6 +56,10 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
         {
             var jobs = await _jobHandler.GetJobs(pageNumber, limit);
             return Ok(jobs);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception ex)
         {
@@ -67,6 +76,10 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
             await _jobHandler.DeleteJob(id);
             return Ok();
         }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
         catch (Exception ex)
         {
             return StatusCode(400, ex);
@@ -81,6 +94,10 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
         {
             await _jobHandler.UpdateJob(job);
             return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception ex)
         {

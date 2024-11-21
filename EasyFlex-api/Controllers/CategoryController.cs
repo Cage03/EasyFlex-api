@@ -1,4 +1,5 @@
 using Interface.Dtos;
+using Interface.Exceptions;
 using Interface.Factories;
 using Interface.Interface.Handlers;
 using Microsoft.AspNetCore.Mvc;
@@ -53,18 +54,15 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         {
             Category category = await _categoryHandler.GetCategoryById(id);
 
-            return Ok(category);    
+            return Ok(category);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound();
         }
         catch (Exception ex)
-        {
-            if (ex.Message == "NotFound")
-            {
-                return NotFound();
-            }
-            else
-            {
-                return StatusCode(400, ex);
-            }
+        { 
+            return StatusCode(400, ex);
         }
     }
 

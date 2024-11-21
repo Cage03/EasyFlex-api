@@ -1,3 +1,4 @@
+using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,8 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
 {
     public async Task<int> CreateCategory(CategoryModel category)
     {
-        bool alreadyExists = context.Categories.AnyAsync(model => model.Name.ToLower() == category.Name.ToLower() ).Result;
+        bool alreadyExists = context.Categories.AnyAsync(model => model.Name.ToLower() == category.Name.ToLower())
+            .Result;
         if (!alreadyExists)
         {
             context.Categories.Add(category);
@@ -20,14 +22,15 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
         {
             return 0;
         }
-
     }
 
     public async Task<CategoryModel> GetCategoryById(int id)
     {
         var category = await context.Categories.Include(c => c.Skills).FirstOrDefaultAsync(x => x.Id == id);
         if (category == null)
-        { throw new Exception("NotFound"); }
+        {
+            throw new NotFoundException("Category not found");
+        }
 
         return category;
     }
@@ -38,14 +41,15 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
             .Skip(offset)
             .Take(limit)
             .Include(c => c.Skills)
-            .ToListAsync(); 
+            .ToListAsync();
     }
 
     public async Task UpdateCategory(CategoryModel category)
     {
         var oldCategory = context.Categories.FirstOrDefaultAsync(model => model.Id == category.Id).Result;
-        bool alreadyExists = context.Categories.AnyAsync(model =>  model.Name.ToLower() == category.Name.ToLower() && model.Id != category.Id ).Result;
-        
+        bool alreadyExists = context.Categories
+            .AnyAsync(model => model.Name.ToLower() == category.Name.ToLower() && model.Id != category.Id).Result;
+
         if (alreadyExists)
         {
             throw new Exception("alreadyExists");
