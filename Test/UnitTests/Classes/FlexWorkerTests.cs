@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Interface.Dtos;
 using Logic.Classes;
 
 namespace Test.UnitTests.Classes

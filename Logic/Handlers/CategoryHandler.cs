@@ -27,6 +27,20 @@ public class CategoryHandler(ICategoryDal categoryDal) : ICategoryHandler
 
     public async Task UpdateCategory(Category category)
     {
-         await categoryDal.UpdateCategory(category.ToModel());
+         await categoryDal.UpdateCategory(ToModel(category));
+    }
+
+    private CategoryModel ToModel(Category category)
+    {
+        return new CategoryModel
+        {
+            Id = category.Id,
+            Name = category.Name,
+            Skills = category.Skills.Select(s => new SkillModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToList()
+        };
     }
 }

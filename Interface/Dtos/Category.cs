@@ -1,7 +1,6 @@
 using Interface.Models;
-using Logic.Classes;
 
-namespace Logic.Dtos;
+namespace Interface.Dtos;
 
 public record Category
 {
