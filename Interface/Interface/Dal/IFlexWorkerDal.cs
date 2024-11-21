@@ -2,13 +2,13 @@
 
 namespace Interface.Interface.Dal;
 
-public interface IFlexWorkerDal
+public interface IFlexworkerDal
 {
-    public Task<List<FlexworkerModel>> GetAllFlexWorkers(int limit, int page);
-    public Task AddFlexWorker(FlexworkerModel flexWorker);
-    public Task<FlexworkerModel?> GetFlexWorkerById(int id);
-    public Task UpdateFlexWorker(FlexworkerModel flexWorker);
-    public Task DeleteFlexWorker(int id);
+    public Task<List<FlexworkerModel>> GetAllFlexworkers(int limit, int page);
+    public Task AddFlexWorker(FlexworkerModel flexworker);
+    public Task<FlexworkerModel> GetFlexworkerById(int id);
+    public Task UpdateFlexWorker(FlexworkerModel flexworker);
+    public Task DeleteFlexworker(int id);
     public Task AddSkills(FlexworkerModel flexworker, List<SkillModel> skills);
-    public Task RemoveSkills(FlexworkerModel flexWorker, List<SkillModel> skills);
+    public Task RemoveSkills(FlexworkerModel flexworker, List<SkillModel> skills);
 }

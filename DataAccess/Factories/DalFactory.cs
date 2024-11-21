@@ -11,9 +11,9 @@ public class DalFactory(EasyFlexContext context) : IDalFactory
         return new CategoryDal(context);
     }
 
-    public IFlexWorkerDal GetFlexWorkerDal()
+    public IFlexworkerDal GetFlexWorkerDal()
     {
-        return new FlexWorkerDal(context);
+        return new FlexworkerDal(context);
     }
 
     public IJobDal GetJobDal()

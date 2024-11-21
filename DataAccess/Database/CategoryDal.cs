@@ -27,7 +27,7 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
     {
         var category = await context.Categories.Include(c => c.Skills).FirstOrDefaultAsync(x => x.Id == id);
         if (category == null)
-        { throw new Exception("doesNotExist"); }
+        { throw new Exception("NotFound"); }
 
         return category;
     }

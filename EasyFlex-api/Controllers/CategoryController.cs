@@ -1,8 +1,6 @@
 using Interface.Dtos;
 using Interface.Factories;
 using Interface.Interface.Handlers;
-using Interface.Models;
-using Logic.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
@@ -37,16 +35,8 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
     {
         try
         {
-            List<CategoryModel> categories = await _categoryHandler.GetCategories(pageNumber, limit);
-            // The reason for this is to counter recursion error due to skill having categorie field in it
-            // This just enforces it by making sure the new list contains new categories with skills that only contain id and name
-            List<CategoryModel> reformattedCategories = categories.ConvertAll<CategoryModel>(input => new CategoryModel
-            {
-                Id = input.Id,
-                Name = input.Name,
-                Skills = input.Skills.ToList().ConvertAll(skill => new SkillModel{Id = skill.Id, Name = skill.Name})
-            } );
-            return Ok(reformattedCategories);
+            List<Category> categories = await _categoryHandler.GetCategories(pageNumber, limit);
+            return Ok(categories);
         }
         catch(Exception ex)
         {
@@ -61,31 +51,26 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
     {
         try
         {
-            CategoryModel? category = await _categoryHandler.GetCategoryById(id);
-            if (category != null)
-            {
-                CategoryModel reformattedCategory = new CategoryModel()
-                {
-                    Id = category.Id,
-                    Name = category?.Name,
-                    Skills = category?.Skills.ToList().ConvertAll(skill => new SkillModel{Id = skill.Id, Name = skill.Name})
-                };
-                return Ok(reformattedCategory);
-            }
-            else
-            {
-                return NotFound();
-            }
+            Category category = await _categoryHandler.GetCategoryById(id);
+
+            return Ok(category);    
         }
         catch (Exception ex)
         {
-            return StatusCode(400, ex);
+            if (ex.Message == "NotFound")
+            {
+                return NotFound();
+            }
+            else
+            {
+                return StatusCode(400, ex);
+            }
         }
     }
 
     [HttpPut]
     [Route("Update")]
-    public async Task<IActionResult> UpdateCategory([FromBody] CategoryModel category)
+    public async Task<IActionResult> UpdateCategory([FromBody] Category category)
     {
         try
         {

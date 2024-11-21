@@ -8,7 +8,7 @@ namespace Test.UnitTests.Classes
     public class FlexWorkerTests
     {
         private FlexworkerModel _flexWorkerModel = null!;
-        private FlexWorker _flexWorker = null!;
+        private Flexworker _flexWorker = null!;
 
         [TestInitialize]
         public void Setup()
