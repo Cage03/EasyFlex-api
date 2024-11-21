@@ -23,5 +23,5 @@ public partial class FlexworkerModel
 
     public string? ProfilePictureUrl { get; set; }
 
-    public required ICollection<SkillModel> Skills { get; set; } = new List<SkillModel>();
+    public ICollection<SkillModel> Skills { get; set; } = new List<SkillModel>();
 }

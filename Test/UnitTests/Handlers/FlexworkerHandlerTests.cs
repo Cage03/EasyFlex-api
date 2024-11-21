@@ -2,6 +2,7 @@ using Interface.Interface.Dal;
 using Interface.Dtos;
 using Logic.Handlers;
 using Moq;
+using Interface.Models;
 
 namespace Test.UnitTests.Handlers;
 
@@ -27,17 +28,17 @@ public class FlexworkerHandlerTests
             new()
             {
                 Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1", Skills = new List<SkillModel>()
             },
             new()
             {
                 Id = 2, Name = "Flexworker2", Email = "email2@email.nl", Address = "Adress2",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2"
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2", Skills = new List<SkillModel>()
             },
             new()
             {
                 Id = 3, Name = "Flexworker3", Email = "email3@email.nl", Address = "Adress3",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3"
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3", Skills = new List<SkillModel>()
             },
         };
 
@@ -46,7 +47,16 @@ public class FlexworkerHandlerTests
 
         _mockFlexworkerDal
             .Setup(x => x.GetAllFlexworkers(It.IsAny<int>(), It.IsAny<int>()))
-            .ReturnsAsync(flexworkers.Take(limit).ToList());
+            .ReturnsAsync(flexworkers.Take(limit).Select(fw => new FlexworkerModel
+            {
+                Id = fw.Id,
+                Name = fw.Name,
+                Email = fw.Email,
+                Address = fw.Address,
+                DateOfBirth = fw.DateOfBirth,
+                PhoneNumber = fw.PhoneNumber,
+                ProfilePictureUrl = fw.ProfilePictureUrl,
+            }).ToList());
 
         // Act
         var result = await _flexworkerHandler.GetFlexworkers(pageNumber, limit);
@@ -79,7 +89,7 @@ public class FlexworkerHandlerTests
     public async Task CreateFlexWorker_ShouldCreateFlexWorker()
     {
         // Arrange
-        var flexWorker = new FlexworkerModel
+        var flexworker = new Flexworker
         {
             Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
             DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
@@ -88,7 +98,7 @@ public class FlexworkerHandlerTests
         _mockFlexworkerDal.Setup(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()));
 
         // Act
-        await _flexworkerHandler.CreateFlexWorker(flexWorker);
+        await _flexworkerHandler.CreateFlexworker(flexworker);
 
         // Assert
         _mockFlexworkerDal.Verify(x => x.AddFlexWorker(It.IsAny<FlexworkerModel>()), Times.Once);
@@ -98,7 +108,7 @@ public class FlexworkerHandlerTests
     public async Task CreateFlexWorker_ShouldThrowExceptionIfFlexWorkerAlreadyExists()
     {
         // Arrange
-        var flexWorker = new FlexworkerModel
+        var flexworker = new Flexworker
         {
             Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
             DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
@@ -109,7 +119,7 @@ public class FlexworkerHandlerTests
 
         // Act & Assert
         var exception =
-            await Assert.ThrowsExceptionAsync<Exception>(() => _flexworkerHandler.CreateFlexWorker(flexWorker));
+            await Assert.ThrowsExceptionAsync<Exception>(() => _flexworkerHandler.CreateFlexworker(flexworker));
         Assert.AreEqual("Flexworker already exists", exception.Message);
     }
 
@@ -117,17 +127,22 @@ public class FlexworkerHandlerTests
     public async Task DeleteFlexWorker_ShouldDeleteFlexWorker()
     {
         // Arrange
-        var flexWorker = new FlexworkerModel
+        var flexworker = new FlexworkerModel
         {
-            Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
-            DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
+            Id = 1,
+            Name = "Flexworker1",
+            Email = "email1@email.nl",
+            Address = "Adress1",
+            DateOfBirth = new DateOnly(1990, 10, 1),
+            PhoneNumber = "0612345678",
+            ProfilePictureUrl = "url1"
         };
 
-        _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
+        _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync(flexworker);
         _mockFlexworkerDal.Setup(x => x.DeleteFlexworker(It.IsAny<int>()));
 
         // Act
-        await _flexworkerHandler.DeleteFlexWorker(flexWorker.Id);
+        await _flexworkerHandler.DeleteFlexworker(flexworker.Id);
 
         // Assert
         _mockFlexworkerDal.Verify(x => x.DeleteFlexworker(It.IsAny<int>()), Times.Once);
@@ -187,7 +202,7 @@ public class FlexworkerHandlerTests
             Id = 1, Name = "Old_Flexworker", Email = "old@email.nl", Address = "Old_Adress",
             DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
         };
-        var updatedFlexWorker = new FlexworkerModel
+        var updatedFlexWorker = new Flexworker
         {
             Id = 1, Name = "New_Flexworker", Email = "new@email.nl", Address = "New_Adress",
             DateOfBirth = new DateOnly(2000, 11, 19), PhoneNumber = "new_0612345678", ProfilePictureUrl = "new_url"
@@ -197,7 +212,7 @@ public class FlexworkerHandlerTests
         _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>()));
 
         // Act
-        await _flexworkerHandler.UpdateFlexWorker(updatedFlexWorker);
+        await _flexworkerHandler.UpdateFlexworker(updatedFlexWorker);
 
         // Assert
         _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
@@ -220,7 +235,7 @@ public class FlexworkerHandlerTests
             DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "old_url"
         };
 
-        var updatedFlexWorker = new FlexworkerModel
+        var updatedFlexWorker = new Flexworker
         {
             Id = 1, Name = "Updated_Flexworker", Email = "updated@email.nl", Address = "Updated_Adress",
             DateOfBirth = new DateOnly(2000, 11, 19), PhoneNumber = "New_0612345678", ProfilePictureUrl = "new_url"
@@ -230,7 +245,7 @@ public class FlexworkerHandlerTests
         _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>()));
 
         // Act
-        await _flexworkerHandler.UpdateFlexWorker(updatedFlexWorker);
+        await _flexworkerHandler.UpdateFlexworker(updatedFlexWorker);
 
         // Assert
         _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
@@ -253,21 +268,19 @@ public class FlexworkerHandlerTests
             DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
         };
 
-        var skills = new List<SkillModel>
+        var skills = new List<Skill>
         {
-            new SkillModel
+            new Skill
             {
                 Id = 1,
                 CategoryId = 100,
                 Name = "C#",
-                Category = new CategoryModel { Id = 100, Name = "Programming" },
             },
-            new SkillModel
+            new Skill
             {
                 Id = 2,
                 CategoryId = 101,
                 Name = "SQL",
-                Category = new CategoryModel { Id = 101, Name = "Database" },
             }
         };
 
@@ -294,7 +307,7 @@ public class FlexworkerHandlerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsExceptionAsync<Exception>(() =>
-            _flexworkerHandler.AddSkills(flexWorker.Id, new List<SkillModel>()));
+            _flexworkerHandler.AddSkills(flexWorker.Id, new List<Skill>()));
 
         Assert.AreEqual("No skills provided", exception.Message);
 
@@ -310,7 +323,7 @@ public class FlexworkerHandlerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsExceptionAsync<Exception>(() =>
-            _flexworkerHandler.AddSkills(1, new List<SkillModel>()));
+            _flexworkerHandler.AddSkills(1, new List<Skill>()));
 
         Assert.AreEqual("Flexworker not found", exception.Message);
 
@@ -328,21 +341,19 @@ public class FlexworkerHandlerTests
             DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
         };
 
-        var skills = new List<SkillModel>
+        var skills = new List<Skill>
         {
-            new SkillModel
+            new Skill
             {
                 Id = 1,
                 CategoryId = 100,
                 Name = "C#",
-                Category = new CategoryModel { Id = 100, Name = "Programming" },
             },
-            new SkillModel
+            new Skill
             {
                 Id = 2,
                 CategoryId = 101,
                 Name = "SQL",
-                Category = new CategoryModel { Id = 101, Name = "Database" },
             }
         };
 
@@ -372,7 +383,7 @@ public class FlexworkerHandlerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsExceptionAsync<Exception>(() =>
-            _flexworkerHandler.RemoveSkills(flexWorker.Id, new List<SkillModel>()));
+            _flexworkerHandler.RemoveSkills(flexWorker.Id, new List<Skill>()));
 
         Assert.AreEqual("No skills provided", exception.Message);
 
@@ -386,7 +397,7 @@ public class FlexworkerHandlerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsExceptionAsync<Exception>(() =>
-            _flexworkerHandler.RemoveSkills(1, new List<SkillModel>()));
+            _flexworkerHandler.RemoveSkills(1, new List<Skill>()));
 
         Assert.AreEqual("Flexworker not found", exception.Message);
 
