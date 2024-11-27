@@ -72,7 +72,7 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
         }
         else
         {
-            throw new Exception("The category you attempted to delete does not exist.");
+            throw new NotFoundException("Category not found");
         }
         await context.SaveChangesAsync();
     }

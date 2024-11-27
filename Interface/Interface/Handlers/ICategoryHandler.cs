@@ -10,4 +10,5 @@ public interface ICategoryHandler
     public Task<Category> GetCategoryById(int id);
     public Task<List<Category>> GetCategories(int pageNumber, int limit);
     public Task UpdateCategory(Category category);
+    public Task DeleteCategory(int id);
 }
