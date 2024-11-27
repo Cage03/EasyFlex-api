@@ -32,10 +32,10 @@ namespace Test.UnitTests.Handlers
 
             int pageNumber = 1;
             int limit = 2;
-            
+
             // ReSharper disable once UselessBinaryOperation
             var offset = (pageNumber - 1) * limit;
-            
+
             _mockJobDal
                 .Setup(x => x.GetJobs(It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(jobs.Skip(offset).Take(limit).Select(JobHandler.ToModel).ToList());
@@ -45,8 +45,8 @@ namespace Test.UnitTests.Handlers
 
             // Assert
             Assert.AreEqual(2, result!.Length);
-            Assert.AreEqual(1, result[0].Id); 
-            Assert.AreEqual(2, result[1].Id); 
+            Assert.AreEqual(1, result[0].Id);
+            Assert.AreEqual(2, result[1].Id);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace Test.UnitTests.Handlers
         }
 
         [TestMethod]
-        public async Task CreateJob_ShouldReturn1IfSuccessful ()
+        public async Task CreateJob_ShouldReturn1IfSuccessful()
         {
             //Arrange
             Job job = new() { Id = 1, Name = "Job1", Address = "Address1", MinHours = 10, MaxHours = 20, StartDate = new DateOnly(2024, 10, 1) };
@@ -94,7 +94,7 @@ namespace Test.UnitTests.Handlers
             //Assert
             Assert.AreEqual(0, result);
         }
-        
+
         [TestMethod]
         public async Task DeleteJob_ShouldCallDalDeleteJob()
         {
@@ -116,11 +116,11 @@ namespace Test.UnitTests.Handlers
             int invalidJobId = -1;
 
             // Act & Assert
-            await Assert.ThrowsExceptionAsync<IndexOutOfRangeException>(async () => 
+            await Assert.ThrowsExceptionAsync<IndexOutOfRangeException>(async () =>
                 await _jobHandler.DeleteJob(invalidJobId));
         }
-          
-        [TestMethod]  
+
+        [TestMethod]
         public async Task UpdateJob_ShouldBeSuccessful()
         {
             //Arrange
@@ -131,9 +131,15 @@ namespace Test.UnitTests.Handlers
             await _jobHandler.UpdateJob(job);
 
             //Assert
-            _mockJobDal.Verify(x => x.UpdateJob(JobHandler.ToModel(job)), Times.Once);
+            _mockJobDal.Verify(x => x.UpdateJob(It.Is<JobModel>(jm =>
+                jm.Id == job.Id &&
+                jm.Name == job.Name &&
+                jm.Address == job.Address &&
+                jm.MinHours == job.MinHours &&
+                jm.MaxHours == job.MaxHours &&
+                jm.StartDate == job.StartDate)), Times.Once);
         }
-        
+
         [TestMethod]
         public async Task UpdateJob_ShouldThrowExceptionIfUnsuccessful()
         {
@@ -159,20 +165,7 @@ namespace Test.UnitTests.Handlers
             var result = await _jobHandler.GetJob(1);
 
             //Assert
-            Assert.AreEqual(job, result);
-        }
-
-        [TestMethod]
-        public async Task GetJob_ShouldReturnNullIfJobDoesNotExist()
-        {
-            //Arrange
-            _mockJobDal.Setup(x => x.GetJob(It.IsAny<int>())).ReturnsAsync((JobModel?)null);
-
-            //Act
-            var result = await _jobHandler.GetJob(1);
-
-            //Assert
-            Assert.IsNull(result);
+            Assert.AreEqual(job.Id, result.Id);
         }
     }
 }

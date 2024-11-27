@@ -2,7 +2,7 @@ using Interface.Models;
 
 namespace Interface.Dtos;
 
-public class Skill
+public record Skill
 {
     public int Id { get; set; }
     public int CategoryId { get; set; }

@@ -22,8 +22,7 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
 
     public async Task UpdateJob(Job job)
     {
-        var jobModel = ToModel(job);
-        await jobDal.UpdateJob(jobModel);
+        await jobDal.UpdateJob(ToModel(job));
     }
 
     public async Task DeleteJob(int id)

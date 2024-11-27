@@ -2,7 +2,7 @@ using Interface.Models;
 
 namespace Interface.Dtos;
 
-public class Flexworker
+public record Flexworker
 {
     public int Id { get; init; }
     public required string Name { get; init; }
@@ -11,5 +11,5 @@ public class Flexworker
     public required string Email { get; init; }
     public required string PhoneNumber { get; init; }
     public string? ProfilePictureUrl { get; init; }
-    public virtual ICollection<Skill> Skills { get; init; } = null!;
+    public virtual ICollection<Skill> Skills { get; init; } = new List<Skill>();
 }
