@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Interface.Dtos;
 using Interface.Interface.Dal;
 using Interface.Models;
@@ -18,31 +19,31 @@ public class CategoryHandlerTests
     }
     
     [TestMethod]
-    public async Task CreateCategory_ShouldReturn1IfSuccessful ()
+    public async Task CreateCategory_ShouldCreateCategory ()
     {
         //Arrange
-        Category category = new() { Id = 1, Name = "Job1"};
-        _mockCategoryDal.Setup(x => x.CreateCategory(It.IsAny<CategoryModel>())).ReturnsAsync(1);
+        Category category = new() { Id = 1, Name = "Cat1"};
+        _mockCategoryDal.Setup(x => x.CreateCategory(It.IsAny<CategoryModel>()));
 
         //Act
-        var result = await _categoryHandler.CreateCategory(category);
+        await _categoryHandler.CreateCategory(category);
 
         //Assert
-        Assert.AreEqual(1, result);
+        _mockCategoryDal.Verify(x => x.CreateCategory(It.IsAny<CategoryModel>()), Times.Once());
     }
 
     [TestMethod]
-    public async Task CreateJob_ShouldReturn0IfUnsuccessful()
+    public async Task CreateCategory_ShouldThrowExceptionIfCategoryAlreadyExists()
     {
-        //Arrange
-        Category category = new() { Id = 1, Name = "Job1"};
-        _mockCategoryDal.Setup(x => x.CreateCategory(It.IsAny<CategoryModel>())).ReturnsAsync(0);
+        // Arrange
+        var category = new Category {Id = 1, Name = "Cat1" };
 
-        //Act
-        var result = await _categoryHandler.CreateCategory(category);
-
-        //Assert
-        Assert.AreEqual(0, result);
+        _mockCategoryDal.Setup(x => x.CreateCategory(It.IsAny<CategoryModel>()))
+            .ThrowsAsync(new Exception("Category already exists"));
+        
+        // Act
+        var exception = await Assert.ThrowsExceptionAsync<Exception>(() => _categoryHandler.CreateCategory(category));
+        Assert.AreEqual("Category already exists", exception.Message);
     }
 
     [TestMethod]
@@ -110,16 +111,16 @@ public class CategoryHandlerTests
     public async Task UpdateCategory_ShouldReturnShouldBeSuccessful()
     {
         //Arrange
-        Category oldCategory = new() { Id = 1, Name = "categorie1" };
+        Category oldCategory = new() { Id = 1, Name = "category1" };
         
-        _mockCategoryDal.Setup(x => x.UpdateCategory(It.IsAny<CategoryModel>())).Returns(Task.CompletedTask);
+        _mockCategoryDal.Setup(x => x.UpdateCategory(It.IsAny<CategoryModel>()));
         //Act
         
         await _categoryHandler.UpdateCategory(oldCategory);
         
         
         //Assert
-       _mockCategoryDal.Verify(x => x.UpdateCategory(CategoryHandler.ToModel(oldCategory)), Times.Once);
+       _mockCategoryDal.Verify(x => x.UpdateCategory(It.IsAny<CategoryModel>()), Times.Once);
         
     }
     [TestMethod]

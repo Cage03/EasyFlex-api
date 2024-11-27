@@ -8,9 +8,9 @@ namespace Logic.Handlers;
 
 public class CategoryHandler(ICategoryDal categoryDal) : ICategoryHandler
 {
-    public async Task<int> CreateCategory(Category category)
+    public async Task CreateCategory(Category category)
     {
-        return await categoryDal.CreateCategory(ToModel(category));
+        await categoryDal.CreateCategory(ToModel(category));
     }
 
     public async Task<Category> GetCategoryById(int id)

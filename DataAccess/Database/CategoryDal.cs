@@ -7,7 +7,7 @@ namespace DataAccess.Database;
 
 public class CategoryDal(EasyFlexContext context) : ICategoryDal
 {
-    public async Task<int> CreateCategory(CategoryModel category)
+    public async Task CreateCategory(CategoryModel category)
     {
         bool alreadyExists = context.Categories.AnyAsync(model => model.Name.ToLower() == category.Name.ToLower())
             .Result;
@@ -15,12 +15,10 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
         {
             context.Categories.Add(category);
             await context.SaveChangesAsync();
-            int id = category.Id;
-            return id;
         }
         else
         {
-            return 0;
+            throw new Exception("Category already exists");
         }
     }
 
@@ -52,23 +50,15 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
 
         if (alreadyExists)
         {
-            throw new Exception("alreadyExists");
+            throw new Exception("Category already Exists");
         }
 
-        if (oldCategory != null)
+        if (oldCategory == null)
         {
-            // Check if the new name only changes in case or if it's unique
-            if (oldCategory.Name.ToLower() == category.Name.ToLower() && oldCategory.Name == category.Name)
-            {
-                throw new Exception("isSameName");
-            }
+            throw new NotFoundException("Category not found");
+        }
 
-            oldCategory.Name = category.Name;
-            await context.SaveChangesAsync();
-        }
-        else
-        {
-            throw new Exception("doesNotExist");
-        }
+        oldCategory.Name = category.Name;
+        await context.SaveChangesAsync();
     }
 }

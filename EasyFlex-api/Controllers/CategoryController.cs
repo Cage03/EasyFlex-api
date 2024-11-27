@@ -19,14 +19,12 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
     {
         try
         {
-            int id = await _categoryHandler.CreateCategory(category);
-            if (id == 0)
-            { return StatusCode(400,new { Message = "Failed to create category.", isDuplicate = true }); }
-            else { return Ok(id); }
+            await _categoryHandler.CreateCategory(category);
+            return Ok();
         }
         catch (Exception ex)
         {
-            return StatusCode(400, ex);
+            return StatusCode(400, ex.Message);
         }
     }
 
@@ -48,7 +46,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
     
     [HttpGet]
     [Route("Get")]
-    public async Task<IActionResult> GetCategoryByID([FromQuery] int id)
+    public async Task<IActionResult> GetCategoryById([FromQuery] int id)
     {
         try
         {
@@ -73,20 +71,15 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         try
         {
             await _categoryHandler.UpdateCategory(category);
-            return Ok( );
+            return Ok();
+        }
+        catch (NotFoundException)
+        {
+            return NotFound();
         }
         catch (Exception ex)
         {
-            bool alreadyExists = false;
-            bool doesNotExist = false;
-            bool isSameName = false;
-            
-            if (ex.Message == "alreadyExists") alreadyExists = true;
-            else if (ex.Message == "doesNotExist") doesNotExist = true;
-            else if (ex.Message == "isSameName") isSameName = true;
-            else return StatusCode(400, ex);
-            
-            return StatusCode(400,new { message = ex.Message, alreadyExists = alreadyExists, doesNotExist = doesNotExist, isSameName = isSameName });
+            return StatusCode(400, ex.Message);
         }
     }
 }

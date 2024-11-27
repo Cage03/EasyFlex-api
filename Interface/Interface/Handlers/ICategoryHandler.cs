@@ -5,7 +5,7 @@ namespace Interface.Interface.Handlers;
 
 public interface ICategoryHandler
 {
-    public Task<int> CreateCategory(Category category);
+    public Task CreateCategory(Category category);
     
     public Task<Category> GetCategoryById(int id);
     public Task<List<Category>> GetCategories(int pageNumber, int limit);

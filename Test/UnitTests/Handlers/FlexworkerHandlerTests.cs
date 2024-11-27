@@ -28,17 +28,17 @@ public class FlexworkerHandlerTests
             new()
             {
                 Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1", Skills = new List<SkillModel>()
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1", Skills = new List<Skill>()
             },
             new()
             {
                 Id = 2, Name = "Flexworker2", Email = "email2@email.nl", Address = "Adress2",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2", Skills = new List<SkillModel>()
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2", Skills = new List<Skill>()
             },
             new()
             {
                 Id = 3, Name = "Flexworker3", Email = "email3@email.nl", Address = "Adress3",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3", Skills = new List<SkillModel>()
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3", Skills = new List<Skill>()
             },
         };
 
