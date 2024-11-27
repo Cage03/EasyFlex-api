@@ -52,28 +52,30 @@ public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
         await context.SaveChangesAsync();
     }
 
-    public async Task AddSkills(FlexworkerModel flexworker, List<SkillModel> skills)
+    public async Task AddSkills(int flexworkerId, List<SkillModel> skills)
     {
         foreach (var skill in skills)
         {
-            var existingSkill = context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
-            if (existingSkill.Result != null)
+            var flexworker = await GetFlexworkerById(flexworkerId);
+            var existingSkill = await context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
+            if (existingSkill != null)
             {
-                flexworker.Skills.Add(existingSkill.Result);
+                flexworker.Skills.Add(existingSkill);
             }
         }
 
         await context.SaveChangesAsync();
     }
 
-    public async Task RemoveSkills(FlexworkerModel flexWorker, List<SkillModel> skills)
+    public async Task RemoveSkills(int flexworkerId, List<SkillModel> skills)
     {
+        var flexworker = await GetFlexworkerById(flexworkerId);
         foreach (var skill in skills)
         {
             var existingSkill = context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
             if (existingSkill.Result != null)
             {
-                flexWorker.Skills.Remove(existingSkill.Result);
+                flexworker.Skills.Remove(existingSkill.Result);
             }
         }
 

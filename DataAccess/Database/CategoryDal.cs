@@ -45,9 +45,9 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
 
     public async Task UpdateCategory(CategoryModel category)
     {
-        var oldCategory = context.Categories.FirstOrDefaultAsync(model => model.Id == category.Id).Result;
-        bool alreadyExists = context.Categories
-            .AnyAsync(model => model.Name.ToLower() == category.Name.ToLower() && model.Id != category.Id).Result;
+        var oldCategory = await GetCategoryById(category.Id);
+        bool alreadyExists = await context.Categories
+            .AnyAsync(model => model.Name.ToLower() == category.Name.ToLower() && model.Id != category.Id);
 
         if (alreadyExists)
         {
@@ -58,22 +58,14 @@ public class CategoryDal(EasyFlexContext context) : ICategoryDal
         {
             throw new NotFoundException("Category not found");
         }
-
         oldCategory.Name = category.Name;
         await context.SaveChangesAsync();
     }
 
     public async Task DeleteCategory(int id)
     {
-        var category = context.Categories.FirstOrDefaultAsync(model => model.Id == id);
-        if (category.Result != null)
-        {
-            context.Categories.Remove(category.Result);
-        }
-        else
-        {
-            throw new NotFoundException("Category not found");
-        }
+        var category = await GetCategoryById(id);
+        context.Categories.Remove(category);
         await context.SaveChangesAsync();
     }
 }

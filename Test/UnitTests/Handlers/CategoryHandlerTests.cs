@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Interface.Dtos;
+using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Logic.Handlers;
@@ -185,8 +186,11 @@ public class CategoryHandlerTests
         // Arrange
         int invalidCategoryId = -1;
 
+        _mockCategoryDal.Setup(x => x.DeleteCategory(invalidCategoryId))
+            .ThrowsAsync(new NotFoundException("Not found"));
+
         // Act & Assert
-        await Assert.ThrowsExceptionAsync<IndexOutOfRangeException>(async () => 
+        await Assert.ThrowsExceptionAsync<NotFoundException>(async () => 
             await _categoryHandler.DeleteCategory(invalidCategoryId));
     }
 }

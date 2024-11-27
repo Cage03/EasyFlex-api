@@ -27,8 +27,6 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
 
     public async Task DeleteJob(int id)
     {
-        if (id <= 0) throw new IndexOutOfRangeException();
-        
         await jobDal.DeleteJob(id);
     }
 

@@ -261,12 +261,12 @@ public class FlexworkerHandlerTests
         };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
-        _mockFlexworkerDal.Setup(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()));
+        _mockFlexworkerDal.Setup(x => x.AddSkills(It.IsAny<int>(), It.IsAny<List<SkillModel>>()));
         // Act
         await _flexworkerHandler.AddSkills(flexWorker.Id, skills);
 
         // Assert
-        _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()), Times.Once);
+        _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<int>(), It.IsAny<List<SkillModel>>()), Times.Once);
     }
 
     [TestMethod]
@@ -287,7 +287,7 @@ public class FlexworkerHandlerTests
 
         Assert.AreEqual("No skills provided", exception.Message);
 
-        _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()),
+        _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<int>(), It.IsAny<List<SkillModel>>()),
             Times.Never);
     }
 
@@ -318,13 +318,13 @@ public class FlexworkerHandlerTests
         };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync(flexWorker);
-        _mockFlexworkerDal.Setup(x => x.RemoveSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()));
+        _mockFlexworkerDal.Setup(x => x.RemoveSkills(It.IsAny<int>(), It.IsAny<List<SkillModel>>()));
 
         // Act
         await _flexworkerHandler.RemoveSkills(flexWorker.Id, skills);
 
         // Assert
-        _mockFlexworkerDal.Verify(x => x.RemoveSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()),
+        _mockFlexworkerDal.Verify(x => x.RemoveSkills(It.IsAny<int>(), It.IsAny<List<SkillModel>>()),
             Times.Once);
     }
 

@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
@@ -17,9 +18,8 @@ public class JobDal(EasyFlexContext context) : IJobDal
 
     public async Task DeleteJob(int id)
     {
-        var job = await context.Jobs.FindAsync(id);
-        
-        if (job != null) context.Jobs.Remove(job);
+        var job = await GetJob(id);
+        context.Jobs.Remove(job);
         await context.SaveChangesAsync();
     }
 
@@ -43,7 +43,18 @@ public class JobDal(EasyFlexContext context) : IJobDal
 
     public async Task UpdateJob(JobModel job)
     {
-        context.Jobs.Update(job);
+        var originalJob = await GetJob(job.Id);
+        
+        // Use reflection to copy all properties from job to originalJob
+        foreach (var property in typeof(JobModel).GetProperties())
+        {
+            if (property.CanWrite)
+            {
+                var newValue = property.GetValue(job);
+                property.SetValue(originalJob, newValue);
+            }
+        }
+        context.Jobs.Update(originalJob);
         await context.SaveChangesAsync();
     }
 }

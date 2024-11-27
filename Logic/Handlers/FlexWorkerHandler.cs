@@ -42,26 +42,22 @@ public class FlexWorkerHandler(IFlexworkerDal flexworkerDal) : IFlexworkerHandle
 
     public async Task AddSkills(int flexworkerId, List<Skill> skills)
     {
-        Flexworker flexworker = await GetFlexworkerById(flexworkerId);
-
         if (skills.Count == 0)
         {
             throw new Exception("No skills provided");
         }
         List<SkillModel> skillModels = skills.Select(SkillHandler.ToModel).ToList();
-        await flexworkerDal.AddSkills(ToModel(flexworker), skillModels);
+        await flexworkerDal.AddSkills(flexworkerId, skillModels);
     }
 
     public async Task RemoveSkills(int flexworkerId, List<Skill> skills)
     {
-        Flexworker flexworker = await GetFlexworkerById(flexworkerId);
-
         if (skills.Count == 0)
         {
             throw new Exception("No skills provided");
         }
         List<SkillModel> skillModels = skills.Select(SkillHandler.ToModel).ToList();
-        await flexworkerDal.RemoveSkills(ToModel(flexworker), skillModels);
+        await flexworkerDal.RemoveSkills(flexworkerId, skillModels);
     }
 
     public static FlexworkerModel ToModel(Flexworker flexworker)
