@@ -1,11 +1,12 @@
-using DataAccess.Models;
+using System.Text.Json.Nodes;
+using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
 
-public class JobDal(dbo context) : IJobDal
+public class JobDal(EasyFlexContext context) : IJobDal
 {
     public async Task<int> CreateJob(JobModel job)
     {
@@ -17,9 +18,8 @@ public class JobDal(dbo context) : IJobDal
 
     public async Task DeleteJob(int id)
     {
-        var job = await context.Jobs.FindAsync(id);
-        
-        if (job != null) context.Jobs.Remove(job);
+        var job = await GetJob(id);
+        context.Jobs.Remove(job);
         await context.SaveChangesAsync();
     }
 
@@ -31,14 +31,30 @@ public class JobDal(dbo context) : IJobDal
             .ToListAsync();  // Now returns a List instead of IQueryable
     }
 
-    public async Task<JobModel?> GetJob(int id)
+    public async Task<JobModel> GetJob(int id)
     {
-        return await context.Jobs.FindAsync(id);
+        var job = await context.Jobs.FindAsync(id);
+        if (job == null)
+        {
+            throw new NotFoundException("Job not found");
+        }
+        return job;
     }
 
     public async Task UpdateJob(JobModel job)
     {
-        context.Jobs.Update(job);
+        var originalJob = await GetJob(job.Id);
+        
+        // Use reflection to copy all properties from job to originalJob
+        foreach (var property in typeof(JobModel).GetProperties())
+        {
+            if (property.CanWrite)
+            {
+                var newValue = property.GetValue(job);
+                property.SetValue(originalJob, newValue);
+            }
+        }
+        context.Jobs.Update(originalJob);
         await context.SaveChangesAsync();
     }
 }

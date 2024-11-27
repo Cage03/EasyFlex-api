@@ -1,47 +1,52 @@
 ﻿using System.Text.Json;
+using Interface.Dtos;
+using Interface.Exceptions;
 using Interface.Factories;
 using Interface.Interface.Handlers;
-using Interface.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
 
 [Route("Flexworker")]
 [ApiController]
-public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
+public class FlexworkerController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
-    private readonly IFlexWorkerHandler _flexWorkerHandler =
-        logicFactoryBuilder.BuildHandlerFactory().GetFlexWorkerHandler();
-    
-    private readonly ISkillHandler _skillHandler =logicFactoryBuilder.BuildHandlerFactory().GetSkillHandler();
+    private readonly IFlexworkerHandler _flexworkerHandler =
+        logicFactoryBuilder.BuildHandlerFactory().GetFlexworkerHandler();
 
-    [HttpGet]
-    [Route("Get")]
-    public async Task<IActionResult> GetFlexWorkers(int limit, int page)
-    {
-        try
-        {
-            var flexWorkers = await _flexWorkerHandler.GetFlexWorkers(limit, page);
-            return Ok(flexWorkers);
-        }
-        catch (Exception e)
-        {
-            return NotFound(e);
-        }
-    }
-    
+    private readonly ISkillHandler _skillHandler = logicFactoryBuilder.BuildHandlerFactory().GetSkillHandler();
+
     [HttpPost]
     [Route("Register")]
-    public async Task<IActionResult> RegisterFlexWorker([FromBody] FlexworkerModel flexWorker)
+    public async Task<IActionResult> RegisterFlexworker([FromBody] Flexworker flexworker)
     {
         try
         {
-            await _flexWorkerHandler.CreateFlexWorker(flexWorker);
+            await _flexworkerHandler.CreateFlexworker(flexworker);
             return Ok();
         }
         catch (Exception e)
         {
-            return NotFound(e);
+            return BadRequest(e);
+        }
+    }
+
+    [HttpGet]
+    [Route("Get")]
+    public async Task<IActionResult> GetFlexworkers(int limit, int page)
+    {
+        try
+        {
+            List<Flexworker> flexworkers = await _flexworkerHandler.GetFlexworkers(limit, page);
+            return Ok(flexworkers);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
         }
     }
 
@@ -51,85 +56,111 @@ public class FlexWorkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
     {
         try
         {
-            return Ok(await _flexWorkerHandler.GetFlexworkerById(id));
+            Flexworker flexworker = await _flexworkerHandler.GetFlexworkerById(id);
+            return Ok(flexworker);
         }
-        catch (Exception ex)
+        catch (NotFoundException ex)
         {
-            return NotFound(ex);
+            return NotFound(ex.Message);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
         }
     }
-    
+
     [HttpDelete]
     [Route("Delete")]
-    public async Task<IActionResult> DeleteFlexWorker(int id)
+    public async Task<IActionResult> DeleteFlexworker(int id)
     {
         try
         {
-            await _flexWorkerHandler.DeleteFlexWorker(id);
+            await _flexworkerHandler.DeleteFlexworker(id);
             return Ok();
         }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
         catch (Exception e)
         {
-            return NotFound(e);
+            return BadRequest(e);
         }
-    } 
-    
+    }
+
     [HttpPost]
     [Route("Update")]
-    public async Task<IActionResult> UpdateFlexWorker([FromBody] FlexworkerModel flexWorker)
+    public async Task<IActionResult> UpdateFlexworker([FromBody] Flexworker flexworker)
     {
         try
         {
-            await _flexWorkerHandler.UpdateFlexWorker(flexWorker);
-            return Ok( );
+            await _flexworkerHandler.UpdateFlexworker(flexworker);
+            return Ok();
+        }
+
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception e)
         {
-            return NotFound(e);
+            return BadRequest(e);
         }
     }
-    
+
     [HttpPost]
     [Route("AddSkills")]
     public async Task<IActionResult> AddSkills(JsonElement body)
     {
         try
         {
-            int? flexWorkerId = body.GetProperty("flexWorkerId").GetInt32();
+            int? flexworkerId = body.GetProperty("flexWorkerId").GetInt32();
             List<int>? skillIds = JsonSerializer.Deserialize<List<int>>(body.GetProperty("skillIds").ToString());
-            
-            if(skillIds is { Count: 0 })
+
+            if (skillIds == null || skillIds.Count == 0)
+            {
                 return BadRequest("No skills provided");
-            
-            List<SkillModel> skills = await _skillHandler.GetSkills(skillIds);
-            await _flexWorkerHandler.AddSkills((int)flexWorkerId, skills);
+            }
+
+            List<Skill> skills = await _skillHandler.GetSkills(skillIds);
+            await _flexworkerHandler.AddSkills((int)flexworkerId, skills);
             return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception e)
         {
-            return NotFound(e);
+            return BadRequest(e);
         }
-    } 
-    
+    }
+
     [HttpDelete]
     [Route("RemoveSkills")]
     public async Task<IActionResult> RemoveSkills(JsonElement body)
     {
         try
         {
-            int? flexWorkerId = body.GetProperty("flexWorkerId").GetInt32();
+            int? flexworkerId = body.GetProperty("flexWorkerId").GetInt32();
             List<int>? skillIds = JsonSerializer.Deserialize<List<int>>(body.GetProperty("skillIds").ToString());
-            
-            if(skillIds is { Count: 0 })
+
+            if (skillIds == null || skillIds.Count == 0)
+            {
                 return BadRequest("No skills provided");
-            
-            List<SkillModel> skills = await _skillHandler.GetSkills(skillIds);
-            await _flexWorkerHandler.RemoveSkills((int)flexWorkerId, skills);
+            }
+
+            List<Skill> skills = await _skillHandler.GetSkills(skillIds);
+            await _flexworkerHandler.RemoveSkills((int)flexworkerId, skills);
             return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception e)
         {
-            return NotFound(e);
+            return BadRequest(e);
         }
     }
 }

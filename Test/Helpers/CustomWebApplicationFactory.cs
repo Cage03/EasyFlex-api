@@ -1,4 +1,4 @@
-﻿using DataAccess.Models;
+﻿using DataAccess;
 using Interface.Factories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -18,13 +18,13 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             // Remove the actual DbContext
             var dbContextDescriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<dbo>));
+                d => d.ServiceType == typeof(DbContextOptions<EasyFlexContext>));
             if (dbContextDescriptor != null)
             {
                 services.Remove(dbContextDescriptor);
             }
             
-            services.AddDbContext<dbo>(options =>
+            services.AddDbContext<EasyFlexContext>(options =>
             {
                 options.UseInMemoryDatabase("TestDb");
             });

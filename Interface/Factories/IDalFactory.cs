@@ -5,7 +5,7 @@ namespace Interface.Factories;
 public interface IDalFactory
 {
     public ICategoryDal GetCategoryDal();
-    public IFlexWorkerDal GetFlexWorkerDal();
+    public IFlexworkerDal GetFlexWorkerDal();
     public IJobDal GetJobDal();
     public ISkillDal GetSkillDal();
     
