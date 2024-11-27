@@ -83,6 +83,7 @@ public class FlexWorkerHandler(IFlexworkerDal flexworkerDal) : IFlexworkerHandle
     {
         return new Flexworker()
         {
+            Id = flexworkerModel.Id,
             Name = flexworkerModel.Name,
             Address = flexworkerModel.Address,
             DateOfBirth = flexworkerModel.DateOfBirth,

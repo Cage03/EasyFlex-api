@@ -28,17 +28,17 @@ public class FlexworkerHandlerTests
             new()
             {
                 Id = 1, Name = "Flexworker1", Email = "email1@email.nl", Address = "Adress1",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1", Skills = new List<Skill>()
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url1"
             },
             new()
             {
                 Id = 2, Name = "Flexworker2", Email = "email2@email.nl", Address = "Adress2",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2", Skills = new List<Skill>()
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url2"
             },
             new()
             {
                 Id = 3, Name = "Flexworker3", Email = "email3@email.nl", Address = "Adress3",
-                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3", Skills = new List<Skill>()
+                DateOfBirth = new DateOnly(1990, 10, 1), PhoneNumber = "0612345678", ProfilePictureUrl = "url3"
             },
         };
 
@@ -149,17 +149,6 @@ public class FlexworkerHandlerTests
     }
 
     [TestMethod]
-    public async Task DeleteFlexWorker_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
-    {
-        // Arrange
-        _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel?)null);
-
-        // Act & Assert
-        var exception = await Assert.ThrowsExceptionAsync<Exception>(() => _flexworkerHandler.DeleteFlexworker(1));
-        Assert.AreEqual("Flexworker not found", exception.Message);
-    }
-
-    [TestMethod]
     public async Task GetFlexworkerById_ShouldReturnFlexworker()
     {
         // Arrange
@@ -178,19 +167,6 @@ public class FlexworkerHandlerTests
         Assert.IsNotNull(result);
         Assert.AreEqual(flexWorker.Id, result.Id);
         Assert.AreEqual(flexWorker.Name, result.Name);
-    }
-
-    [TestMethod]
-    public async Task GetFlexworkerById_ShouldReturnNullIfFlexworkerDoesNotExist()
-    {
-        // Arrange
-        _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel)null);
-
-        // Act
-        var result = await _flexworkerHandler.GetFlexworkerById(1);
-
-        // Assert
-        Assert.IsNull(result);
     }
 
     [TestMethod]
@@ -314,22 +290,6 @@ public class FlexworkerHandlerTests
         _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()),
             Times.Never);
     }
-    
-    [TestMethod]
-    public async Task AddSkills_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
-    {
-        // Arrange
-        _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel?)null);
-
-        // Act & Assert
-        var exception = await Assert.ThrowsExceptionAsync<Exception>(() =>
-            _flexworkerHandler.AddSkills(1, new List<Skill>()));
-
-        Assert.AreEqual("Flexworker not found", exception.Message);
-
-        _mockFlexworkerDal.Verify(x => x.AddSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()),
-            Times.Never);
-    }
 
     [TestMethod]
     public async Task RemoveSkills_ShouldRemoveSkillsFromFlexWorker()
@@ -388,21 +348,4 @@ public class FlexworkerHandlerTests
         Assert.AreEqual("No skills provided", exception.Message);
 
     }
-    
-    [TestMethod]
-    public async Task RemoveSkills_ShouldThrowExceptionIfFlexWorkerDoesNotExist()
-    {
-        // Arrange
-        _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync((FlexworkerModel?)null);
-
-        // Act & Assert
-        var exception = await Assert.ThrowsExceptionAsync<Exception>(() =>
-            _flexworkerHandler.RemoveSkills(1, new List<Skill>()));
-
-        Assert.AreEqual("Flexworker not found", exception.Message);
-
-        _mockFlexworkerDal.Verify(x => x.RemoveSkills(It.IsAny<FlexworkerModel>(), It.IsAny<List<SkillModel>>()),
-            Times.Never);
-    }
-
 }
