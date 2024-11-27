@@ -50,4 +50,11 @@ public class CategoryHandler(ICategoryDal categoryDal) : ICategoryHandler
             Skills = categoryModel.Skills.Select(s => SkillHandler.ToDto(s)).ToList()
         };
     }
+
+    public async Task DeleteCategory(int id)
+    {
+        if (id <= 0) throw new IndexOutOfRangeException();
+        
+        await categoryDal.DeleteCategory(id);
+    }
 }

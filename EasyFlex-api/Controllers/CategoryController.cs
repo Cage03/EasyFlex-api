@@ -24,7 +24,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         }
         catch (Exception ex)
         {
-            return StatusCode(400, ex.Message);
+            return StatusCode(500, ex.Message);
         }
     }
 
@@ -39,7 +39,7 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         }
         catch(Exception ex)
         {
-            return StatusCode(400, ex);
+            return StatusCode(500, ex.Message);
         }
 
     }
@@ -59,8 +59,8 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
             return NotFound();
         }
         catch (Exception ex)
-        { 
-            return StatusCode(400, ex);
+        {
+            return StatusCode(500, ex.Message);
         }
     }
 
@@ -80,6 +80,21 @@ public class CategoryController(ILogicFactoryBuilder logicFactoryBuilder) : Cont
         catch (Exception ex)
         {
             return StatusCode(400, ex.Message);
+        }
+    }
+    
+    [HttpDelete]
+    [Route("Delete")]
+    public async Task<IActionResult> DeleteCategory([FromQuery] int id)
+    {
+        try
+        {
+            await _categoryHandler.DeleteCategory(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
         }
     }
 }

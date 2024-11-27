@@ -164,5 +164,30 @@ public class CategoryHandlerTests
         //Assert
         await Assert.ThrowsExceptionAsync<Exception>(Act);
     }
+    
+    [TestMethod]
+    public async Task DeleteCategory_ShouldCallDalDeleteCategory()
+    {
+        // Arrange
+        int categoryId = 1;
+        _mockCategoryDal.Setup(x => x.DeleteCategory(categoryId)).Returns(Task.CompletedTask);
+
+        // Act
+        await _categoryHandler.DeleteCategory(categoryId);
+
+        // Assert
+        _mockCategoryDal.Verify(x => x.DeleteCategory(categoryId), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task DeleteCategory_ShouldNotCallDalIfInvalidId()
+    {
+        // Arrange
+        int invalidCategoryId = -1;
+
+        // Act & Assert
+        await Assert.ThrowsExceptionAsync<IndexOutOfRangeException>(async () => 
+            await _categoryHandler.DeleteCategory(invalidCategoryId));
+    }
 }
 
