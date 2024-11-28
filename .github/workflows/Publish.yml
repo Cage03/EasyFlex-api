@@ -2,14 +2,13 @@ name: Publish Docker Image to DockerHub
 on:
   workflow_dispatch:
   workflow_run:
-    workflows:
-      - 'integration'
-    types:
-      - success
+    workflows: [".NET Integration"]
+    types: [completed]
 
 jobs:
-  publish_image:
+  on-success:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       packages: write
       contents: read
@@ -39,3 +38,9 @@ jobs:
             push: true
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
+
+  on-failure:
+      runs-on: ubuntu-latest
+      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+      steps:
+        - run: echo 'The triggering workflow failed'
