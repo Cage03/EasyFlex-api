@@ -19,3 +19,5 @@ COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "EasyFlex-api.dll"]
 
 #Note that this runs as a Http and NOT a Https
+
+#Use ConnectionStrings__DefaultConnection=your-databaseconnection Environment variable to give it acces to a database
