@@ -1,32 +1,37 @@
-using DataAccess.Models;
+using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Microsoft.EntityFrameworkCore;
+using Exception = System.Exception;
 
 namespace DataAccess.Database;
 
-public class CategoryDal(dbo context) : ICategoryDal
+public class CategoryDal(EasyFlexContext context) : ICategoryDal
 {
-    public async Task<int> CreateCategory(CategoryModel category)
+    public async Task CreateCategory(CategoryModel category)
     {
-        bool alreadyExists = context.Categories.AnyAsync(model => model.Name.ToLower() == category.Name.ToLower() ).Result;
+        bool alreadyExists = context.Categories.AnyAsync(model => model.Name.ToLower() == category.Name.ToLower())
+            .Result;
         if (!alreadyExists)
         {
             context.Categories.Add(category);
             await context.SaveChangesAsync();
-            int id = category.Id;
-            return id;
         }
         else
         {
-            return 0;
+            throw new Exception("Category already exists");
         }
-
     }
 
-    public async Task<CategoryModel?> GetCategoryById(int id)
+    public async Task<CategoryModel> GetCategoryById(int id)
     {
-        return await context.Categories.Include(c => c.Skills).FirstOrDefaultAsync(x => x.Id == id);
+        var category = await context.Categories.Include(c => c.Skills).FirstOrDefaultAsync(x => x.Id == id);
+        if (category == null)
+        {
+            throw new NotFoundException("Category not found");
+        }
+
+        return category;
     }
 
     public async Task<List<CategoryModel>> GetCategories(int offset, int limit)
@@ -35,33 +40,32 @@ public class CategoryDal(dbo context) : ICategoryDal
             .Skip(offset)
             .Take(limit)
             .Include(c => c.Skills)
-            .ToListAsync(); 
+            .ToListAsync();
     }
 
     public async Task UpdateCategory(CategoryModel category)
     {
-        var oldCategory = context.Categories.FirstOrDefaultAsync(model => model.Id == category.Id).Result;
-        bool alreadyExists = context.Categories.AnyAsync(model =>  model.Name.ToLower() == category.Name.ToLower() && model.Id != category.Id ).Result;
-        
+        var oldCategory = await GetCategoryById(category.Id);
+        bool alreadyExists = await context.Categories
+            .AnyAsync(model => model.Name.ToLower() == category.Name.ToLower() && model.Id != category.Id);
+
         if (alreadyExists)
         {
-            throw new Exception("alreadyExists");
+            throw new Exception("Category already Exists");
         }
 
-        if (oldCategory != null)
+        if (oldCategory == null)
         {
-            // Check if the new name only changes in case or if it's unique
-            if (oldCategory.Name.ToLower() == category.Name.ToLower() && oldCategory.Name == category.Name)
-            {
-                throw new Exception("isSameName");
-            }
+            throw new NotFoundException("Category not found");
+        }
+        oldCategory.Name = category.Name;
+        await context.SaveChangesAsync();
+    }
 
-            oldCategory.Name = category.Name;
-            await context.SaveChangesAsync();
-        }
-        else
-        {
-            throw new Exception("doesNotExist");
-        }
+    public async Task DeleteCategory(int id)
+    {
+        var category = await GetCategoryById(id);
+        context.Categories.Remove(category);
+        await context.SaveChangesAsync();
     }
 }

@@ -1,14 +1,15 @@
-﻿using Interface.Models;
+﻿using Interface.Dtos;
+using Interface.Models;
 
 namespace Interface.Interface.Handlers;
 
-public interface IFlexWorkerHandler
+public interface IFlexworkerHandler
 {
-    public Task<List<FlexworkerModel>> GetFlexWorkers(int limit, int page);
-    public Task CreateFlexWorker(FlexworkerModel flexWorker);
-    public Task UpdateFlexWorker(FlexworkerModel flexWorker);
-    public Task<FlexworkerModel?> GetFlexworkerById(int id);
-    public Task DeleteFlexWorker(int id);
-    public Task AddSkills(int flexWorkerId, List<SkillModel> skills);
-    public Task RemoveSkills(int flexWorkerId, List<SkillModel> skills);
+    public Task<List<Flexworker>> GetFlexworkers(int limit, int page);
+    public Task CreateFlexworker(Flexworker flexworker);
+    public Task UpdateFlexworker(Flexworker flexworker);
+    public Task<Flexworker> GetFlexworkerById(int id);
+    public Task DeleteFlexworker(int id);
+    public Task AddSkills(int flexworkerId, List<Skill> skills);
+    public Task RemoveSkills(int flexworkerId, List<Skill> skills);
 }

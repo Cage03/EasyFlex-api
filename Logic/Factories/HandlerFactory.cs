@@ -7,7 +7,7 @@ namespace Logic.Factories;
 
 public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
 {
-    public IFlexWorkerHandler GetFlexWorkerHandler()
+    public IFlexworkerHandler GetFlexworkerHandler()
     {
         return new FlexWorkerHandler(dalFactory.GetFlexWorkerDal());
     }

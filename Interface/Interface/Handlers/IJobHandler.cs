@@ -1,12 +1,13 @@
-﻿using Interface.Models;
+﻿using Interface.Dtos;
+using Interface.Models;
 
 namespace Interface.Interface.Handlers;
 
 public interface IJobHandler
 {
-    public Task<int> CreateJob(JobModel job);
-    public Task<JobModel?> GetJob(int id);
-    public Task<JobModel[]?> GetJobs(int pageNumber, int limit);
+    public Task<int> CreateJob(Job job);
+    public Task<Job> GetJob(int id);
+    public Task<Job[]> GetJobs(int pageNumber, int limit);
     public Task DeleteJob(int id);
-    public Task UpdateJob(JobModel job);
+    public Task UpdateJob(Job job);
 }

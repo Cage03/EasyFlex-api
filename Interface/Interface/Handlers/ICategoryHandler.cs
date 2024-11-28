@@ -1,12 +1,14 @@
+using Interface.Dtos;
 using Interface.Models;
 
 namespace Interface.Interface.Handlers;
 
 public interface ICategoryHandler
 {
-    public Task<int> CreateCategory(CategoryModel category);
+    public Task CreateCategory(Category category);
     
-    public Task<CategoryModel?> GetCategoryById(int id);
-    public Task<List<CategoryModel>> GetCategories(int pageNumber, int limit);
-    public Task UpdateCategory(CategoryModel category);
+    public Task<Category> GetCategoryById(int id);
+    public Task<List<Category>> GetCategories(int pageNumber, int limit);
+    public Task UpdateCategory(Category category);
+    public Task DeleteCategory(int id);
 }
