@@ -1,55 +1,98 @@
-using DataAccess.Models;
+using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Database;
 
-public class FlexWorkerDal(dbo context) : IFlexWorkerDal
+public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
 {
-    public async Task<List<FlexworkerModel>> GetAllFlexWorkers()
+    public async Task AddFlexWorker(FlexworkerModel flexworker)
     {
-        return await context.Flexworkers.ToListAsync();
-    }
-
-    public async Task AddFlexWorker(FlexworkerModel flexWorker)
-    {
-        context.Flexworkers.Add(flexWorker);
+        context.Flexworkers.Add(flexworker);
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
-    {
-        var existingFlexworker = context.Flexworkers.FirstOrDefaultAsync(worker => worker.Id == flexWorker.Id);
-        if (existingFlexworker.Result != null)
-        {
-            existingFlexworker.Result.Name = flexWorker.Name;
-            existingFlexworker.Result.Email = flexWorker.Email;
-            existingFlexworker.Result.Address = flexWorker.Address;
-            existingFlexworker.Result.DateOfBirth = flexWorker.DateOfBirth;
-            existingFlexworker.Result.PhoneNumber = flexWorker.PhoneNumber;
-            existingFlexworker.Result.ProfilePictureUrl = flexWorker.ProfilePictureUrl;
-        }
-        await context.SaveChangesAsync();
-    }
-
-    public async Task DeleteFlexWorker(int id)
-    {
-        var flexWorker = await context.Flexworkers.FindAsync(id);
-        context.Flexworkers.Remove(flexWorker!);
-        await context.SaveChangesAsync();
-    }
-
-    public async Task<List<FlexworkerModel>> GetFlexWorkersByPage(int limit, int page)
+    public async Task<List<FlexworkerModel>> GetAllFlexworkers(int limit, int page)
     {
         return await context.Flexworkers.Skip(page * limit).Take(limit).ToListAsync();
     }
 
-    public async Task<FlexworkerModel?> GetFlexWorkerById(int id)
+    public async Task<FlexworkerModel> GetFlexworkerById(int id)
     {
-        var flexworker = await context.Flexworkers.FindAsync(id);
-        if (flexworker == null) throw new Exception("Flexworker not found");
+        var flexworker = await context.Flexworkers.Include(f => f.Skills).FirstOrDefaultAsync(f => f.Id == id);
+        if (flexworker == null)
+        {
+            throw new NotFoundException("Flexworker not found");
+        }
 
         return flexworker;
+    }
+
+    public async Task<List<FlexworkerModel>> GetFlexworkersBySkills(List<SkillModel> skills)
+    {
+        List<FlexworkerModel> flexworkers = await context.Flexworkers
+            .Include(f => f.Skills)
+            .Where(f => f.Skills.Any(s => skills.Contains(s)))
+            .ToListAsync();
+
+        if (flexworkers.Count == 0)
+        {
+            throw new NotFoundException("No flexworkers found with the given skills");
+        }
+        return flexworkers;
+    }
+
+    public async Task UpdateFlexworker(FlexworkerModel flexworker)
+    {
+        var existingFlexworker = context.Flexworkers.FirstOrDefaultAsync(worker => worker.Id == flexworker.Id);
+        if (existingFlexworker.Result != null)
+        {
+            existingFlexworker.Result.Name = flexworker.Name;
+            existingFlexworker.Result.Email = flexworker.Email;
+            existingFlexworker.Result.Address = flexworker.Address;
+            existingFlexworker.Result.DateOfBirth = flexworker.DateOfBirth;
+            existingFlexworker.Result.PhoneNumber = flexworker.PhoneNumber;
+            existingFlexworker.Result.ProfilePictureUrl = flexworker.ProfilePictureUrl;
+        }
+
+        await context.SaveChangesAsync();
+    }
+
+    public async Task DeleteFlexworker(int id)
+    {
+        var flexworker = await context.Flexworkers.FindAsync(id);
+        context.Flexworkers.Remove(flexworker!);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task AddSkills(int flexworkerId, List<SkillModel> skills)
+    {
+        foreach (var skill in skills)
+        {
+            var flexworker = await GetFlexworkerById(flexworkerId);
+            var existingSkill = await context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
+            if (existingSkill != null)
+            {
+                flexworker.Skills.Add(existingSkill);
+            }
+        }
+
+        await context.SaveChangesAsync();
+    }
+
+    public async Task RemoveSkills(int flexworkerId, List<SkillModel> skills)
+    {
+        var flexworker = await GetFlexworkerById(flexworkerId);
+        foreach (var skill in skills)
+        {
+            var existingSkill = context.Skills.FirstOrDefaultAsync(s => s.Id == skill.Id);
+            if (existingSkill.Result != null)
+            {
+                flexworker.Skills.Remove(existingSkill.Result);
+            }
+        }
+
+        await context.SaveChangesAsync();
     }
 }

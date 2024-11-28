@@ -1,40 +1,103 @@
-﻿using Interface.Interface.Dal;
+using Interface.Dtos;
+using Interface.Interface.Dal;
 using Interface.Interface.Handlers;
 using Interface.Models;
-using Logic.Classes;
 
 
 namespace Logic.Handlers;
 
-public class FlexWorkerHandler(IFlexWorkerDal flexWorkerDal) : IFlexWorkerHandler
+public class FlexWorkerHandler(IFlexworkerDal flexworkerDal) : IFlexworkerHandler
 {
-    public async Task CreateFlexWorker(FlexworkerModel flexWorker)
+    public async Task CreateFlexworker(Flexworker flexworker)
     { 
-        await flexWorkerDal.AddFlexWorker(flexWorker);
+        await flexworkerDal.AddFlexWorker(ToModel(flexworker));
     }
 
-    public async Task<List<FlexworkerModel>> GetFlexWorkers(int limit, int page)
+    public async Task<List<Flexworker>> GetFlexworkers(int limit, int page)
     {
-        return await flexWorkerDal.GetFlexWorkersByPage(limit, page);
-    }
-
-    public async Task<FlexworkerModel?> GetFlexworkerById(int id)
-    {
-        return await flexWorkerDal.GetFlexWorkerById(id);
-    }
-
-    public async Task DeleteFlexWorker(int id)
-    {
-        var flexWorker = await GetFlexworkerById(id);
-        if (flexWorker == null)
+        List<Flexworker> list = new List<Flexworker>();
+        foreach (FlexworkerModel model in await flexworkerDal.GetAllFlexworkers(limit, page))
         {
-            throw new Exception("Flexworker not found");
+            list.Add(ToDto(model));
         }
-        await flexWorkerDal.DeleteFlexWorker(id);
+        return list;
     }
 
-    public async Task UpdateFlexWorker(FlexworkerModel flexWorker)
+    public async Task<Flexworker> GetFlexworkerById(int id)
     {
-        await flexWorkerDal.UpdateFlexWorker(flexWorker);
+        FlexworkerModel model = await flexworkerDal.GetFlexworkerById(id);
+
+        return ToDto(model);
+    }
+
+    public async Task<List<Flexworker>> GetFlexworkersBySkills(List<Skill> skills)
+    {
+        List<SkillModel> skillModels = skills.Select(SkillHandler.ToModel).ToList();
+        List<Flexworker> flexworkers = flexworkerDal.GetFlexworkersBySkills(skillModels).Result.Select(ToDto).ToList();
+        foreach (FlexworkerModel model in await flexworkerDal.GetFlexworkersBySkills(skillModels))
+        {
+            flexworkers.Add(ToDto(model));
+        }
+        return flexworkers;
+    }
+
+    public async Task UpdateFlexworker(Flexworker flexworker)
+    {
+        await flexworkerDal.UpdateFlexworker(ToModel(flexworker));
+    }
+
+    public async Task DeleteFlexworker(int id)
+    {
+        await flexworkerDal.DeleteFlexworker(id);
+    }
+
+    public async Task AddSkills(int flexworkerId, List<Skill> skills)
+    {
+        if (skills.Count == 0)
+        {
+            throw new Exception("No skills provided");
+        }
+        List<SkillModel> skillModels = skills.Select(SkillHandler.ToModel).ToList();
+        await flexworkerDal.AddSkills(flexworkerId, skillModels);
+    }
+
+    public async Task RemoveSkills(int flexworkerId, List<Skill> skills)
+    {
+        if (skills.Count == 0)
+        {
+            throw new Exception("No skills provided");
+        }
+        List<SkillModel> skillModels = skills.Select(SkillHandler.ToModel).ToList();
+        await flexworkerDal.RemoveSkills(flexworkerId, skillModels);
+    }
+
+    public static FlexworkerModel ToModel(Flexworker flexworker)
+    {
+        return new FlexworkerModel
+        {
+            Id = flexworker.Id,
+            Name = flexworker.Name,
+            Address = flexworker.Address,
+            DateOfBirth = flexworker.DateOfBirth,
+            Email = flexworker.Email,
+            PhoneNumber = flexworker.PhoneNumber,
+            ProfilePictureUrl = flexworker.ProfilePictureUrl,
+            Skills = flexworker.Skills.Select(s => SkillHandler.ToModel(s)).ToList()
+        };
+    }
+
+    public static Flexworker ToDto(FlexworkerModel flexworkerModel)
+    {
+        return new Flexworker()
+        {
+            Id = flexworkerModel.Id,
+            Name = flexworkerModel.Name,
+            Address = flexworkerModel.Address,
+            DateOfBirth = flexworkerModel.DateOfBirth,
+            Email = flexworkerModel.Email,
+            PhoneNumber = flexworkerModel.PhoneNumber,
+            ProfilePictureUrl = flexworkerModel.ProfilePictureUrl,
+            Skills = flexworkerModel.Skills.Select(s => SkillHandler.ToDto(s)).ToList()
+        };
     }
 }

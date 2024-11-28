@@ -1,4 +1,4 @@
-﻿using Interface.Factories;
+using Interface.Factories;
 using Interface.Interface.Dal;
 using Interface.Interface.Handlers;
 using Logic.Handlers;
@@ -7,7 +7,7 @@ namespace Logic.Factories;
 
 public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
 {
-    public IFlexWorkerHandler GetFlexWorkerHandler()
+    public IFlexworkerHandler GetFlexworkerHandler()
     {
         return new FlexWorkerHandler(dalFactory.GetFlexWorkerDal());
     }
@@ -15,6 +15,16 @@ public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
     public IJobHandler GetJobHandler()
     {
         return new JobHandler(dalFactory.GetJobDal());
+    }
+
+    public ISkillHandler GetSkillHandler()
+    {
+        return new SkillHandler(dalFactory.GetSkillDal());
+    }
+
+    public ICategoryHandler GetCategoryHandler()
+    {
+        return new CategoryHandler(dalFactory.GetCategoryDal());
     }
 
     public IMatchingHandler GetMatchingHandler()

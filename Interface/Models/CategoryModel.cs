@@ -2,22 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Interface.Models;
 
-public partial class CategoryModel
+public class CategoryModel
 {
     public int Id { get; set; }
 
     [Required]
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
-    public virtual ICollection<SkillModel> Skills { get; set; } = new List<SkillModel>();
-    
-    // public CategoryDto ToDto()
-    // {
-    //     return new CategoryDto
-    //     {
-    //         Id = Id,
-    //         Name = Name,
-    //         Skills = Skills.Select(s => s.ToDto()).ToList()
-    //     };
-    // }
+    public ICollection<SkillModel> Skills { get; set; } = new List<SkillModel>();
 }

@@ -1,6 +1,6 @@
+using DataAccess;
 using DataAccess.Database;
 using DataAccess.Factories;
-using DataAccess.Models;
 using EasyFlex_api.Utils;
 using Interface.Factories;
 using Interface.Interface;
@@ -13,10 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddHttpClient();
 
-builder.Services.AddDbContext<dbo>(options =>
+builder.Services.AddDbContext<EasyFlexContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IFlexWorkerDal, FlexWorkerDal>();
+builder.Services.AddScoped<IFlexworkerDal, FlexworkerDal>();
 
 builder.Services.AddSingleton<IConfigLoader, ConfigLoader>();
 builder.Services.AddScoped<ILogicFactoryBuilder, LogicFactoryBuilderBuilder>();

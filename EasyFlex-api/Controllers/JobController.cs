@@ -1,6 +1,7 @@
-﻿using Interface.Factories;
+﻿using Interface.Dtos;
+using Interface.Exceptions;
+using Interface.Factories;
 using Interface.Interface.Handlers;
-using Interface.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
@@ -14,7 +15,7 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
 
     [HttpPost]
     [Route("Register")]
-    public async Task<IActionResult> CreateJob([FromBody] JobModel job)
+    public async Task<IActionResult> CreateJob([FromBody] Job job)
     {
         try
         {
@@ -35,8 +36,12 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
-            JobModel? job = await _jobHandler.GetJob(id);
+            Job? job = await _jobHandler.GetJob(id);
             return Ok(job);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception ex)
         {
@@ -53,6 +58,10 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
             var jobs = await _jobHandler.GetJobs(pageNumber, limit);
             return Ok(jobs);
         }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
         catch (Exception ex)
         {
             return StatusCode(400, ex);
@@ -68,6 +77,10 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
             await _jobHandler.DeleteJob(id);
             return Ok();
         }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
         catch (Exception ex)
         {
             return StatusCode(400, ex);
@@ -76,12 +89,16 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     
     [HttpPost]
     [Route("Update")]
-    public async Task<IActionResult> UpdateJob([FromBody] JobModel job)
+    public async Task<IActionResult> UpdateJob([FromBody] Job job)
     {
         try
         {
             await _jobHandler.UpdateJob(job);
             return Ok();
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception ex)
         {
