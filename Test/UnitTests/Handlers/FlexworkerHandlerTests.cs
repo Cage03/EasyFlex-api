@@ -185,13 +185,13 @@ public class FlexworkerHandlerTests
         };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync(oldFlexWorker);
-        _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>()));
+        _mockFlexworkerDal.Setup(x => x.UpdateFlexworker(It.IsAny<FlexworkerModel>()));
 
         // Act
         await _flexworkerHandler.UpdateFlexworker(updatedFlexWorker);
 
         // Assert
-        _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
+        _mockFlexworkerDal.Verify(x => x.UpdateFlexworker(It.Is<FlexworkerModel>(
             fw => fw.Id == updatedFlexWorker.Id &&
                   fw.Name == updatedFlexWorker.Name &&
                   fw.Email == updatedFlexWorker.Email &&
@@ -218,13 +218,13 @@ public class FlexworkerHandlerTests
         };
 
         _mockFlexworkerDal.Setup(x => x.GetFlexworkerById(It.IsAny<int>())).ReturnsAsync(existingFlexWorker);
-        _mockFlexworkerDal.Setup(x => x.UpdateFlexWorker(It.IsAny<FlexworkerModel>()));
+        _mockFlexworkerDal.Setup(x => x.UpdateFlexworker(It.IsAny<FlexworkerModel>()));
 
         // Act
         await _flexworkerHandler.UpdateFlexworker(updatedFlexWorker);
 
         // Assert
-        _mockFlexworkerDal.Verify(x => x.UpdateFlexWorker(It.Is<FlexworkerModel>(
+        _mockFlexworkerDal.Verify(x => x.UpdateFlexworker(It.Is<FlexworkerModel>(
             fw => fw.Id == updatedFlexWorker.Id &&
                   fw.Name == updatedFlexWorker.Name &&
                   fw.Email == updatedFlexWorker.Email &&

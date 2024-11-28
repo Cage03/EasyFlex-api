@@ -29,7 +29,21 @@ public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
         return flexworker;
     }
 
-    public async Task UpdateFlexWorker(FlexworkerModel flexworker)
+    public async Task<List<FlexworkerModel>> GetFlexworkersBySkills(List<SkillModel> skills)
+    {
+        List<FlexworkerModel> flexworkers = await context.Flexworkers
+            .Include(f => f.Skills)
+            .Where(f => f.Skills.Any(s => skills.Contains(s)))
+            .ToListAsync();
+
+        if (flexworkers.Count == 0)
+        {
+            throw new NotFoundException("No flexworkers found with the given skills");
+        }
+        return flexworkers;
+    }
+
+    public async Task UpdateFlexworker(FlexworkerModel flexworker)
     {
         var existingFlexworker = context.Flexworkers.FirstOrDefaultAsync(worker => worker.Id == flexworker.Id);
         if (existingFlexworker.Result != null)

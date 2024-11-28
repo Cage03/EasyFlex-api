@@ -16,13 +16,6 @@ public class JobDal(EasyFlexContext context) : IJobDal
         return id;
     }
 
-    public async Task DeleteJob(int id)
-    {
-        var job = await GetJob(id);
-        context.Jobs.Remove(job);
-        await context.SaveChangesAsync();
-    }
-
     public async Task<List<JobModel>> GetJobs(int offset, int limit)
     {
         return await context.Jobs
@@ -55,6 +48,13 @@ public class JobDal(EasyFlexContext context) : IJobDal
             }
         }
         context.Jobs.Update(originalJob);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task DeleteJob(int id)
+    {
+        var job = await GetJob(id);
+        context.Jobs.Remove(job);
         await context.SaveChangesAsync();
     }
 }
