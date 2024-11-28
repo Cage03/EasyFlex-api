@@ -21,7 +21,9 @@ namespace Test.AlgorithmTests
                 (3, "Engels", 1, false, 50),
                 (4, "Engels", 1, false, 100),
                 (5, "Havodiploma", 2, false, 75),
-                (6, "Heftruck", 3, false, 50)
+                (6, "Heftruck", 3, false, 50),
+                (7, "Nederlands", 0, false, 50),
+                (8, "Havo", 2, false, 50),
             };
 
             foreach (var data in preferenceData)

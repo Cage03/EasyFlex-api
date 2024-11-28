@@ -28,20 +28,14 @@ namespace Logic
                         }
 
                         weight += preference.Weight;
-                        match = true;
                     }
                     else if (flexworker.Skills.Any(s => s.Id == preference.SkillId))
                     {
                         weight += preference.Weight;
                     }
-                    else 
-                    { 
-                        match = false; 
-                        break; 
-                    }
                 }
 
-                if (!match || totalWeight == 0) continue;
+                if (!match || totalWeight == 0 || weight == 0) continue;
 
                 var compatibility = Math.Round(weight / totalWeight * 100);
                 results.Add(new JobResultModel
@@ -54,6 +48,8 @@ namespace Logic
 
             return results;
         }
+
+
 
 
         public static List<FlexworkerResultModel> FindFlexworkersForJob(JobModel job, List<FlexworkerModel> flexworkers)
@@ -94,8 +90,5 @@ namespace Logic
             }
             return results;
         }
-
-        
-
     }
 }

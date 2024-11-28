@@ -53,7 +53,12 @@ namespace Test.AlgorithmTests
         public FlexworkerModel Flexworker_Sc_1()
         {
             return flexworkers[0];
-        } 
+        }
+        
+        public FlexworkerModel FlexworkerModel_Sc_2()
+        {
+            return flexworkers[2];
+        }
 
         public List<FlexworkerModel> Flexworkers_Sc_1_3()
         {
