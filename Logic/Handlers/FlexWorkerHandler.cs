@@ -30,9 +30,20 @@ public class FlexWorkerHandler(IFlexworkerDal flexworkerDal) : IFlexworkerHandle
         return ToDto(model);
     }
 
+    public async Task<List<Flexworker>> GetFlexworkersBySkills(List<Skill> skills)
+    {
+        List<SkillModel> skillModels = skills.Select(SkillHandler.ToModel).ToList();
+        List<Flexworker> flexworkers = flexworkerDal.GetFlexworkersBySkills(skillModels).Result.Select(ToDto).ToList();
+        foreach (FlexworkerModel model in await flexworkerDal.GetFlexworkersBySkills(skillModels))
+        {
+            flexworkers.Add(ToDto(model));
+        }
+        return flexworkers;
+    }
+
     public async Task UpdateFlexworker(Flexworker flexworker)
     {
-        await flexworkerDal.UpdateFlexWorker(ToModel(flexworker));
+        await flexworkerDal.UpdateFlexworker(ToModel(flexworker));
     }
 
     public async Task DeleteFlexworker(int id)
