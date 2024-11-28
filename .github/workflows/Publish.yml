@@ -1,6 +1,11 @@
 name: Publish Docker Image to DockerHub
 on:
-  [workflow_dispatch]
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - 'integration'
+    types:
+      - success
 
 jobs:
   publish_image:
