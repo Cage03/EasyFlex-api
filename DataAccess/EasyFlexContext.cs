@@ -22,6 +22,8 @@ public partial class EasyFlexContext : DbContext
 
     public virtual DbSet<SkillModel> Skills { get; set; }
 
+    public virtual DbSet<PreferenceModel> Preferences { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer();
 

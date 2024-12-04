@@ -112,7 +112,7 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
-            var matches = await _matchingHandler.GetMatches(jobId);
+            var matches = await _matchingHandler.GetMatchesForJob(jobId);
             return Ok(matches);
         }
         catch (Exception ex)

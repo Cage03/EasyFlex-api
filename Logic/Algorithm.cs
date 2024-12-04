@@ -1,15 +1,15 @@
-using Interface.Models;
+using Interface.Dtos;
 
 namespace Logic
 {
     public static class Algorithm
     {
 
-        public static List<JobResultModel> FindJobsForFlexworker(FlexworkerModel flexworker, List<JobModel> jobs)
+        public static List<JobResult> FindJobsForFlexworker(Flexworker flexworker, List<Job> jobs)
         {
-            var results = new List<JobResultModel>();
+            var results = new List<JobResult>();
 
-            foreach (JobModel job in jobs)
+            foreach (Job job in jobs)
             {
                 var match = true;
                 float totalWeight = 0;
@@ -38,7 +38,7 @@ namespace Logic
                 if (!match || totalWeight == 0 || weight == 0) continue;
 
                 var compatibility = Math.Round(weight / totalWeight * 100);
-                results.Add(new JobResultModel
+                results.Add(new JobResult
                 {
                     JobId = job.Id,
                     JobName = job.Name,
@@ -49,14 +49,11 @@ namespace Logic
             return results;
         }
 
-
-
-
-        public static List<FlexworkerResultModel> FindFlexworkersForJob(JobModel job, List<FlexworkerModel> flexworkers)
+        public static List<FlexworkerResult> FindFlexworkersForJob(Job job, List<Flexworker> flexworkers)
         {
-            var results = new List<FlexworkerResultModel>();
+            var results = new List<FlexworkerResult>();
         
-            foreach (FlexworkerModel flexworker in flexworkers)
+            foreach (Flexworker flexworker in flexworkers)
             {
                 var match = true;
                 float totalWeight = 0;
@@ -80,7 +77,7 @@ namespace Logic
                 if (!match) continue;
                 
                 var compatibility = Math.Round(weight / totalWeight * 100);
-                results.Add(new FlexworkerResultModel
+                results.Add(new FlexworkerResult
                 {
                     FlexworkerId = flexworker.Id,
                     FlexworkerName = flexworker.Name,

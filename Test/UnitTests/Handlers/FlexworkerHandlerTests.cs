@@ -10,13 +10,13 @@ namespace Test.UnitTests.Handlers;
 public class FlexworkerHandlerTests
 {
     private Mock<IFlexworkerDal> _mockFlexworkerDal = null!;
-    private FlexWorkerHandler _flexworkerHandler = null!;
+    private FlexworkerHandler _flexworkerHandler = null!;
 
     [TestInitialize]
     public void Setup()
     {
         _mockFlexworkerDal = new Mock<IFlexworkerDal>();
-        _flexworkerHandler = new FlexWorkerHandler(_mockFlexworkerDal.Object);
+        _flexworkerHandler = new FlexworkerHandler(_mockFlexworkerDal.Object);
     }
 
     [TestMethod]

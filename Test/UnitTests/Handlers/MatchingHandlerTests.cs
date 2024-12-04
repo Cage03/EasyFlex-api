@@ -59,7 +59,7 @@ public class MatchingHandlerTests
         _mockFlexWorkerDal.Setup(x => x.GetAllFlexWorkers()).ReturnsAsync(flexWorkers);
 
         // Act
-        var results = await _matchingHandler.GetMatches(jobId);
+        var results = await _matchingHandler.GetMatchesForJob(jobId);
 
         // Assert
         Assert.IsNotNull(results);
@@ -76,7 +76,7 @@ public class MatchingHandlerTests
         _mockJobDal.Setup(x => x.GetJob(invalidJobId)).ReturnsAsync((JobModel)null!);
 
         // Act & Assert
-        await Assert.ThrowsExceptionAsync<NullReferenceException>(() => _matchingHandler.GetMatches(invalidJobId));
+        await Assert.ThrowsExceptionAsync<NullReferenceException>(() => _matchingHandler.GetMatchesForJob(invalidJobId));
     }
 
     [TestMethod]
@@ -91,7 +91,7 @@ public class MatchingHandlerTests
         _mockFlexWorkerDal.Setup(x => x.GetAllFlexWorkers()).ReturnsAsync(emptyFlexWorkers);
 
         // Act
-        var results = await _matchingHandler.GetMatches(jobId);
+        var results = await _matchingHandler.GetMatchesForJob(jobId);
 
         // Assert
         Assert.IsNotNull(results);
@@ -134,7 +134,7 @@ public class MatchingHandlerTests
         _mockFlexWorkerDal.Setup(x => x.GetAllFlexWorkers()).ReturnsAsync(flexWorkers);
 
         // Act
-        var results = await _matchingHandler.GetMatches(jobId);
+        var results = await _matchingHandler.GetMatchesForJob(jobId);
 
         // Assert
         Assert.IsNotNull(results);

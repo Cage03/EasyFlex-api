@@ -12,5 +12,5 @@ public record Job
     public int MaxHours { get; init; }
     public DateOnly StartDate { get; init; }
     public DateOnly? EndDate { get; init; }
-    public ICollection<Skill> Skills { get; init; } = new List<Skill>();
+    public ICollection<Preference> Preferences { get; init; } = new List<Preference>();
 }

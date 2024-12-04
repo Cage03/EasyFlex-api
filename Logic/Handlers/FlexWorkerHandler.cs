@@ -6,7 +6,7 @@ using Interface.Models;
 
 namespace Logic.Handlers;
 
-public class FlexWorkerHandler(IFlexworkerDal flexworkerDal) : IFlexworkerHandler
+public class FlexworkerHandler(IFlexworkerDal flexworkerDal) : IFlexworkerHandler
 {
     public async Task CreateFlexworker(Flexworker flexworker)
     { 
@@ -30,11 +30,10 @@ public class FlexWorkerHandler(IFlexworkerDal flexworkerDal) : IFlexworkerHandle
         return ToDto(model);
     }
 
-    public async Task<List<Flexworker>> GetFlexworkersBySkills(List<Skill> skills)
+    public async Task<List<Flexworker>> GetFlexworkersBySkillIds(List<int> skillIds)
     {
-        List<SkillModel> skillModels = skills.Select(SkillHandler.ToModel).ToList();
-        List<Flexworker> flexworkers = flexworkerDal.GetFlexworkersBySkills(skillModels).Result.Select(ToDto).ToList();
-        foreach (FlexworkerModel model in await flexworkerDal.GetFlexworkersBySkills(skillModels))
+        List<Flexworker> flexworkers = new List<Flexworker>();
+        foreach (FlexworkerModel model in await flexworkerDal.GetFlexworkersBySkills(skillIds))
         {
             flexworkers.Add(ToDto(model));
         }
