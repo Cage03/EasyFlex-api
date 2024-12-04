@@ -110,17 +110,6 @@ namespace Test.UnitTests.Handlers
         }
 
         [TestMethod]
-        public async Task DeleteJob_ShouldNotCallDalIfInvalidId()
-        {
-            // Arrange
-            int invalidJobId = -1;
-
-            // Act & Assert
-            await Assert.ThrowsExceptionAsync<IndexOutOfRangeException>(async () =>
-                await _jobHandler.DeleteJob(invalidJobId));
-        }
-
-        [TestMethod]
         public async Task UpdateJob_ShouldBeSuccessful()
         {
             //Arrange

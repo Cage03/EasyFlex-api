@@ -1,4 +1,3 @@
-using System.Text.Json.Nodes;
 using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Models;
@@ -12,7 +11,7 @@ public class JobDal(EasyFlexContext context) : IJobDal
     {
         context.Jobs.Add(job);
         await context.SaveChangesAsync();
-        int id = job.Id; 
+        int id = job.Id;
         return id;
     }
 
@@ -21,7 +20,7 @@ public class JobDal(EasyFlexContext context) : IJobDal
         return await context.Jobs
             .Skip(offset)
             .Take(limit)
-            .ToListAsync();  // Now returns a List instead of IQueryable
+            .ToListAsync(); 
     }
 
     public async Task<JobModel> GetJob(int id)
@@ -31,24 +30,80 @@ public class JobDal(EasyFlexContext context) : IJobDal
         {
             throw new NotFoundException("Job not found");
         }
+
         return job;
     }
 
     public async Task UpdateJob(JobModel job)
     {
-        var originalJob = await GetJob(job.Id);
-        
-        // Use reflection to copy all properties from job to originalJob
+        var originalJob = await context.Jobs
+            .Include(j => j.Preferences)
+            .FirstOrDefaultAsync(j => j.Id == job.Id);
+
+        if (originalJob == null)
+        {
+            throw new NotFoundException($"Job with ID {job.Id} not found.");
+        }
+
+        //The below functions are necessary to differentiate between updating, adding or removing a preference
+        UpdateScalarProperties(originalJob, job);
+        SynchronizePreferences(originalJob, job.Preferences);
+
+        context.Jobs.Update(originalJob);
+        await context.SaveChangesAsync();
+    }
+
+    private void UpdateScalarProperties(JobModel originalJob, JobModel updatedJob)
+    {
         foreach (var property in typeof(JobModel).GetProperties())
         {
-            if (property.CanWrite)
+            if (property.CanWrite && property.Name != nameof(JobModel.Preferences))
             {
-                var newValue = property.GetValue(job);
+                var newValue = property.GetValue(updatedJob);
                 property.SetValue(originalJob, newValue);
             }
         }
-        context.Jobs.Update(originalJob);
-        await context.SaveChangesAsync();
+    }
+
+    private void SynchronizePreferences(JobModel originalJob, ICollection<PreferenceModel> updatedPreferences)
+    {
+        // Update or add preferences
+        foreach (var updatedPreference in updatedPreferences)
+        {
+            var existingPreference = originalJob.Preferences
+                .FirstOrDefault(p => p.Id == updatedPreference.Id);
+
+            if (existingPreference != null)
+            {
+                UpdatePreference(existingPreference, updatedPreference);
+            }
+            else
+            {
+                originalJob.Preferences.Add(updatedPreference);
+            }
+        }
+
+        // Remove preferences not in the updated job
+        var preferencesToRemove = originalJob.Preferences
+            .Where(p => updatedPreferences.All(updated => updated.Id != p.Id))
+            .ToList();
+
+        foreach (var preference in preferencesToRemove)
+        {
+            context.Preferences.Remove(preference);
+        }
+    }
+
+    private void UpdatePreference(PreferenceModel existingPreference, PreferenceModel updatedPreference)
+    {
+        foreach (var property in typeof(PreferenceModel).GetProperties())
+        {
+            if (property.CanWrite)
+            {
+                var newValue = property.GetValue(updatedPreference);
+                property.SetValue(existingPreference, newValue);
+            }
+        }
     }
 
     public async Task DeleteJob(int id)

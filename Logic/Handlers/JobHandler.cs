@@ -1,5 +1,4 @@
 ﻿using Interface.Dtos;
-using Interface.Exceptions;
 using Interface.Interface.Dal;
 using Interface.Interface.Handlers;
 using Interface.Models;
@@ -50,7 +49,7 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
             MaxHours = jobDto.MaxHours,
             StartDate = jobDto.StartDate,
             EndDate = jobDto.EndDate,
-            Preferences = jobDto.Skills.Select(s => SkillHandler.ToModel(s)).ToList()
+            Preferences = jobDto.Preferences.Select(PreferenceToModel).ToList()
         };
     }
     
@@ -66,7 +65,31 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
             MaxHours = jobModel.MaxHours,
             StartDate = jobModel.StartDate,
             EndDate = jobModel.EndDate,
-            Skills = jobModel.Skills.Select(s => SkillHandler.ToDto(s)).ToList()
+            Preferences = jobModel.Preferences.Select(PreferenceToDto).ToList()
+        };
+    }
+    
+    private static Preference PreferenceToDto(PreferenceModel preferenceModel)
+    {
+        return new Preference
+        {
+            Id = preferenceModel.Id,
+            SkillId = preferenceModel.Skill.Id,
+            JobId = preferenceModel.Job.Id,
+            IsRequired = preferenceModel.IsRequired,
+            Weight = preferenceModel.Weight
+        };
+    }
+    
+    private static PreferenceModel PreferenceToModel(Preference preference)
+    {
+        return new PreferenceModel
+        {
+            Id = preference.Id,
+            Skill = new SkillModel { Id = preference.SkillId },
+            Job = new JobModel { Id = preference.JobId },
+            IsRequired = preference.IsRequired,
+            Weight = preference.Weight
         };
     }
 }
