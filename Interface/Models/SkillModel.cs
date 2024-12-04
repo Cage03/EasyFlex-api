@@ -7,7 +7,7 @@ public partial class SkillModel
     public int Id { get; set; }
 
     [Required]
-    public required string Name { get; set; }
+    public string Name { get; set; }
 
     [Required]
     public int CategoryId { get; set; }

@@ -9,4 +9,5 @@ public interface IHandlerFactory
     public IJobHandler GetJobHandler();
     public ISkillHandler GetSkillHandler();
     public ICategoryHandler GetCategoryHandler();
+    public IMatchingHandler GetMatchingHandler();
 }

@@ -19,6 +19,7 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
+            //todo validate name and address are not empty
             int id = await _jobHandler.CreateJob(job);
             if (id == 0)
             { return StatusCode(400, "Failed to create job."); }
@@ -36,7 +37,7 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
-            Job? job = await _jobHandler.GetJob(id);
+            Job job = await _jobHandler.GetJob(id);
             return Ok(job);
         }
         catch (NotFoundException ex)
@@ -93,6 +94,7 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     {
         try
         {
+            //todo validate name and address are not empty
             await _jobHandler.UpdateJob(job);
             return Ok();
         }
