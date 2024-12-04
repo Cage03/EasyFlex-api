@@ -80,9 +80,10 @@ namespace Logic
                 results.Add(new FlexworkerResult
                 {
                     FlexworkerId = flexworker.Id,
-                    FlexworkerName = flexworker.Name,
+                    Name = flexworker.Name,
                     ProfilePictureUrl = flexworker.ProfilePictureUrl,
-                    Compatibility = compatibility
+                    Compatibility = compatibility,
+                    Skills = flexworker.Skills
                 });
             }
             return results;
