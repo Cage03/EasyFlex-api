@@ -1,4 +1,5 @@
 using DataAccess.Database;
+using Interface.Dtos;
 using Interface.Models;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,11 @@ namespace Test.AlgorithmTests
 {
     public class JobGenerator
     {
-        public List<JobModel> Jobs;
+        public List<Job> Jobs;
 
-        public JobGenerator(List<PreferenceModel> preferences)
+        public JobGenerator(List<Preference> preferences)
         {
-            Jobs = new List<JobModel>();
+            Jobs = new List<Job>();
 
             var jobData = new List<(int Id, List<int> preferenceIndices)>
             {
@@ -40,37 +41,38 @@ namespace Test.AlgorithmTests
                 
             };
 
-            foreach(var job in jobData)
+            foreach(var j in jobData)
             {
-                JobModel jobModel = new JobModel()
+                Job job = new Job()
                 {
-                    Id = job.Id,
+                    Id = j.Id,
                     Name = "name",
+                    Address = "address",
                     Description = "desc",
                     MinHours = 4,
                     MaxHours = 8,
                     StartDate = new DateOnly(2022, 1, 1),
                     EndDate = new DateOnly(2022, 1, 1)
                 };
-                foreach (var preferenceIndex in job.preferenceIndices)
+                foreach (var preferenceIndex in j.preferenceIndices)
                 {
-                    jobModel.Preferences.Add(preferences[preferenceIndex]);
+                    job.Preferences.Add(preferences[(int)preferenceIndex]);
                 }
-                Jobs.Add(jobModel);
+                Jobs.Add(job);
             }
         }
 
-        public List<JobModel> Jobs_Hardfilter_Sc_1()
+        public List<Job> Jobs_Hardfilter_Sc_1()
         {
-            List<JobModel> output = new List<JobModel>();
+            List<Job> output = new List<Job>();
             output.Add(Jobs[0]);
             output.Add(Jobs[8]);
             return output;
         }
         
-        public List<JobModel> Jobs_Hardfilter_Sc_2()
+        public List<Job> Jobs_Hardfilter_Sc_2()
         {
-            List<JobModel> output = new List<JobModel>();
+            List<Job> output = new List<Job>();
             output.Add(Jobs[11]);
             output.Add(Jobs[2]);
             output.Add(Jobs[9]);
@@ -79,18 +81,18 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<JobModel> Jobs_Softfilter_Sc_1()
+        public List<Job> Jobs_Softfilter_Sc_1()
         {
-            List<JobModel> output = new List<JobModel>();
+            List<Job> output = new List<Job>();
             output.Add(Jobs[11]);
             output.Add(Jobs[10]);
             return output;
 
         }
         
-        public List<JobModel> Jobs_Softfilter_Sc_2()
+        public List<Job> Jobs_Softfilter_Sc_2()
         {
-            List<JobModel> output = new List<JobModel>();
+            List<Job> output = new List<Job>();
             
             output.Add(Jobs[12]);
             output.Add(Jobs[11]);
@@ -101,9 +103,9 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<JobModel> Jobs_HardSoftFilter()
+        public List<Job> Jobs_HardSoftFilter()
         {
-            List<JobModel> output = new List<JobModel>();
+            List<Job> output = new List<Job>();
             output.Add(Jobs[14]);
             output.Add(Jobs[15]);
             output.Add(Jobs[16]);

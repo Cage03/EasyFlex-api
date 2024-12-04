@@ -24,6 +24,4 @@ public partial class JobModel
     public DateOnly? EndDate { get; set; }
 
     public virtual ICollection<PreferenceModel> Preferences { get; set; } = new List<PreferenceModel>();
-    public ICollection<SkillModel> Skills { get; set; } = new List<SkillModel>();
-
 }

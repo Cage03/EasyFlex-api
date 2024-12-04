@@ -1,3 +1,4 @@
+using Interface.Dtos;
 using Interface.Models;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace Test.AlgorithmTests
 {
     public class FlexworkerGenerator
     {
-        private List<FlexworkerModel> flexworkers;
+        private List<Flexworker> flexworkers;
 
-        public FlexworkerGenerator(List<SkillModel> skills)
+        public FlexworkerGenerator(List<Skill> skills)
         {
-            flexworkers = new List<FlexworkerModel>();
+            flexworkers = new List<Flexworker>();
 
             var flexworkerData = new List<(int Id, string Name, List<int> SkillIndices)>
             {
@@ -31,7 +32,7 @@ namespace Test.AlgorithmTests
 
             foreach (var data in flexworkerData)
             {
-                var flexworker = new FlexworkerModel
+                var flexworker = new Flexworker
                 {
                     Id = data.Id,
                     Name = data.Name,
@@ -50,28 +51,28 @@ namespace Test.AlgorithmTests
                 flexworkers.Add(flexworker);
             }
         }
-        public FlexworkerModel Flexworker_Sc_1()
+        public Flexworker Flexworker_Sc_1()
         {
             return flexworkers[0];
         }
         
-        public FlexworkerModel FlexworkerModel_Sc_2()
+        public Flexworker FlexworkerModel_Sc_2()
         {
             return flexworkers[2];
         }
 
-        public List<FlexworkerModel> Flexworkers_Sc_1_3()
+        public List<Flexworker> Flexworkers_Sc_1_3()
         {
-            List<FlexworkerModel> output = new List<FlexworkerModel>();
+            List<Flexworker> output = new List<Flexworker>();
             output.Add(flexworkers[0]);
             output.Add(flexworkers[1]);
 
             return output;
         }
 
-        public List<FlexworkerModel> Flexworkers_Sc_2_4()
+        public List<Flexworker> Flexworkers_Sc_2_4()
         {
-            List<FlexworkerModel> output = new List<FlexworkerModel>();
+            List<Flexworker> output = new List<Flexworker>();
 
             //Nederlands en engels
             output.Add(flexworkers[2]);
@@ -85,9 +86,9 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<FlexworkerModel> Flexworkers_Sc_5()
+        public List<Flexworker> Flexworkers_Sc_5()
         {
-            List<FlexworkerModel> output = new List<FlexworkerModel>();
+            List<Flexworker> output = new List<Flexworker>();
 
             //Nederlands, Havodiploma, engels
             output.Add(flexworkers[5]);
@@ -105,9 +106,9 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<FlexworkerModel> Flexworkers_Sc_6()
+        public List<Flexworker> Flexworkers_Sc_6()
         {
-            List<FlexworkerModel> output = new List<FlexworkerModel>();
+            List<Flexworker> output = new List<Flexworker>();
             //Nederlands en Engels
             output.Add(flexworkers[2]);
             //Nederlands
@@ -118,9 +119,9 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<FlexworkerModel> Flexworkers_Sc_7()
+        public List<Flexworker> Flexworkers_Sc_7()
         {
-            List<FlexworkerModel> output = new List<FlexworkerModel>();
+            List<Flexworker> output = new List<Flexworker>();
 
             output.Add(flexworkers[5]);
             output.Add(flexworkers[4]);
@@ -131,9 +132,9 @@ namespace Test.AlgorithmTests
             return output;
         }
 
-        public List<FlexworkerModel> Flexworkers_Sc_8()
+        public List<Flexworker> Flexworkers_Sc_8()
         {
-            List<FlexworkerModel> output = new List<FlexworkerModel>();
+            List<Flexworker> output = new List<Flexworker>();
             output.Add(flexworkers[6]);
             output.Add(flexworkers[5]);
             output.Add(flexworkers[2]);
