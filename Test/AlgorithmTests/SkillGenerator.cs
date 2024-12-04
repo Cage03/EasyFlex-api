@@ -1,4 +1,5 @@
-﻿using Interface.Models;
+﻿using Interface.Dtos;
+using Interface.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Test.AlgorithmTests
 {
     public class SkillGenerator
     {
-        public List<SkillModel> Skills = new List<SkillModel>();
+        public List<Skill> Skills = new List<Skill>();
 
         public SkillGenerator()
         {
@@ -23,7 +24,7 @@ namespace Test.AlgorithmTests
 
             foreach (var data in skillData)
             {
-                var skill = new SkillModel
+                var skill = new Skill
                 {
                     Id = data.Id,
                     Name = data.Name

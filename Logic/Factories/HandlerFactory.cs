@@ -29,6 +29,6 @@ public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
 
     public IMatchingHandler GetMatchingHandler()
     {
-        return new MatchingHandler(dalFactory.GetFlexWorkerDal(), dalFactory.GetJobDal());
+        return new MatchingHandler(GetFlexworkerHandler(), GetJobHandler());
     }
 }

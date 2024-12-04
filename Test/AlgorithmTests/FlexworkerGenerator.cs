@@ -1,10 +1,4 @@
 using Interface.Dtos;
-using Interface.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Test.AlgorithmTests
 {
@@ -56,7 +50,7 @@ namespace Test.AlgorithmTests
             return flexworkers[0];
         }
         
-        public Flexworker FlexworkerModel_Sc_2()
+        public Flexworker Flexworker_Sc_2()
         {
             return flexworkers[2];
         }

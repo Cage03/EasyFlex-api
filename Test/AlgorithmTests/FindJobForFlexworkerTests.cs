@@ -1,4 +1,5 @@
-﻿using Interface.Models;
+﻿using Interface.Dtos;
+using Interface.Models;
 using Logic;
 
 namespace Test.AlgorithmTests
@@ -27,7 +28,7 @@ namespace Test.AlgorithmTests
         {
             var flexworker = flexworkerGenerator.Flexworkers_Sc_1_3()[0];
             
-            List<JobResultModel> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Hardfilter_Sc_1());
+            List<JobResult> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Hardfilter_Sc_1());
 
             Assert.AreEqual(0, results[0].JobId);
             Assert.AreEqual(1, results.Count);
@@ -38,9 +39,9 @@ namespace Test.AlgorithmTests
         [TestMethod]
         public void Test_Sc_2_HardFilter()
         {
-            var flexworker = flexworkerGenerator.FlexworkerModel_Sc_2();
+            var flexworker = flexworkerGenerator.Flexworker_Sc_2();
             
-            List<JobResultModel> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Hardfilter_Sc_2());
+            List<JobResult> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Hardfilter_Sc_2());
             
             Assert.AreEqual(3, results.Count);
             Assert.AreEqual(100, results[0].Compatibility);
@@ -53,7 +54,7 @@ namespace Test.AlgorithmTests
         {
             var flexworker = flexworkerGenerator.Flexworker_Sc_1();
             
-            List<JobResultModel> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Softfilter_Sc_1());
+            List<JobResult> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Softfilter_Sc_1());
             
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual(100, results[0].Compatibility);
@@ -62,9 +63,9 @@ namespace Test.AlgorithmTests
         [TestMethod]
         public void Test_Sc_4_SoftFilter()
         {
-            var flexworker = flexworkerGenerator.FlexworkerModel_Sc_2();
+            var flexworker = flexworkerGenerator.Flexworker_Sc_2();
             
-            List<JobResultModel> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Softfilter_Sc_2());
+            List<JobResult> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Softfilter_Sc_2());
             
             Assert.AreEqual(4, results.Count);
             Assert.AreEqual(100, results[0].Compatibility);
@@ -77,9 +78,9 @@ namespace Test.AlgorithmTests
         [TestMethod]
         public void Test_Sc_5_HardSoftFilter()
         {
-            var flexworker = flexworkerGenerator.FlexworkerModel_Sc_2();
+            var flexworker = flexworkerGenerator.Flexworker_Sc_2();
 
-            List<JobResultModel> results =
+            List<JobResult> results =
                 Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_HardSoftFilter());
             
            Assert.AreEqual(6, results.Count);

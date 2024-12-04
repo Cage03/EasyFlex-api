@@ -1,4 +1,5 @@
-﻿using Interface.Models;
+﻿using Interface.Dtos;
+using Interface.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Test.AlgorithmTests
 {
     public class PreferenceGenerator
     {
-        public List<PreferenceModel> Preferences = new List<PreferenceModel>();
+        public List<Preference> Preferences = new List<Preference>();
 
         public PreferenceGenerator()
         {
@@ -28,7 +29,7 @@ namespace Test.AlgorithmTests
 
             foreach (var data in preferenceData)
             {
-                var preference = new PreferenceModel
+                var preference = new Preference
                 {
                     Id = data.Id,
                     SkillId = data.SkillId,
