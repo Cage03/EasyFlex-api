@@ -11,6 +11,7 @@ namespace EasyFlex_api.Controllers;
 public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controller
 {
     private readonly IJobHandler _jobHandler = logicFactoryBuilder.BuildHandlerFactory().GetJobHandler();
+    private readonly IMatchingHandler _matchingHandler = logicFactoryBuilder.BuildHandlerFactory().GetMatchingHandler();
 
     [HttpPost]
     [Route("Register")]
@@ -98,6 +99,21 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
         catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
+        }
+    }
+    
+    [HttpGet]
+    [Route("Matches")]
+    public async Task<IActionResult> GetMatches([FromQuery] int jobId)
+    {
+        try
+        {
+            var matches = await _matchingHandler.GetMatchesForJob(jobId);
+            return Ok(matches);
         }
         catch (Exception ex)
         {

@@ -9,7 +9,7 @@ public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
 {
     public IFlexworkerHandler GetFlexworkerHandler()
     {
-        return new FlexWorkerHandler(dalFactory.GetFlexWorkerDal());
+        return new FlexworkerHandler(dalFactory.GetFlexWorkerDal());
     }
 
     public IJobHandler GetJobHandler()

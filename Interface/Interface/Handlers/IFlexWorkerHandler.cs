@@ -6,6 +6,7 @@ namespace Interface.Interface.Handlers;
 public interface IFlexworkerHandler
 {
     public Task<List<Flexworker>> GetFlexworkers(int limit, int page);
+    public Task<List<Flexworker>> GetFlexworkersBySkillIds(List<int> skillIds);
     public Task CreateFlexworker(Flexworker flexworker);
     public Task UpdateFlexworker(Flexworker flexworker);
     public Task<Flexworker> GetFlexworkerById(int id);

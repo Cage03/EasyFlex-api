@@ -29,11 +29,11 @@ public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
         return flexworker;
     }
 
-    public async Task<List<FlexworkerModel>> GetFlexworkersBySkills(List<SkillModel> skills)
+    public async Task<List<FlexworkerModel>> GetFlexworkersBySkills(List<int> skillIds)
     {
         List<FlexworkerModel> flexworkers = await context.Flexworkers
             .Include(f => f.Skills)
-            .Where(f => f.Skills.Any(s => skills.Contains(s)))
+            .Where(f => skillIds.All(id => f.Skills.Any(s => s.Id == id)))
             .ToListAsync();
 
         if (flexworkers.Count == 0)
