@@ -38,11 +38,11 @@ public partial class EasyFlexContext : DbContext
                 j => j.HasOne<FlexworkerModel>().WithMany().HasForeignKey("FlexworkersId"));
 
         modelBuilder.Entity<JobModel>()
-            .HasMany(j => j.Skills)
+            .HasMany(j => j.Preferences)
             .WithMany()
             .UsingEntity<Dictionary<string, object>>(
-                "JobSkill",
-                j => j.HasOne<SkillModel>().WithMany().HasForeignKey("SkillsId"),
+                "JobPreference",
+                j => j.HasOne<PreferenceModel>().WithMany().HasForeignKey("PreferenceIds"),
                 j => j.HasOne<JobModel>().WithMany().HasForeignKey("JobsId"));
 
         OnModelCreatingPartial(modelBuilder);

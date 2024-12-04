@@ -50,7 +50,7 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
             MaxHours = jobDto.MaxHours,
             StartDate = jobDto.StartDate,
             EndDate = jobDto.EndDate,
-            Skills = jobDto.Skills.Select(s => SkillHandler.ToModel(s)).ToList()
+            Preferences = jobDto.Skills.Select(s => SkillHandler.ToModel(s)).ToList()
         };
     }
     

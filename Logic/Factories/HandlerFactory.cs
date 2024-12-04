@@ -26,4 +26,9 @@ public class HandlerFactory(IDalFactory dalFactory) : IHandlerFactory
     {
         return new CategoryHandler(dalFactory.GetCategoryDal());
     }
+
+    public IMatchingHandler GetMatchingHandler()
+    {
+        return new MatchingHandler(GetFlexworkerHandler(), GetJobHandler());
+    }
 }
