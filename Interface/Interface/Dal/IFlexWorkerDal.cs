@@ -1,4 +1,4 @@
-﻿using Interface.Models;
+using Interface.Models;
 
 namespace Interface.Interface.Dal;
 
