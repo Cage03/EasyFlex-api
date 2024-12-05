@@ -86,8 +86,8 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
         return new PreferenceModel
         {
             Id = preference.Id,
-            Skill = new SkillModel { Id = preference.SkillId },
-            Job = new JobModel { Id = preference.JobId },
+            SkillId = preference.SkillId,
+            JobId = preference.JobId,
             IsRequired = preference.IsRequired,
             Weight = preference.Weight
         };
