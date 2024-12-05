@@ -25,7 +25,10 @@ public class JobDal(EasyFlexContext context) : IJobDal
 
     public async Task<JobModel> GetJob(int id)
     {
-        var job = await context.Jobs.FindAsync(id);
+        var job = await context.Jobs
+            .Include(j => j.Preferences)
+            .FirstOrDefaultAsync(j => j.Id == id);
+
         if (job == null)
         {
             throw new NotFoundException("Job not found");
