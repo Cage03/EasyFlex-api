@@ -51,8 +51,7 @@ public class JobDal(EasyFlexContext context) : IJobDal
         //The below functions are necessary to differentiate between updating, adding or removing a preference
         UpdateScalarProperties(originalJob, job);
         SynchronizePreferences(originalJob, job.Preferences);
-
-        context.Jobs.Update(originalJob);
+        
         await context.SaveChangesAsync();
     }
 
@@ -70,7 +69,6 @@ public class JobDal(EasyFlexContext context) : IJobDal
 
     private void SynchronizePreferences(JobModel originalJob, ICollection<PreferenceModel> updatedPreferences)
     {
-        // Update or add preferences
         foreach (var updatedPreference in updatedPreferences)
         {
             var existingPreference = originalJob.Preferences
@@ -82,18 +80,22 @@ public class JobDal(EasyFlexContext context) : IJobDal
             }
             else
             {
+                if (context.Entry(updatedPreference).State == EntityState.Detached)
+                {
+                    context.Preferences.Attach(updatedPreference);
+                }
                 originalJob.Preferences.Add(updatedPreference);
             }
         }
-
-        // Remove preferences not in the updated job
+        
         var preferencesToRemove = originalJob.Preferences
             .Where(p => updatedPreferences.All(updated => updated.Id != p.Id))
             .ToList();
 
         foreach (var preference in preferencesToRemove)
         {
-            context.Preferences.Remove(preference);
+            originalJob.Preferences.Remove(preference);
+            context.Preferences.Remove(preference); 
         }
     }
 
