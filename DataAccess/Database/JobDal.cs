@@ -56,7 +56,7 @@ public class JobDal(EasyFlexContext context) : IJobDal
             // Delete children
             foreach (var existingPreference in originalJob.Preferences.ToList())
             {
-                if (originalJob.Preferences.All(c => c.Id != existingPreference.Id))
+                if (job.Preferences.Any(c => c.Id == existingPreference.Id))
                     context.Preferences.Remove(existingPreference);
             }
 
