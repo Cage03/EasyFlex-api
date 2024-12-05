@@ -20,7 +20,7 @@ public class JobDal(EasyFlexContext context) : IJobDal
         return await context.Jobs
             .Skip(offset)
             .Take(limit)
-            .ToListAsync(); 
+            .ToListAsync();
     }
 
     public async Task<JobModel> GetJob(int id)
@@ -48,10 +48,10 @@ public class JobDal(EasyFlexContext context) : IJobDal
             throw new NotFoundException($"Job with ID {job.Id} not found.");
         }
 
-        //The below functions are necessary to differentiate between updating, adding or removing a preference
         UpdateScalarProperties(originalJob, job);
-        SynchronizePreferences(originalJob, job.Preferences);
-        
+        await UpdateJobPreferences(originalJob.Id, job.Preferences);
+
+        context.Update(originalJob);
         await context.SaveChangesAsync();
     }
 
@@ -67,11 +67,16 @@ public class JobDal(EasyFlexContext context) : IJobDal
         }
     }
 
-    private void SynchronizePreferences(JobModel originalJob, ICollection<PreferenceModel> updatedPreferences)
+    private async Task UpdateJobPreferences(int jobId, ICollection<PreferenceModel> updatedPreferences)
     {
+        var originalPreferences = await context.Preferences
+            .Where(p => p.JobId == jobId)
+            .ToListAsync();
+
+        // Add or update preferences
         foreach (var updatedPreference in updatedPreferences)
         {
-            var existingPreference = originalJob.Preferences
+            var existingPreference = originalPreferences
                 .FirstOrDefault(p => p.Id == updatedPreference.Id);
 
             if (existingPreference != null)
@@ -80,24 +85,29 @@ public class JobDal(EasyFlexContext context) : IJobDal
             }
             else
             {
-                if (context.Entry(updatedPreference).State == EntityState.Detached)
+                if (updatedPreference.Id != 0)
                 {
-                    context.Preferences.Attach(updatedPreference);
+                    updatedPreference.Id = 0;
                 }
-                originalJob.Preferences.Add(updatedPreference);
+
+                updatedPreference.JobId = jobId;
+                context.Preferences.Add(updatedPreference);
             }
         }
-        
-        var preferencesToRemove = originalJob.Preferences
+
+        // Remove preferences not in the updated list
+        var preferencesToRemove = originalPreferences
             .Where(p => updatedPreferences.All(updated => updated.Id != p.Id))
             .ToList();
 
         foreach (var preference in preferencesToRemove)
         {
-            originalJob.Preferences.Remove(preference);
-            context.Preferences.Remove(preference); 
+            context.Preferences.Remove(preference);
         }
+
+        await context.SaveChangesAsync();
     }
+
 
     private void UpdatePreference(PreferenceModel existingPreference, PreferenceModel updatedPreference)
     {
@@ -110,6 +120,7 @@ public class JobDal(EasyFlexContext context) : IJobDal
             }
         }
     }
+
 
     public async Task DeleteJob(int id)
     {
