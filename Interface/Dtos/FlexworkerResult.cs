@@ -9,8 +9,8 @@ namespace Interface.Dtos
     public record FlexworkerResult
     {
         public int FlexworkerId { get; init; }
-        public required string FlexworkerName { get; init; }
+        public required string Name { get; init; }
         public string? ProfilePictureUrl { get; init; }
-        public double Compatibility { get; init; }
+        public int Compatibility { get; init; }
     }
 }

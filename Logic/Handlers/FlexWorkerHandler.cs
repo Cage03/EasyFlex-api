@@ -33,7 +33,8 @@ public class FlexworkerHandler(IFlexworkerDal flexworkerDal) : IFlexworkerHandle
     public async Task<List<Flexworker>> GetFlexworkersBySkillIds(List<int> skillIds)
     {
         List<Flexworker> flexworkers = new List<Flexworker>();
-        foreach (FlexworkerModel model in await flexworkerDal.GetFlexworkersBySkills(skillIds))
+        List<FlexworkerModel> models = await flexworkerDal.GetFlexworkersBySkills(skillIds);
+        foreach (FlexworkerModel model in models)
         {
             flexworkers.Add(ToDto(model));
         }

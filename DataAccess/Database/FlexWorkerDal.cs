@@ -36,10 +36,6 @@ public class FlexworkerDal(EasyFlexContext context) : IFlexworkerDal
             .Where(f => skillIds.All(id => f.Skills.Any(s => s.Id == id)))
             .ToListAsync();
 
-        if (flexworkers.Count == 0)
-        {
-            throw new NotFoundException("No flexworkers found with the given skills");
-        }
         return flexworkers;
     }
 
