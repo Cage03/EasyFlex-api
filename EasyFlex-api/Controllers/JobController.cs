@@ -110,11 +110,11 @@ public class JobController(ILogicFactoryBuilder logicFactoryBuilder) : Controlle
     
     [HttpGet]
     [Route("Matches")]
-    public async Task<IActionResult> GetMatches([FromQuery] int jobId)
+    public async Task<IActionResult> GetMatches([FromQuery] int id)
     {
         try
         {
-            var matches = await _matchingHandler.GetMatchesForJob(jobId);
+            var matches = await _matchingHandler.GetMatchesForJob(id);
             return Ok(matches);
         }
         catch (Exception ex)

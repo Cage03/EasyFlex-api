@@ -52,9 +52,12 @@ namespace Logic
         public static List<FlexworkerResult> FindFlexworkersForJob(Job job, List<Flexworker> flexworkers)
         {
             var results = new List<FlexworkerResult>();
-        
+            if (job.Preferences.Count == 0) return results;
+            
             foreach (Flexworker flexworker in flexworkers)
             {
+                
+
                 var match = true;
                 float totalWeight = 0;
                 float weight = 0;
@@ -76,11 +79,11 @@ namespace Logic
 
                 if (!match) continue;
                 
-                var compatibility = Math.Round(weight / totalWeight * 100);
+                int compatibility = (int)Math.Round(weight / totalWeight * 100);
                 results.Add(new FlexworkerResult
                 {
                     FlexworkerId = flexworker.Id,
-                    FlexworkerName = flexworker.Name,
+                    Name = flexworker.Name,
                     ProfilePictureUrl = flexworker.ProfilePictureUrl,
                     Compatibility = compatibility
                 });
