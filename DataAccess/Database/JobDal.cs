@@ -20,7 +20,7 @@ public class JobDal(EasyFlexContext context) : IJobDal
         return await context.Jobs
             .Skip(offset)
             .Take(limit)
-            .ToListAsync(); 
+            .ToListAsync();
     }
 
     public async Task<JobModel> GetJob(int id)
@@ -48,56 +48,52 @@ public class JobDal(EasyFlexContext context) : IJobDal
             throw new NotFoundException($"Job with ID {job.Id} not found.");
         }
 
-        //The below functions are necessary to differentiate between updating, adding or removing a preference
-        UpdateScalarProperties(originalJob, job);
-        SynchronizePreferences(originalJob, job.Preferences);
-        
+        if (originalJob != null)
+        {
+            // Update parent
+            context.Entry(originalJob).CurrentValues.SetValues(job);
+
+            // Delete children
+            foreach (var existingPreference in originalJob.Preferences.ToList())
+            {
+                if (job.Preferences.Any(c => c.Id == existingPreference.Id))
+                    context.Preferences.Remove(existingPreference);
+            }
+
+            // Update and Insert children
+            foreach (var newPreference in job.Preferences)
+            {
+                var existingChild = originalJob.Preferences
+                    .SingleOrDefault(c => c.Id == newPreference.Id && c.Id != default(int));
+
+                if (existingChild != null)
+                    // Update child
+                    context.Entry(existingChild).CurrentValues.SetValues(newPreference);
+                else
+                {
+                    // Insert child
+                    var newAddedPreference = new PreferenceModel()
+                    {
+                        SkillId = newPreference.SkillId,
+                        JobId = job.Id,
+                        IsRequired = newPreference.IsRequired,
+                        Weight = newPreference.Weight,
+                        Job = originalJob,
+                        Skill = context.Skills.FirstOrDefault(x => x.Id == newPreference.SkillId),
+                    };
+                    originalJob.Preferences.Add(newAddedPreference);
+                }
+            }
+
+        }
+        else 
+        {
+            throw new NotFoundException($"Job with ID {job.Id} not found.");
+        }
+
         await context.SaveChangesAsync();
     }
-
-    private void UpdateScalarProperties(JobModel originalJob, JobModel updatedJob)
-    {
-        foreach (var property in typeof(JobModel).GetProperties())
-        {
-            if (property.CanWrite && property.Name != nameof(JobModel.Preferences))
-            {
-                var newValue = property.GetValue(updatedJob);
-                property.SetValue(originalJob, newValue);
-            }
-        }
-    }
-
-    private void SynchronizePreferences(JobModel originalJob, ICollection<PreferenceModel> updatedPreferences)
-    {
-        foreach (var updatedPreference in updatedPreferences)
-        {
-            var existingPreference = originalJob.Preferences
-                .FirstOrDefault(p => p.Id == updatedPreference.Id);
-
-            if (existingPreference != null)
-            {
-                UpdatePreference(existingPreference, updatedPreference);
-            }
-            else
-            {
-                if (context.Entry(updatedPreference).State == EntityState.Detached)
-                {
-                    context.Preferences.Attach(updatedPreference);
-                }
-                originalJob.Preferences.Add(updatedPreference);
-            }
-        }
-        
-        var preferencesToRemove = originalJob.Preferences
-            .Where(p => updatedPreferences.All(updated => updated.Id != p.Id))
-            .ToList();
-
-        foreach (var preference in preferencesToRemove)
-        {
-            originalJob.Preferences.Remove(preference);
-            context.Preferences.Remove(preference); 
-        }
-    }
+    
 
     private void UpdatePreference(PreferenceModel existingPreference, PreferenceModel updatedPreference)
     {

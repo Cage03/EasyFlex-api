@@ -122,7 +122,11 @@ public class FlexworkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
                 return BadRequest("No skills provided");
             }
 
-            List<Skill> skills = await _skillHandler.GetSkills(skillIds);
+            List<Skill> skills = new List<Skill>();
+            foreach (int skillId in skillIds)
+            {
+                skills.Add(await _skillHandler.GetSkillFromId(skillId));
+            }
             await _flexworkerHandler.AddSkills((int)flexworkerId, skills);
             return Ok();
         }
@@ -149,8 +153,12 @@ public class FlexworkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
             {
                 return BadRequest("No skills provided");
             }
-
-            List<Skill> skills = await _skillHandler.GetSkills(skillIds);
+            
+            List<Skill> skills = new List<Skill>();
+            foreach (int skillId in skillIds)
+            {
+                skills.Add(await _skillHandler.GetSkillFromId(skillId));
+            }
             await _flexworkerHandler.RemoveSkills((int)flexworkerId, skills);
             return Ok();
         }
