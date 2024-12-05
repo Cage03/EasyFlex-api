@@ -5,5 +5,9 @@ namespace Interface.Interface.Handlers;
 
 public interface ISkillHandler
 {
-    public Task<List<Skill>> GetSkills(List<int> skillIds);
+    public Task<Skill> GetSkillFromId(int id);
+    public Task<List<Skill>> GetSkillsFromCategory(int limit, int page, int categoryId);
+    public Task CreateSkill(string name, int categoryId);
+    public Task DeleteSkill(int id);
+    public Task UpdateSkill(Skill skill);
 }
