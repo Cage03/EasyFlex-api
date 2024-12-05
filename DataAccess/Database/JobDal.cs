@@ -48,66 +48,52 @@ public class JobDal(EasyFlexContext context) : IJobDal
             throw new NotFoundException($"Job with ID {job.Id} not found.");
         }
 
-        UpdateScalarProperties(originalJob, job);
-        await UpdateJobPreferences(originalJob.Id, job.Preferences);
-
-        context.Update(originalJob);
-        await context.SaveChangesAsync();
-    }
-
-    private void UpdateScalarProperties(JobModel originalJob, JobModel updatedJob)
-    {
-        foreach (var property in typeof(JobModel).GetProperties())
+        if (originalJob != null)
         {
-            if (property.CanWrite && property.Name != nameof(JobModel.Preferences))
+            // Update parent
+            context.Entry(originalJob).CurrentValues.SetValues(job);
+
+            // Delete children
+            foreach (var existingPreference in originalJob.Preferences.ToList())
             {
-                var newValue = property.GetValue(updatedJob);
-                property.SetValue(originalJob, newValue);
+                if (originalJob.Preferences.All(c => c.Id != existingPreference.Id))
+                    context.Preferences.Remove(existingPreference);
             }
-        }
-    }
 
-    private async Task UpdateJobPreferences(int jobId, ICollection<PreferenceModel> updatedPreferences)
-    {
-        var originalPreferences = await context.Preferences
-            .Where(p => p.JobId == jobId)
-            .ToListAsync();
-
-        // Add or update preferences
-        foreach (var updatedPreference in updatedPreferences)
-        {
-            var existingPreference = originalPreferences
-                .FirstOrDefault(p => p.Id == updatedPreference.Id);
-
-            if (existingPreference != null)
+            // Update and Insert children
+            foreach (var newPreference in job.Preferences)
             {
-                UpdatePreference(existingPreference, updatedPreference);
-            }
-            else
-            {
-                if (updatedPreference.Id != 0)
+                var existingChild = originalJob.Preferences
+                    .SingleOrDefault(c => c.Id == newPreference.Id && c.Id != default(int));
+
+                if (existingChild != null)
+                    // Update child
+                    context.Entry(existingChild).CurrentValues.SetValues(newPreference);
+                else
                 {
-                    updatedPreference.Id = 0;
+                    // Insert child
+                    var newAddedPreference = new PreferenceModel()
+                    {
+                        SkillId = newPreference.SkillId,
+                        JobId = job.Id,
+                        IsRequired = newPreference.IsRequired,
+                        Weight = newPreference.Weight,
+                        Job = originalJob,
+                        Skill = context.Skills.FirstOrDefault(x => x.Id == newPreference.SkillId),
+                    };
+                    originalJob.Preferences.Add(newAddedPreference);
                 }
-
-                updatedPreference.JobId = jobId;
-                context.Preferences.Add(updatedPreference);
             }
+
         }
-
-        // Remove preferences not in the updated list
-        var preferencesToRemove = originalPreferences
-            .Where(p => updatedPreferences.All(updated => updated.Id != p.Id))
-            .ToList();
-
-        foreach (var preference in preferencesToRemove)
+        else 
         {
-            context.Preferences.Remove(preference);
+            throw new NotFoundException($"Job with ID {job.Id} not found.");
         }
 
         await context.SaveChangesAsync();
     }
-
+    
 
     private void UpdatePreference(PreferenceModel existingPreference, PreferenceModel updatedPreference)
     {
@@ -120,7 +106,6 @@ public class JobDal(EasyFlexContext context) : IJobDal
             }
         }
     }
-
 
     public async Task DeleteJob(int id)
     {
