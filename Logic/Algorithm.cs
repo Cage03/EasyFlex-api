@@ -56,8 +56,6 @@ namespace Logic
             
             foreach (Flexworker flexworker in flexworkers)
             {
-                
-
                 var match = true;
                 float totalWeight = 0;
                 float weight = 0;
@@ -82,12 +80,13 @@ namespace Logic
                 int compatibility = (int)Math.Round(weight / totalWeight * 100);
                 results.Add(new FlexworkerResult
                 {
-                    FlexworkerId = flexworker.Id,
+                    Id = flexworker.Id,
                     Name = flexworker.Name,
                     ProfilePictureUrl = flexworker.ProfilePictureUrl,
                     Compatibility = compatibility
                 });
             }
+            results.Sort((a, b) => b.Compatibility.CompareTo(a.Compatibility));
             return results;
         }
     }

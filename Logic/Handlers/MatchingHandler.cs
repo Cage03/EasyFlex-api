@@ -8,7 +8,10 @@ public class MatchingHandler(IFlexworkerHandler flexworkerHandler, IJobHandler j
     public async Task<List<FlexworkerResult>> GetMatchesForJob(int jobId)
     {
         Job job = await jobHandler.GetJob(jobId);
-        List<int> skillIds = job.Preferences.Select(p => p.SkillId).ToList();
+        List<int> skillIds = job.Preferences
+            .Where(p => p.IsRequired)
+            .Select(p => p.SkillId)
+            .ToList();
 
         List<Flexworker> flexworkers = await flexworkerHandler.GetFlexworkersBySkillIds(skillIds);
 

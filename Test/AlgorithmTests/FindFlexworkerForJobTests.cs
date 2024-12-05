@@ -37,7 +37,7 @@ namespace Test.AlgorithmTests
             List<Flexworker> flexworkers = flexworkerGenerator.Flexworkers_Sc_1_3();
             List<FlexworkerResult> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[0], flexworkers);
 
-            Assert.AreEqual(0, results[0].FlexworkerId);
+            Assert.AreEqual(0, results[0].Id);
             Assert.AreEqual(1, results.Count);
 
             Assert.AreEqual(100, results[0].Compatibility);
@@ -49,7 +49,7 @@ namespace Test.AlgorithmTests
             List<Flexworker> flexworkers = flexworkerGenerator.Flexworkers_Sc_2_4();
             List<FlexworkerResult> results = Algorithm.FindFlexworkersForJob(jobGenerator.Jobs[1], flexworkers);
 
-            Assert.AreEqual(2, results[0].FlexworkerId);
+            Assert.AreEqual(2, results[0].Id);
             Assert.AreEqual(1, results.Count);
 
             Assert.AreEqual(100, results[0].Compatibility);
