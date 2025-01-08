@@ -12,5 +12,6 @@ namespace Interface.Dtos
         public required string Name { get; init; }
         public string? ProfilePictureUrl { get; init; }
         public int Compatibility { get; init; }
+        public List<Skill> Skills { get; init; }
     }
 }
