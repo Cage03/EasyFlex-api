@@ -23,6 +23,14 @@ public class JobDal(EasyFlexContext context) : IJobDal
             .ToListAsync();
     }
 
+    public async Task<List<JobModel>> GetJobsBySkillIds(List<int> skillIds)
+    {
+        return await context.Jobs
+            .Include(j => j.Preferences)
+            .Where(j => j.Preferences.Any(p => skillIds.Contains(p.SkillId)))
+            .ToListAsync();
+    }
+
     public async Task<JobModel> GetJob(int id)
     {
         var job = await context.Jobs

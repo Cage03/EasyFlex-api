@@ -30,7 +30,7 @@ namespace Test.AlgorithmTests
             
             List<JobResult> results = Algorithm.FindJobsForFlexworker(flexworker, jobGenerator.Jobs_Hardfilter_Sc_1());
 
-            Assert.AreEqual(0, results[0].JobId);
+            Assert.AreEqual(0, results[0].Id);
             Assert.AreEqual(1, results.Count);
 
             Assert.AreEqual(100, results[0].Compatibility);

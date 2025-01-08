@@ -3,6 +3,7 @@ using Interface.Dtos;
 using Interface.Exceptions;
 using Interface.Factories;
 using Interface.Interface.Handlers;
+using Logic.Handlers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyFlex_api.Controllers;
@@ -15,6 +16,8 @@ public class FlexworkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         logicFactoryBuilder.BuildHandlerFactory().GetFlexworkerHandler();
 
     private readonly ISkillHandler _skillHandler = logicFactoryBuilder.BuildHandlerFactory().GetSkillHandler();
+
+    private readonly IMatchingHandler _matchingHandler = logicFactoryBuilder.BuildHandlerFactory().GetMatchingHandler();
 
     [HttpPost]
     [Route("Register")]
@@ -169,6 +172,21 @@ public class FlexworkerController(ILogicFactoryBuilder logicFactoryBuilder) : Co
         catch (Exception e)
         {
             return BadRequest(e);
+        }
+    }
+
+    [HttpGet]
+    [Route("Matches")]
+    public async Task<IActionResult> GetMatches([FromQuery] int id)
+    {
+        try
+        {
+            List<JobResult> matches = await _matchingHandler.GetMatchesForFlexworker(id);
+            return Ok(matches);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(400, ex);
         }
     }
 }
