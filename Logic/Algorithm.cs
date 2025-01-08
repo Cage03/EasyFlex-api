@@ -87,7 +87,8 @@ namespace Logic
                     Id = flexworker.Id,
                     Name = flexworker.Name,
                     ProfilePictureUrl = flexworker.ProfilePictureUrl,
-                    Compatibility = compatibility
+                    Compatibility = compatibility,
+                    Skills = flexworker.Skills.Where(s => job.Preferences.Any(p => p.SkillId == s.Id)).ToList()
                 });
             }
             results.Sort((a, b) => b.Compatibility.CompareTo(a.Compatibility));
