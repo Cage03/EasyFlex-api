@@ -11,6 +11,7 @@ namespace Logic
 
             foreach (Job job in jobs)
             {
+                List<Skill> compSkills = new List<Skill>();
                 var match = true;
                 float totalWeight = 0;
                 float weight = 0;
@@ -28,10 +29,12 @@ namespace Logic
                         }
 
                         weight += preference.Weight;
+                        compSkills.Add(flexworker.Skills.First(s => s.Id == preference.SkillId));
                     }
                     else if (flexworker.Skills.Any(s => s.Id == preference.SkillId))
                     {
                         weight += preference.Weight;
+                        compSkills.Add(flexworker.Skills.First(s => s.Id == preference.SkillId));
                     }
                 }
 
@@ -40,9 +43,10 @@ namespace Logic
                 var compatibility = Math.Round(weight / totalWeight * 100);
                 results.Add(new JobResult
                 {
-                    JobId = job.Id,
-                    JobName = job.Name,
-                    Compatibility = compatibility
+                    Id = job.Id,
+                    Name = job.Name,
+                    Compatibility = compatibility,
+                    CommonSkills = compSkills
                 });
             }
 

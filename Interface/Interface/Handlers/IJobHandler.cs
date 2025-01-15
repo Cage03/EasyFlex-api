@@ -8,6 +8,7 @@ public interface IJobHandler
     public Task<int> CreateJob(Job job);
     public Task<Job> GetJob(int id);
     public Task<Job[]> GetJobs(int pageNumber, int limit);
+    public Task<List<Job>> GetJobsBySkillIds(List<int> skillIds);
     public Task DeleteJob(int id);
     public Task UpdateJob(Job job);
 }

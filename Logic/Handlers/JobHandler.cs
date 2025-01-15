@@ -19,6 +19,12 @@ public class JobHandler(IJobDal jobDal) : IJobHandler
         return ToDto(job);
     }
 
+    public async Task<List<Job>> GetJobsBySkillIds(List<int> skillIds)
+    {
+        var jobs = await jobDal.GetJobsBySkillIds(skillIds);
+        return jobs.Select(ToDto).ToList();
+    }
+
     public async Task UpdateJob(Job job)
     {
         await jobDal.UpdateJob(ToModel(job));

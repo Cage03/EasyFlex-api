@@ -17,4 +17,15 @@ public class MatchingHandler(IFlexworkerHandler flexworkerHandler, IJobHandler j
 
         return Algorithm.FindFlexworkersForJob(job, flexworkers);
     }
+
+    public async Task<List<JobResult>> GetMatchesForFlexworker(int flexworkerId)
+    {
+        Flexworker flexworker = await flexworkerHandler.GetFlexworkerById(flexworkerId);
+
+        List<int> skillIds = flexworker.Skills.Select(skill => skill.Id).ToList();
+
+        List<Job> jobs = await jobHandler.GetJobsBySkillIds(skillIds);
+
+        return Algorithm.FindJobsForFlexworker(flexworker, jobs);
+    }
 }
