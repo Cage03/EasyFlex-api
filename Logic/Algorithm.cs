@@ -49,14 +49,13 @@ namespace Logic
                     CommonSkills = compSkills
                 });
             }
-
+            results.Sort((a, b) => b.Compatibility.CompareTo(a.Compatibility));
             return results;
         }
 
         public static List<FlexworkerResult> FindFlexworkersForJob(Job job, List<Flexworker> flexworkers)
         {
             var results = new List<FlexworkerResult>();
-            if (job.Preferences.Count == 0) return results;
             
             foreach (Flexworker flexworker in flexworkers)
             {
