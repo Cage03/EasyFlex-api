@@ -79,8 +79,13 @@ namespace Logic
                 }
 
                 if (!match) continue;
-                
-                int compatibility = (int)Math.Round(weight / totalWeight * 100);
+
+                int compatibility = 0;
+                if (weight > 0)
+                { 
+                    compatibility = (int)Math.Round(weight / totalWeight * 100);
+                }
+
                 results.Add(new FlexworkerResult
                 {
                     Id = flexworker.Id,
